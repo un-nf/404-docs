@@ -3,3 +3,6 @@ site_name: 404 Documentation
 nav: 
   - Home: home.md
   - Getting Started: index.md
+
+theme:
+  name: material
