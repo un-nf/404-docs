@@ -1,8 +1,47 @@
-site_name: 404 Documentation
+site_name: 404 - A Privacy Tool
 
 nav: 
   - Home: home.md
-  - Getting Started: index.md
+  - Overview:
+    - Home: Overview/home.md
+    - Why do I need 404?: Overview/why404.md
+    - Quick Consent & Warning: Overview/consent.md
+  - Getting Started:
+    - Dependencies: Getting Started/deps.md
+    - Download: Getting Started/download.md
+    - Repository (Github/Codeberg): Getting Started/repoStart.md
+    - App (alpha): Getting Started/appStart.md
+  - FAQ: faq.md
 
 theme:
   name: material
+  palette:
+    scheme: slate
+  features:
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+
+# !!! (???)
+#    TEXT HERE
+
+  - attr_list
+
+# BUTTON
+#     [Subscribe to our newsletter](#){ .md-button }
+
+# Primary
+#     [Subscribe to our newsletter](#){ .md-button .md-button--primary }
+
+# w/ icon
+#     [Send :fontawesome-solid-paper-plane:](#){ .md-button }
+
+  - pymdownx.details # for admonition
+  - pymdownx.superfences # for admonition + code highlighting
+  - pymdownx.inlinehilite # for code highlighting
+  - pymdownx.snippets # for code highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
