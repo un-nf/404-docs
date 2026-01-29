@@ -14,30 +14,26 @@
 
 ## Install dependencies & configure PATH
 
-<details>
-<summary><b>Windows install</b></summary>
+??? note "Windows install"
+    
+    Option 1: Install via winget (recommended) 
 
-<h2> Option 1: Install via winget (recommended) </h2>
+    1. Open the Command Prompt
+    
+        - Press... Windows button + r
 
-<h3> 1. Open the Command Prompt </h3>
+        - Type "cmd" into the run dialogue box.
 
-<p>
-- Press... Windows button + r
-</p>
 
-<p>
-- Type "cmd" into the run dialogue box.
-</p>
+    2. Download the dependencies
 
-<h3> 2. Download the dependencies </h3>
+    ```bash
+    winget install Kitware.CMake\ 
+    winget install nasm -i
+    ```
 
-```bash
-$ winget install Kitware.CMake
-$ winget install nasm -i
-```
+    Restart your shell after installation. Tools should be on your PATH automatically. 
 
-<sub> Restart your shell after installation. Tools should be on your PATH automatically. </sub>
-</details>
 
 <details>
 <summary><b>macOS install</b></summary>
