@@ -35,20 +35,15 @@
     Restart your shell after installation. Tools should be on your PATH automatically. 
 
 
-<details>
-<summary><b>macOS install</b></summary>
+??? note "macOS install"
+Install via homebrew (recommended) 
 
-<h2> Install via homebrew (recommended) </h2>
+Open the Terminal
 
-<ol>
-<li> Open the Terminal </li>
+Download dependencies w/ homebrew:
+ `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
-<li> Download dependencies w/ homebrew: </li>
-
-<ul>
-<li><code> $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </code></li>
-
-<li><code> $ brew install rust nasm cmake </code></li>
+`brew install rust nasm cmake`
 </ul>
 
 <sub>Restart your shell after installation. Tools should be on your PATH automatically.</sub>

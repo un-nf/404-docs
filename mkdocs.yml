@@ -7,10 +7,12 @@ nav:
     - Why do I need 404?: Overview/why404.md
     - Quick Consent & Warning: Overview/consent.md
   - Getting Started:
-    - Dependencies: Getting Started/deps.md
-    - Download: Getting Started/download.md
-    - Repository (Github/Codeberg): Getting Started/repoStart.md
-    - App (alpha): Getting Started/appStart.md
+    - Download: getStart/download.md
+    - Repository (Github/Codeberg): getStart/repoStart.md
+    - App (alpha): getStart/appStart.md
+  - Developer Resources:
+    - Dependencies: dev/depsDev.md
+    - Repository (Github/Codeberg): dev/repoDev.md
   - FAQ: faq.md
 
 theme:
