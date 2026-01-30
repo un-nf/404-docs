@@ -10,6 +10,6 @@ If you do not understand JavaScript, or if you don't take the time to look throu
 
 ***Technical comlexity*** - It's a lot. I know, but honestly it kind of just works right now. It may get you rate-limited or flagged as a bot (I haven't been yet, and I run this jawn every day), but you should be able to pass Captchas and prove you're a human -- no, the pole is not a part of the 'street light.'
 
-> I do not know the long term effects on account usage. I have been logging-in via this proxy using my personal Google, Microsoft, and Apple accounts for the last 6-ish months, and I have experienced no retaliation (bans and whatnot). That is *not* to say you will have the same experience. **I *strongly* recommend that you use alternate/disposable accounts if you're going to be testing OAuth or other login flows.**
+> I do not know the long term effects on account usage. I have been logging-in via this proxy using my personal Google, Microsoft, and Apple accounts for the last 9-ish months, and I have experienced *no* retaliation (bans and whatnot). That is *not* to say you will have the same experience. **I *strongly* recommend that you use alternate/disposable accounts if you're going to be testing OAuth or other login flows.**
 
 *I am not a cybersecurity engineer. I hammered this together and may have missed something important. Feel free to reach out with security vulnerabilities @ 404mesh@proton.me*

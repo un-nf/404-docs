@@ -7,12 +7,13 @@ nav:
     - Why do I need 404?: Overview/why404.md
     - Quick Consent & Warning: Overview/consent.md
   - Getting Started:
-    - Download: getStart/download.md
-    - Repository (Github/Codeberg): getStart/repoStart.md
     - App (alpha): getStart/appStart.md
   - Developer Resources:
-    - Dependencies: dev/depsDev.md
     - Repository (Github/Codeberg): dev/repoDev.md
+    - Download: dev/downloadDev.md
+    - Dependencies: dev/depsDev.md
+    - Get Started: dev/repoStart.md
+    - eBPF Guide: dev/ebpf.md
   - FAQ: faq.md
 
 theme:
@@ -23,6 +24,14 @@ theme:
     - content.code.copy
 
 markdown_extensions:
+
+# Mermaid support
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
   - admonition
 
 # !!! (???)

@@ -36,39 +36,32 @@
 
 
 ??? note "macOS install"
-Install via homebrew (recommended) 
+    Install via homebrew (recommended) 
 
-Open the Terminal
+    Open the Terminal
 
-Download dependencies w/ homebrew:
- `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+    Download dependencies w/ homebrew:
 
-`brew install rust nasm cmake`
-</ul>
+    `brew install rust nasm cmake`
 
-<sub>Restart your shell after installation. Tools should be on your PATH automatically.</sub>
-</ol>
-</details>
+    Restart your shell after installation. Tools should be on your PATH automatically.
 
-<details>
-<summary><b>Linux install</b></summary>
+??? note "Linux install"
 
-<h2>Install via package manager</h2>
+    Install via package manager
 
-```bash
-# Debian/Ubuntu
-$ sudo apt update
-$ sudo apt install -y curl build-essential nasm cmake
+    ```bash
+    # Debian/Ubuntu
+    $ sudo apt update
+    $ sudo apt install -y curl build-essential nasm cmake
 
-# Arch
-$ sudo pacman -S rust nasm cmake
+    # Arch
+    $ sudo pacman -S rust nasm cmake
 
-# Fedora/RHEL
-$ sudo dnf install -y rust cargo nasm cmake
+    # Fedora/RHEL
+    $ sudo dnf install -y rust cargo nasm cmake
 
-# Install Rust via rustup (if not installed via package manager)
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-$ source $HOME/.cargo/env
-```
-
-</details>
+    # Install Rust via rustup (if not installed via package manager)
+    $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    $ source $HOME/.cargo/env
+    ```
