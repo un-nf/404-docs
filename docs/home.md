@@ -20,6 +20,17 @@ hide:
 
 ## Core capabilities
 
+```mermaid
+sequenceDiagram
+    participant F as Firefox on Windows
+    participant 404
+    participant A as Ad-Tech Corporations
+    F->>404: Hi, Google! I am using Firefox on Windows
+    404->>A: Hi, Google! I am using Chrome on macOS
+    A->>404: Hi, 404! Here is your webpage for Chrome on macOS.
+    404->>F: Here is your webpage.
+```
+
 -   ### Anti-fingerprinting
     404 targets *correlation*: offers coherent profiles across **TLS → headers → JS surfaces**.
 
@@ -46,31 +57,6 @@ Websites and fingerprinting vendors collect semi-unique signals and combine them
 - Typing speed
 
 404 sits in the middle and **rewrites your fingerprint** before it leaves your machine.
-
----
-
-## The “personality cloud” (before / after)
-
-```mermaid
-flowchart LR
-  %% Zig-zag layout: left -> middle -> right
-  A["BROWSER_SIGNAL<br/><b>[LEAKING]</b><br/><br/>User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) …<br/>CanvasID: 9b:17:2f:aa:…<br/>WebGL: ANGLE (Apple, Apple M1, OpenGL 4.1)<br/>Fonts: 178 enumerated<br/>TLS: ClientHello shape: unique-ish"]
-
-  B["404_PROXY<br/><b>[INTERCEPT]</b><br/><br/>• rewrite TLS plan<br/>• normalize headers + ordering<br/>• inject JS spoofing stack (profile JSON)<br/>• block/downgrade leaky upgrades (when configured)"]
-
-  C["SPOOFED_SIGNAL<br/><b>[PROTECTED]</b><br/><br/>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) …<br/>CanvasID: 0xFD42… (scrambled deterministically)<br/>WebGL: NVIDIA… (profile-consistent)<br/>Fonts: constrained + salted<br/>TLS: profile-aligned handshake shape"]
-
-  A -->|HTTPS request| B -->|rewritten request| C
-
-  classDef leak fill:#2b1b1b,stroke:#ff6b6b,stroke-width:1px,color:#ffdede;
-  classDef mid  fill:#1b2433,stroke:#4b8bff,stroke-width:1px,color:#dbe9ff;
-  classDef safe fill:#1b2b1f,stroke:#4ade80,stroke-width:1px,color:#dcffe7;
-
-  class A leak;
-  class B mid;
-  class C safe;
-
-```
 
 ---
 

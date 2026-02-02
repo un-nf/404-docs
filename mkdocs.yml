@@ -3,7 +3,7 @@ site_name: 404 - A Privacy Tool
 nav: 
   - Home: home.md
   - Overview:
-    - Home: Overview/home.md
+    - What is 404?: Overview/whatIs.md
     - Why do I need 404?: Overview/why404.md
     - Quick Consent & Warning: Overview/consent.md
   - Getting Started:

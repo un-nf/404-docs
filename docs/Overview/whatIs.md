@@ -1,7 +1,35 @@
+---
+hide:
+  - toc
+---
 
-## What is 404?
+
+# What is 404?
 
 By leveraging a Blazing fast Rust privacy proxy & a Linux kernel module, 404 offers full control over your machine's fingerprint.
+
+## The “personality cloud” (before / after)
+
+```mermaid
+flowchart LR
+  %% Zig-zag layout: left -> middle -> right
+  A["BROWSER_SIGNAL<br/><b>[LEAKING]</b><br/>User-Agent: Mozilla/5.0 on macOS<br/>CanvasID: 9b:17:2f:aa:…<br/>Fonts: 178 enumerated<br/>TLS: ClientHello: unique-ish"]
+
+  B["404_PROXY<br/><b>[INTERCEPT]</b><br/><br/>• Rewrite TLS plan<br/>• Normalize headers + ordering<br/>• Inject JS spoofing stack (profile JSON)"]
+
+  C["SPOOFED_SIGNAL<br/><b>[PROTECTED]</b><br/><br/>User-Agent: Mozilla/5.0 on Windows<br/>CanvasID: 0xFD42… (scrambled deterministically)<br/>Fonts: constrained + salted<br/>TLS: profile-aligned handshake shape"]
+
+  A -->|HTTPS request| B -->|rewritten request| C
+
+  classDef leak fill:#2b1b1b,stroke:#ff6b6b,stroke-width:1px,color:#ffdede;
+  classDef mid  fill:#1b2433,stroke:#4b8bff,stroke-width:1px,color:#dbe9ff;
+  classDef safe fill:#1b2b1f,stroke:#4ade80,stroke-width:1px,color:#dcffe7;
+
+  class A leak;
+  class B mid;
+  class C safe;
+
+```
 
 404 houses two main modules:
 - STATIC Proxy - *Synthetic Traffic and TLS Identity Camouflage*
@@ -30,7 +58,7 @@ Requests are broken into `flows`. Each `flow` passes through multiple `stages`. 
 
 3. **CspStage** - Generates CSP nonces and rewrites Content-Security-Policy headers so injected scripts execute without breaking origin policies.
 
-4. **JsInjectionStage** - Embeds the fingerprint spoofing stack (bootstrap, globals shim, config layer, spoof scripts) at the beginning of <head>. Records SHA-256 hashes for CSP validation.
+4. **JsInjectionStage** - Embeds the fingerprint spoofing stack (bootstrap, globals shim, config layer, spoof scripts) at the beginning of `<head>`. Records SHA-256 hashes for CSP validation.
 
 5. **BehavioralNoiseStage** - Tags the flow with timing patterns for coordination between Rust and injected JavaScript.
 
