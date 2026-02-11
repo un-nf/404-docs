@@ -1,21 +1,21 @@
 # Getting Started
 
 !!! Info 
-    All steps assume that there is a folder named `404` located at `~/git/404`
+    All steps assume that there is a folder named `404/` located at `~/git/`
 
 ## Run the proxy
 
 Linux/macOS:
 
 ```bash
-cd ~/git/404repo/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
+cd ~/git/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
 cargo run  # This will take a while on the first run (~5-minutes)
 ```
 
 Windows:
 
 ```bash
-cd %USERPROFILE%/git/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
+cd %USERPROFILE%\git\404\src\STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
 cargo run  # This will take a while on the first run (~5-minutes)
 ```
 

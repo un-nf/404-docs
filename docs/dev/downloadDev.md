@@ -6,7 +6,7 @@ The *simplest* option is to download a zipped version of the repository. *This d
 
 [**Download .zip**](../assets/404.zip)
 
-!!! Warning ".zip file last updated: 1/30/2025"
+!!! Warning ".zip file last updated: 2/11/2026"
 
 Please be sure to move this .zip file to the location you would like it (e.g. `~/git/`) before unzipping the file. Though moving the repo is a simple enough process at any time, doing so now will save you from losing it in your `Downloads/` folder as well as allow you to use the commands provided more seamlessly.
 

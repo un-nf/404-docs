@@ -6,9 +6,9 @@
 
 | Component | Version | Install Link |
 |-----------|---------|-------|
-| **Rust** | 1.76+ | [INSTALL](https://rust-lang.org/tools/install/) - *manual install req.* |
-| **CMake** | Latest | [INSTALL](https://www.nasm.us/pub/nasm/releasebuilds/3.01/) |
-| **NASM** | Latest | [INSTALL](https://cmake.org/download/) |
+| **Rust** | 1.76+ | [INSTALL](https://rust-lang.org/tools/install/){target="_blank"} - *manual install req.* |
+| **CMake** | Latest | [INSTALL](https://cmake.org/download/){target="_blank"} |
+| **NASM** | Latest | [INSTALL](https://www.nasm.us/pub/nasm/releasebuilds/3.01/){target="_blank"} |
 
 > *You may install these manually, but it is often easier to install them via `brew` or `winget`. So open the Terminal and lets get started!*
 
