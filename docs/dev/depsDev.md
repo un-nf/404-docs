@@ -42,7 +42,9 @@
 
     Download dependencies w/ homebrew:
 
-    `brew install rust nasm cmake`
+    ```zsh
+    brew install rust nasm cmake
+    ```
 
     Restart your shell after installation. Tools should be on your PATH automatically.
 

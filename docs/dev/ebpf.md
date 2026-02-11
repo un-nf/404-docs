@@ -79,4 +79,4 @@ On Host machine:
 - (Windows: Network adapter settings → Properties → TCP/IPv4 → Gateway)
 - (Linux/Mac: `sudo route add default gw <vm-host-only-ip>`)
 
-> Some additional tinkering may be required. Feel free to leave a comment or open an issue with suggestions on improving the setup process. *If you have any experience developing with the Linux kernel, I am interested in building a minimal kernel with only the key elements, but beyond my scope (for the time being) and would love some assistance or guidance.*
+> Some additional tinkering may be required. Feel free to leave a comment or open an issue with suggestions on improving the setup process.

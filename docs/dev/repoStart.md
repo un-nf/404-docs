@@ -8,15 +8,15 @@
 Linux/macOS:
 
 ```bash
-$ cd ~/git/404repo/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
-$ cargo run  # This will take a while on the first run (~5-minutes)
+cd ~/git/404repo/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
+cargo run  # This will take a while on the first run (~5-minutes)
 ```
 
 Windows:
 
 ```bash
-$ cd %USERPROFILE%/git/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
-$ cargo run  # This will take a while on the first run (~5-minutes)
+cd %USERPROFILE%/git/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
+cargo run  # This will take a while on the first run (~5-minutes)
 ```
 
 ## Trust proxy-generated CA
@@ -37,7 +37,7 @@ $ cargo run  # This will take a while on the first run (~5-minutes)
     ```bash
     certutil.exe -addstore root C:\\path\\to\\myCA.pem
     ```
-
+    ***or*** manually...
     1. Navigate to the `404/` directory and locate the `../static_proxy/certs/` directory.
     2. Double-click the file labeled `static-ca.crt` (may appear without .crt extension)
     3. Click `Install Certificate...`
@@ -48,8 +48,8 @@ $ cargo run  # This will take a while on the first run (~5-minutes)
 
 ??? note "macOS"
 
-    ```bash
-    $ sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain static_proxy/certs/static-ca.crt
+    ```zsh
+    sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain static_proxy/certs/static-ca.crt
     ```
 
     Or use the GUI:
@@ -64,8 +64,8 @@ $ cargo run  # This will take a while on the first run (~5-minutes)
 
     ```bash
     # Copy CA to system trust store
-    $ sudo cp static_proxy/certs/static-ca.crt /usr/local/share/ca-certificates/static-ca.crt
-    $ sudo update-ca-certificates
+    sudo cp static_proxy/certs/static-ca.crt /usr/local/share/ca-certificates/static-ca.crt
+    sudo update-ca-certificates
     ```
 
 ## Configure your Browser
