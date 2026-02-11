@@ -1,5 +1,5 @@
 site_name: 404 - A Privacy Tool
-site_url: https://un-nf.github.io/404-docs/
+site_url: https://un-nf.github.io/404-docs/home
 
 nav: 
   - Home: home.md
