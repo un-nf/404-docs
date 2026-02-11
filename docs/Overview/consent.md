@@ -14,7 +14,7 @@
 
 - You will not share your CA certificate with anyone.
 
-- If you find a security issue report it to 404mesh@proton.me
+- If you find a security issue report it to 404co@proton.me
 
 [Join the Discord for support!](https://discord.gg/G7rUYrZqS2)
 
