@@ -2,7 +2,7 @@ site_name: 404 - A Privacy Tool
 site_url: https://un-nf.github.io/404-docs/home
 
 nav: 
-  - Home: home.md
+  - Home: index.md
   - Overview:
     - What is 404?: Overview/whatIs.md
     - Why do I need 404?: Overview/why404.md
