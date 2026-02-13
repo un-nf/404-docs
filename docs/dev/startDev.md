@@ -88,3 +88,5 @@ Set your browser (or system) to use `localhost:8080` (or `127.0.0.1:8080`) as an
 You *100% could* configure a VM and route traffic from your host machine to a VM guest, [instructions for VM configuration here](ebpf.md).
 
 For now, just running STATIC should be enough, though network level obfuscation is not possible without a Linux kernel (yet).
+
+[Step 4 *(optional)* - Setup eBPF](./ebpf.md){.md-button .md-button--primary}

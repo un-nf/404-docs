@@ -14,7 +14,7 @@
 
 ## Install dependencies & configure PATH
 
-!!! tip
+!!! Abstract "Developer Tip"
     All commands can be copy pasted into your terminal for easy usage!
 
 ??? note "Windows install"
@@ -89,3 +89,5 @@
     $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     $ source $HOME/.cargo/env
     ```
+
+[Step 3 - Start Proxy](./startDev.md){.md-button .md-button--primary}

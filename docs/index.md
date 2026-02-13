@@ -1,6 +1,6 @@
 ---
 title: 404 Proxy
-description: Reclaim your digital anonymity with a local-first spoofing proxy for TLS, headers, and fingerprint surfaces.
+description: Reclaim your digital anonymity with a local-first spoofing proxy for TLS, headers, JavaScript, and network level fingerprinting surfaces.
 hide:
   - toc
 ---
@@ -13,7 +13,9 @@ hide:
 !!! info "v1.1 available"
     New builds are live. If you’re upgrading, skim the release notes before swapping profiles.
 
-[Get Started](Overview/consent.md){.md-button .md-button--primary}
+    ![type:video](./assets/images/demo.mp4)
+
+[Get Started](./dev/downloadDev.md){.md-button .md-button--primary}
 [GitHub](https://github.com/un-nf/404){.md-button}
 
 ---

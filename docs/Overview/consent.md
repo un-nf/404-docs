@@ -1,3 +1,10 @@
+---
+title: 404 Consent & Warning
+description:
+hide:
+  - toc
+---
+
 # Quick consent & warning
 
 *By running this software you understand that:*

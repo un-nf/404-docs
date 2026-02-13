@@ -1,4 +1,6 @@
 ---
+title: What is 404?
+description:
 hide:
   - toc
 ---
@@ -38,8 +40,8 @@ flowchart LR
 - STATIC Proxy - *Synthetic Traffic and TLS Identity Camouflage*
 - Linux eBPF module
 
-### STATIC Proxy
-#### *Synthetic Traffic and TLS Identity Camouflage*
+## STATIC Proxy
+### *Synthetic Traffic and TLS Identity Camouflage*
 
 The heart of 404, built in Rust. 
 
@@ -83,7 +85,7 @@ Each stage runs asynchronously and can inspect or mutate the request/response. T
 - [What is my Browser](https://whatismybrowser.com/){target="_blank"}
 - [HTTP bin](https://httpbin.org/headers){target="_blank"}
 
-### Linux eBPF module
+## Linux eBPF module
 
 The eBPF module is, again, quite simple. It leverages powerful, fast, well documented, low-level Linux kernel hooks. By attaching carefully crafted eBPF programs to Linux's Traffic Control (tc) egress hooks, we can mutate files extensively.
 

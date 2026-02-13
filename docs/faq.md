@@ -1,3 +1,10 @@
+---
+title: Frequently Asked Questions
+description: 
+
+hide:
+---
+
 # FAQ
 
 ## Does 404 make me anonymous online? 
