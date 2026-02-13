@@ -8,7 +8,7 @@ hide:
 
 ## Reclaim Your **Digital Anonymity**
 
-*Stealth by design. Illegibility on purpose.*
+*Local by design. Illegibility on purpose.*
 
 !!! info "v1.1 available"
     New builds are live. If you’re upgrading, skim the release notes before swapping profiles.
