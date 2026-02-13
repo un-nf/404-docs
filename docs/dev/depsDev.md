@@ -14,6 +14,9 @@
 
 ## Install dependencies & configure PATH
 
+!!! tip
+    All commands can be copy pasted into your terminal for easy usage!
+
 ??? note "Windows install"
     
     Install via winget
