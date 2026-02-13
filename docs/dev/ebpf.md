@@ -19,13 +19,13 @@
 
 *Modify hardcoded globals to desired values before compiling.*
 
-**Native OS Options:**
-    
-| OS | TTL | Window Size | Window Scale | ISN | MSS* | Timestamps | TCP Option Order |
-| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| Windows | 128 | 64 kb (64240 bytes) | 8 | Randomized | Varies based on connection | Not used | MSS,NOP,WS,NOP,NOP,SACK |
-| MacOS | 64 | 64 kb (65535 bytes) | 6 | Randomized | Varies based on connection | Internal counter | MSS,NOP,WS,NOP,NOP,TS,SACK,EOL |
-| Linux | 64 | 64 kb (65535 bytes - 5840 bytes for 2.4/2.6 kernels) | 7 | Randomized | Varies based on connection | Internal counter - sometimes randomized | MSS,SACK,TS,NOP,WS |
+??? tip "Native OS Options:"
+        
+    | OS | TTL | Window Size | Window Scale | ISN | MSS* | Timestamps | TCP Option Order |
+    | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+    | Windows | 128 | 64 kb (64240 bytes) | 8 | Randomized | Varies based on connection | Not used | MSS,NOP,WS,NOP,NOP,SACK |
+    | MacOS | 64 | 64 kb (65535 bytes) | 6 | Randomized | Varies based on connection | Internal counter | MSS,NOP,WS,NOP,NOP,TS,SACK,EOL |
+    | Linux | 64 | 64 kb (65535 bytes - 5840 bytes for 2.4/2.6 kernels) | 7 | Randomized | Varies based on connection | Internal counter - sometimes randomized | MSS,SACK,TS,NOP,WS |
 
 ??? note "Default Implementation Options"
 
