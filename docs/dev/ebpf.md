@@ -1,6 +1,6 @@
 # eBPF Kernel Module
 
-## Overview
+This eBPF program hooks into the Linux kernel's network stack at the TC egress point and modifies outgoing packets before they leave your machine. It rewrites packet-level fingerprints that are visible to network observers and can be used to identify your OS and network stack implementation.
 
 ![tcpdump output](../assets/images/tcpdump_output.png)
 
