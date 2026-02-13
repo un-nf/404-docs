@@ -16,19 +16,24 @@
 
 ??? note "Windows install"
     
-    Option 1: Install via winget (recommended) 
+    Install via winget
 
-    1. Open the Command Prompt
+    1. Click [here](https://static.rust-lang.org/rustup/dist/i686-pc-windows-msvc/rustup-init.exe) (32-bit) to download rust-up. Open the downloaded `.exe` file and follow setup instructions.
+
+        - Use the “Workload” tab to select the “Desktop Development with C++” option.
+        - [Help](https://rust-lang.github.io/rustup/installation/windows-msvc.html)
+
+    2. Open the Command Prompt
     
-        - Press... Windows button + r
+        - Press... :material-microsoft-windows: + r
 
         - Type "cmd" into the run dialogue box.
 
 
-    2. Download the dependencies
+    3. Download the dependencies
 
     ```bash
-    winget install Kitware.CMake && winget install nasm -i
+    winget install --id Kitware.CMake -e && winget install --id NASM.NASM -e
     ```
 
     Restart your shell after installation. Tools should be on your PATH automatically. 
@@ -37,9 +42,24 @@
 ??? note "macOS install"
     Install via homebrew (recommended) 
 
-    Open the Terminal
+    1. Open the Terminal
 
-    Download dependencies w/ homebrew:
+        - Press :material-apple-keyboard-command: + space
+        - Search "Terminal" and press Enter
+
+    2. Ensure you have homebrew installed
+
+    a.
+    ```zsh
+    xcode-select --install 
+    ```
+
+    b.
+    ```zsh
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+
+    2. Download dependencies w/ homebrew:
 
     ```zsh
     brew install rust nasm cmake
