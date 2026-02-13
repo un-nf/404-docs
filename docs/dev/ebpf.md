@@ -2,14 +2,16 @@
 
 > The eBPF `ttl_editor` modifies packet-level fingerprints (TTL, TCP window size, sequence numbers, etc.). This requires a Linux kernel.
 
+---
+
+![tcpdump output](../assets/images/tcpdump_output.png)
+
+---
+
 ## Kernel requirements:
 
 - CONFIG_BPF=y, CONFIG_BPF_SYSCALL=y, CONFIG_NET_CLS_BPF=y, CONFIG_NET_ACT_BPF=y
 - Install: `clang`, `llvm`, `libbpf-dev`, `linux-headers-$(uname -r)`, `iproute2`
-
----
-
-![tcpdump output](../assets/images/tcpdump_output.png)
 
 ---
 
@@ -33,20 +35,20 @@
 
     IPv4:
     
-    TTL (Time To Live) → forced to 255
-    TOS (Type of Service) → set to 0x10
-    IP ID (Identification) → randomized per packet
-    TCP window size → 65535
-    TCP initial sequence number → randomized (again)
-    TCP window scale → 5
-    TCP MSS (Maximum Segment Size) → 1460
-    TCP timestamps → randomized
+    - TTL (Time To Live) → forced to 255
+    - TOS (Type of Service) → set to 0x10
+    - IP ID (Identification) → randomized per packet
+    - TCP window size → 65535
+    - TCP initial sequence number → randomized (again)
+    - TCP window scale → 5
+    - TCP MSS (Maximum Segment Size) → 1460
+    - TCP timestamps → randomized
     
     IPv6:
     
-    Hop limit → forced to 255
-    Flow label → randomized
-    TCP parameters (same as IPv4)
+    - Hop limit → forced to 255
+    - Flow label → randomized
+    - TCP parameters (same as IPv4)
 
 **1. Open `ttl_editor.c` and modify the `#define` values at the top:**
 
