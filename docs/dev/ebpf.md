@@ -1,8 +1,6 @@
-## Compile & attach eBPF program to TC egress hook (if using Linux)
+# eBPF Kernel Module
 
-> The eBPF `ttl_editor` modifies packet-level fingerprints (TTL, TCP window size, sequence numbers, etc.). This requires a Linux kernel.
-
----
+> The eBPF module modifies packet-level fingerprints (TTL, TCP window size, sequence numbers, etc.). This requires a Linux kernel.
 
 ![tcpdump output](../assets/images/tcpdump_output.png)
 
