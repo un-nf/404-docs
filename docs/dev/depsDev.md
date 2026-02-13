@@ -28,8 +28,7 @@
     2. Download the dependencies
 
     ```bash
-    winget install Kitware.CMake\ 
-    winget install nasm -i
+    winget install Kitware.CMake && winget install nasm -i
     ```
 
     Restart your shell after installation. Tools should be on your PATH automatically. 
