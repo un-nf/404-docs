@@ -25,9 +25,9 @@ sequenceDiagram
     participant F as Firefox on Windows
     participant Alice
     participant A as Ad-Tech Corporations
-    F->>404: Hi, Google! I am using Firefox on Windows
-    404->>A: Hi, Google! I am using Chrome on macOS
-    A->>404: Hi, Alice! Here is your webpage for Chrome on macOS.
+    F->>Alice: Hi, Google! I am using Firefox on Windows
+    Alice->>A: Hi, Google! I am using Chrome on macOS
+    A->>Alice: Hi, Alice! Here is your webpage for Chrome on macOS.
     404->>F: Here is your webpage.
 ```
 
