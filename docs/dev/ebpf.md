@@ -1,10 +1,10 @@
 # eBPF Kernel Module
 
-> The eBPF module modifies packet-level fingerprints (TTL, TCP window size, sequence numbers, etc.). This requires a Linux kernel.
+## Overview
 
 ![tcpdump output](../assets/images/tcpdump_output.png)
 
----
+> The eBPF module modifies packet-level fingerprints (TTL, TCP window size, sequence numbers, etc.). This requires a Linux kernel.
 
 ## Kernel requirements:
 
