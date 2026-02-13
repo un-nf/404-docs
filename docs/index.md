@@ -23,11 +23,11 @@ hide:
 ```mermaid
 sequenceDiagram
     participant F as Firefox on Windows
-    participant 404
+    participant Alice
     participant A as Ad-Tech Corporations
     F->>404: Hi, Google! I am using Firefox on Windows
     404->>A: Hi, Google! I am using Chrome on macOS
-    A->>404: Hi, 404! Here is your webpage for Chrome on macOS.
+    A->>404: Hi, Alice! Here is your webpage for Chrome on macOS.
     404->>F: Here is your webpage.
 ```
 
