@@ -17,11 +17,9 @@
 
 > Currently, IP/TCP packet header values are assigned via global variables at the top of `src/ebpf/ttl_editor.c`. They *do not* align with values passed from `profiles.json`, this is a major pitfall of the current version and will be integrated with dynamic `bpfmaps` in a future release.
 
-*Modify hardcoded globals to desired values *before* compiling.*
+*Modify hardcoded globals to desired values before compiling.*
 
-!!! tip "OS Native Options"
-
-    Default OS network stack fingerprints:
+**Native OS Options:**
     
     | OS | TTL | Window Size | Window Scale | ISN | MSS* | Timestamps | TCP Option Order |
     | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
@@ -48,7 +46,7 @@
     - Flow label → randomized
     - TCP parameters (same as IPv4)
 
-**1. Open `ttl_editor.c` and modify the `#define` values at the top:**
+**1. Open `ttl_editor.c` and modify the `#define` values at the top:** *(optional)*
 
 ```c
 #define FORCE_TTL 255
@@ -57,8 +55,6 @@
 #define SPOOF_TCP_WINDOW_SCALE 5
 // etc.
 ```
-
-**2. Recompile with `make`.**
 
 ---
 
