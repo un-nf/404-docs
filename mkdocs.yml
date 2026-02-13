@@ -25,6 +25,9 @@ theme:
   features:
     - content.code.copy
 
+plugins:
+  - mkdocs-video
+
 markdown_extensions:
 
 #emojis & icons

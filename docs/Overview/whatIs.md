@@ -8,6 +8,9 @@ hide:
 
 By leveraging a Blazing fast Rust privacy proxy & a Linux kernel module, 404 offers full control over your machine's fingerprint.
 
+
+![type:video](https://github.com/user-attachments/assets/fb403522-ac09-4c49-a599-5edd53f33994)
+
 ## The “personality cloud” (before / after)
 
 ```mermaid
