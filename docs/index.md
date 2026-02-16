@@ -4,6 +4,7 @@ description: Reclaim your digital anonymity with a local-first spoofing proxy fo
 hide:
   - toc
 ---
+
 # 404 - Home
 
 ## Reclaim Your **Digital Anonymity**

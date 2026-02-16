@@ -1,3 +1,10 @@
+---
+title: Working with the 404 Repository
+description: Run the 404 STATIC proxy, trust the locally-generated CA certificate, and configure your browser to route traffic through localhost:8080.
+hide:
+  - toc
+---
+
 # Getting Started
 
 !!! Info 

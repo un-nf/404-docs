@@ -1,6 +1,6 @@
 ---
 title: What is 404?
-description:
+description: Deep dive into 404's architecture: how the STATIC proxy and eBPF module work together to rewrite TLS, HTTP, and JavaScript fingerprints in real-time.
 hide:
   - toc
 ---

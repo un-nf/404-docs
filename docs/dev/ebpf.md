@@ -1,3 +1,11 @@
+---
+title: Working with the 404 Repository
+description: Configure and deploy 404's eBPF kernel module to modify packet-level fingerprints including TTL, TCP window size, and sequence numbers on Linux.
+hide:
+  - toc
+---
+
+
 # eBPF Kernel Module
 
 ## Overview

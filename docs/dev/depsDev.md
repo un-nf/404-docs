@@ -1,3 +1,10 @@
+---
+title: Working with the 404 Repository
+description: Step-by-step guide to installing Rust, CMake, and NASM dependencies for building 404's anti-fingerprinting proxy on Windows, macOS, and Linux.
+hide:
+  - toc
+---
+
 # Getting Started with the Repository
 
 ## Requirements

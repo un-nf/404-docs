@@ -1,7 +1,6 @@
 ---
 title: Frequently Asked Questions
-description: 
-
+description: Frequently asked questions about 404—anonymity, data privacy, how the proxy works, and localhost configuration explained.
 hide:
 ---
 

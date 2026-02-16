@@ -1,6 +1,6 @@
 ---
 title: 404 Consent & Warning
-description:
+description: Important security warnings and consent information before running 404. Understand CA certificate risks, TLS termination, and best practices.
 hide:
   - toc
 ---

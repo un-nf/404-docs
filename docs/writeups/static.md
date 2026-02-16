@@ -1,6 +1,6 @@
 ---
 title: STATIC Proxy Guide
-description: Understanding the architecture, configuration, and internals of the Synthetic Traffic and TLS Identity Camouflage proxy
+description: Complete technical reference for STATIC proxy—architecture, TLS fingerprinting, HTTP/2 handling, profile configuration, and troubleshooting guide.
 hide:
 ---
 
