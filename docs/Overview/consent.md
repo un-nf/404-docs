@@ -23,7 +23,7 @@ hide:
 
 - If you find a security issue report it to 404co@proton.me
 
-[Join the Discord for support!](https://discord.gg/G7rUYrZqS2)
+[Join the Discord for support!](https://discord.gg/X9QrVm6dqS){target="_blank"}
 
 **Main Discussion:** GitHub discussions
 

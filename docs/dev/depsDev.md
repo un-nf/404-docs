@@ -6,7 +6,7 @@
 
 | Component | Version | Install Link |
 |-----------|---------|-------|
-| **Rust** | 1.76+ | [INSTALL](https://rust-lang.org/tools/install/){target="_blank"} - *manual install req.* |
+| **Rust** | 1.76+ | [INSTALL](https://rust-lang.org/tools/install/){target="_blank"} |
 | **CMake** | Latest | [INSTALL](https://cmake.org/download/){target="_blank"} |
 | **NASM** | Latest | [INSTALL](https://www.nasm.us/pub/nasm/releasebuilds/3.01/){target="_blank"} |
 
@@ -24,7 +24,7 @@
     1. Click [here](https://static.rust-lang.org/rustup/dist/i686-pc-windows-msvc/rustup-init.exe) (32-bit) to download rust-up. Open the downloaded `.exe` file and follow setup instructions.
 
         - Use the “Workload” tab to select the “Desktop Development with C++” option.
-        - [Help](https://rust-lang.github.io/rustup/installation/windows-msvc.html)
+        - [Help](https://rust-lang.github.io/rustup/installation/windows-msvc.html){target="_blank"}
 
     2. Open the Command Prompt
     

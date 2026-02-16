@@ -4,7 +4,8 @@ repo_url: https://github.com/un-nf/404
 
 nav: 
   - Home: index.md
-  - About us:
+  - About Us: aboutUs.md
+  - What is 404?:
     - What is 404?: Overview/whatIs.md
     - Why do I need 404?: Overview/why404.md
   - Getting Started:
@@ -15,8 +16,12 @@ nav:
     - Dependencies: dev/depsDev.md
     - Start STATIC: dev/startDev.md
     - eBPF Guide: dev/ebpf.md
+  - More Resources:
+    - STATIC: writeups/static.md
+    - eBPF: writeups/ebpf.md
   - Quick Consent & Warning: Overview/consent.md
   - FAQ: faq.md
+  - Contact Us: contact.md
 
 theme:
   name: material
