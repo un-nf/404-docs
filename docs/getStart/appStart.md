@@ -3,6 +3,7 @@ title: 404 Start
 description:
 hide:
   - toc
+  - navigation
 ---
 
 # How to use the 404 Desktop App

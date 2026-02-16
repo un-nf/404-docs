@@ -5,34 +5,41 @@ repo_url: https://github.com/un-nf/404
 nav: 
   - Home: index.md
   - What is 404?:
-    - What is 404?: Overview/whatIs.md
+    - Overview/index.md
     - Why do I need 404?: Overview/why404.md
   - Getting Started:
     - App (alpha): getStart/appStart.md
   - Developer Resources:
-    - Repository (Github/Codeberg): dev/repoDev.md
     - Download: dev/downloadDev.md
     - Dependencies: dev/depsDev.md
     - Start STATIC: dev/startDev.md
     - eBPF Guide: dev/ebpf.md
   - More Resources:
-    - STATIC: writeups/static.md
-    - eBPF: writeups/ebpf.md
-  - Quick Consent & Warning: Overview/consent.md
+    - STATIC: resources/static.md
+    - eBPF: resources/ebpf.md
+    - Repository (Github/Codeberg): resources/repoDev.md
   - FAQ: faq.md
+  - Quick Consent & Warning: consent.md
 
 theme:
   name: material
+  font: false
   palette:
     scheme: slate
   features:
     - content.code.copy
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.indexes
 
 plugins:
   - mkdocs-video:
       css_style:
         width: "100%"
         height: "35vw"
+  - privacy
+  - search
 
 markdown_extensions:
 

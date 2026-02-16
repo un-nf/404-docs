@@ -2,7 +2,6 @@
 title: Working with the 404 Repository
 description: Download or clone the 404 anti-fingerprinting proxy repository. Get the latest version from GitHub and set up your local development environment.
 hide:
-  - toc
 ---
 
 # Getting Started - Download 404

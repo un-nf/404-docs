@@ -2,7 +2,7 @@
 title: 404 Proxy
 description: Reclaim your digital anonymity with a local-first spoofing proxy for TLS, headers, JavaScript, and network level fingerprinting surfaces.
 hide:
-  - toc
+  - navigation
 ---
 
 # 404 - Home
