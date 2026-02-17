@@ -60,17 +60,17 @@ hide:
 
     2. Ensure you have homebrew installed
 
-    a.
-    ```zsh
-    xcode-select --install 
-    ```
+        a.
+        ```zsh
+        xcode-select --install 
+        ```
 
-    b.
-    ```zsh
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    ```
+        b.
+        ```zsh
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        ```
 
-    2. Download dependencies w/ homebrew:
+    3. Download dependencies w/ homebrew:
 
     ```zsh
     brew install rust nasm cmake
