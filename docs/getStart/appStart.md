@@ -10,4 +10,6 @@ hide:
 
 ## Note
 
-Please see the [Developer Resources](../dev/downloadDev.md) tab as the application is currently in development. There is a demo [here](../index.md)!
+!!! Example "The 404 application is currently in development."
+
+[Download 404](../dev/downloadDev.md){.md-button .md-button--primary} [Watch Demo](../index.md){.md-button} 
