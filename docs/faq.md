@@ -9,9 +9,9 @@ hide:
 
 ## Does 404 make me anonymous online? 
 
-!!! Failure "No. Our goal is *not* to offer nation-state level evasion."
+!!! Danger "No. Our goal is *not* to offer nation-state level evasion."
 
-    If you require anonymity and/or plausible deniability from your online activity, there are tools like Tor that are better suited for your needs. 
+    If you require anonymity and/or plausible deniability from your online activity, there are tools that are better suited for your needs. 
 
 404 aims to offer protection from *commercial grade* fingerprinting tools used by ad-tech companies like Google who collect and sell your data to third parties. Paired with a VPN, 404 offers fingerprint protection from most commercial grade fingerprinting tools (dataDome, FingerprintJS, etc.)
 
@@ -21,19 +21,19 @@ hide:
     
 In essence, your machine thinks it is talking to a website (google.com) and the website thinks it is talking to you (Firefox on Windows), but in reality both your machine and the server are talking to your locally hosted instance of 404.
 
-YOU --> 404 --> `google.com`
+YOU → 404 → `google.com`
 
-`google.com` --> 404 --> YOU
+`google.com` → 404 → YOU
 
 This means that no website you visit sees your real fingerprint, only the one dictated by whatever 404 profile you're running.
 
 ## Does 404 ever see my data and/or logs?
 
-!!! Danger "No. The local app has clear access to the contents of your web traffic, but those logs never leave your machine."
+!!! Danger "No, *BUT* the local app has clear access to the contents of your web traffic. Those logs never leave your machine."
 
 404 hosts no infrastructure, nor do we plan to. In order to collect your data, we would need to host servers and allow you to connect to them. 
 
-    **No information ever leaves your machine and all mutation happens locally. Always.**
+**No information ever leaves your machine and all mutation happens locally. Always.**
 
 ## Does 404 change my IP address?
 

@@ -20,6 +20,7 @@ nav:
     - Repository (Github/Codeberg): resources/repoDev.md
   - FAQ: faq.md
   - Quick Consent & Warning: consent.md
+  - Contact Us: contact.md
 
 theme:
   name: material
