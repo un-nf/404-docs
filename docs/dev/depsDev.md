@@ -21,7 +21,7 @@ hide:
 
 ## Install dependencies & configure PATH
 
-!!! Abstract "Developer Tip"
+!!! tip "Developer Tip"
     All commands can be copy pasted into your terminal for easy usage!
 
 ??? note "Windows install"

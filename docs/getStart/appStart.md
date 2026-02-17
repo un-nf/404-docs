@@ -10,6 +10,4 @@ hide:
 
 ## Note
 
-Please see the [Developer Resources](../dev/downloadDev.md) tab as the application is currently in development. There is a demo below!
-
-![type:video](../assets/images/demo.mp4)
+Please see the [Developer Resources](../dev/downloadDev.md) tab as the application is currently in development. There is a demo [here](../index.md)!
