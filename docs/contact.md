@@ -3,6 +3,7 @@ title: Contact Us
 description: Get in touch with the 404 team for support, questions, or feedback.
 hide:
   - toc
+  - navigation
 ---
 
 # Contact Us
