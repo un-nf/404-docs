@@ -7,10 +7,13 @@ hide:
 
 # Getting Started
 
-!!! Info 
-    All steps assume that there is a folder named `404/` located at `~/git/`
+[Step 2 - Download Dependencies](./depsDev.md){.md-button .md-button--primary}
+
+!!! Info "All steps assume that there is a folder named `404/` located at `~/git/`"
 
 ## Run the proxy
+
+!!! Tip "All commands can be copy pasted into your terminal for easy usage!"
 
 Linux/macOS:
 

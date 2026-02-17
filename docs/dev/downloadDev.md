@@ -1,6 +1,6 @@
 ---
-title: Working with the 404 Repository
-description: Download or clone the 404 anti-fingerprinting proxy repository. Get the latest version from GitHub and set up your local development environment.
+title: Getting Started - Download 404
+description: Download or clone the 404 anti-fingerprinting proxy repository. Get the latest version from GitHub and set up a local development environment.
 hide:
 ---
 
@@ -18,9 +18,11 @@ The *simplest* option is to download a zipped version of the repository. *This d
 
 2. Create a new directory @ `~/git/` to house `404`
 
-!!! Success "You may skip this step if you already have a `git/` or `projects/` directory."
+!!! tip "You may skip this step if you already have a `git/` or `projects/` directory."
 
 You can do this using the following commands...
+
+!!! abstract "All commands can be copy pasted into your terminal for easy usage!"
 
 **Windows**: 
 

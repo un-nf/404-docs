@@ -7,6 +7,8 @@ hide:
 
 # Getting Started with the Repository
 
+[Step 1 - Download 404](./downloadDev.md){.md-button .md-button--primary}
+
 ## Requirements
 
 *Utilizing the eBPF module requires a Linux kernel (4.15+).*
@@ -21,8 +23,7 @@ hide:
 
 ## Install dependencies & configure PATH
 
-!!! tip "Developer Tip"
-    All commands can be copy pasted into your terminal for easy usage!
+!!! tip "All commands can be copy pasted into your terminal for easy usage!"
 
 ??? note "Windows install"
     

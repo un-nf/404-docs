@@ -4,8 +4,9 @@ description: Configure and deploy 404's eBPF kernel module to modify packet-leve
 hide:
 ---
 
-
 # eBPF Kernel Module
+
+[Step 3 - Start Proxy](./startDev.md){.md-button .md-button--primary}
 
 ## Overview
 
@@ -68,6 +69,8 @@ This eBPF program hooks into the Linux kernel's network stack at the TC egress p
 ---
 
 ## Build eBPF program
+
+!!! Tip "All commands can be copy pasted into your terminal for easy usage!"
 
 **1.**
 ```bash
@@ -183,6 +186,8 @@ tcpdump -i <interface> -vvv -Q out port 443  # HTTPS traffic only
 
 ## Why eBPF?
 
+!!! Example "Tools like p0f and nmap can passively fingerprint an OS by analyzing packet-level characteristics. This eBPF program attempts to normalize these values to make passive fingerprinting harder."
+
 eBPF programs run in the kernel with strict safety guarantees enforced by the verifier. This program:
 
 1. Attaches to a network interface's TC egress hook
@@ -195,5 +200,3 @@ eBPF programs run in the kernel with strict safety guarantees enforced by the ve
 Operating systems have distinct network stack implementations. Windows, Linux, macOS, Android, and iOS set different default values for TCP/IP packet headers (TTL, MSS, WinSize/Scale). These fingerprinting vectors are trivial to collect and can identify your OS even if you spoof your HTTP headers and browser fingerprint perfectly. Tools like nmap and p0f allow third party network observers to exploit this fingerprinting vector.
 
 > Mismatches between network, JS, and HTTPS values can also be used by servers to identify bot-likely traffic and block connections.
-
-Tools like p0f and nmap can passively fingerprint an OS by analyzing these packet-level characteristics. This eBPF program attempts to normalize these values to make passive fingerprinting harder.
