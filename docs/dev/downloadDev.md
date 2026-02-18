@@ -18,8 +18,6 @@ The *simplest* option is to download a zipped version of the repository. *This d
 
 2. Create a new directory @ `~/git/` to house `404`
 
-!!! tip "You may skip this step if you already have a `git/` or `projects/` directory."
-
 You can do this using the following commands...
 
 !!! abstract "All commands can be copy pasted into your terminal for easy usage!"
@@ -55,7 +53,7 @@ You can do this using the following commands...
 
     ```
 
-"**OR...**" 
+=== "**OR...**" 
 
     By using the *file explorer*.
 
