@@ -6,8 +6,8 @@ nav:
   - Home: index.md
   - What is 404?:
     - Overview/index.md
+    - What Does 404 do?: Overview/whatIs.md
     - Why do I need 404?: Overview/why404.md
-    - About Us: aboutUs.md
   - Getting Started:
     - App (alpha): getStart/appStart.md
   - Developer Resources:

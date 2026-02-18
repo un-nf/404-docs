@@ -1,105 +1,122 @@
 ---
-title: What is 404?
-description: Deep dive into 404's architecture -- how the STATIC proxy and eBPF module work together to rewrite TLS, HTTP, and JavaScript fingerprints in real-time.
+title: About Us
+description: Learn about 404's mission to restore digital privacy through open-source anti-fingerprinting technology. Meet the team fighting surveillance capitalism one fingerprint at a time.
 hide:
 ---
 
-# What is 404?
+# About Us
 
-By leveraging a Blazing fast Rust privacy proxy & a Linux kernel module, 404 offers full control over your machine's fingerprint.
+## Who We Are
 
+404 is a local TLS-terminating proxy built to address cross-session tracking through active fingerprint spoofing. It's currently maintained by a solo developer with a background in systems engineering, computational modeling, and education.
 
-![type:video](../assets/images/demo.mp4)
+The project was founded in 2024 after recognizing that existing privacy tools (e.g. VPNs, private browsing modes, ad blockers) no longer address passive fingerprinting techniques that operate across multiple layers of the network stack. 404 is an attempt to give individuals and organizations practical control over how their devices appear on the web.
 
-## Your “Personality Cloud”
+---
 
-```mermaid
-flowchart LR
-  %% Zig-zag layout: left -> middle -> right
-  A["BROWSER_SIGNAL<br/><b>[LEAKING]</b><br/>User-Agent: Mozilla/5.0 on macOS<br/>CanvasID: 9b:17:2f:aa:…<br/>Fonts: 178 enumerated<br/>TLS: ClientHello: unique-ish"]
+## Our Ethos
 
-  B["404_PROXY<br/><b>[INTERCEPT]</b><br/><br/>• Rewrite TLS plan<br/>• Normalize headers + ordering<br/>• Inject JS spoofing stack (profile JSON)"]
+<div class="grid cards" markdown>
 
-  C["SPOOFED_SIGNAL<br/><b>[PROTECTED]</b><br/><br/>User-Agent: Mozilla/5.0 on Windows<br/>CanvasID: 0xFD42… (scrambled deterministically)<br/>Fonts: constrained + salted<br/>TLS: profile-aligned handshake shape"]
+-   :material-shield-lock:{ .lg .middle } __Privacy as Default Infrastructure__
 
-  A -->|HTTPS request| B -->|rewritten request| C
+    ---
 
-  classDef leak fill:#2b1b1b,stroke:#ff6b6b,stroke-width:1px,color:#ffdede;
-  classDef mid  fill:#1b2433,stroke:#4b8bff,stroke-width:1px,color:#dbe9ff;
-  classDef safe fill:#1b2b1f,stroke:#4ade80,stroke-width:1px,color:#dcffe7;
+    Your device shouldn't broadcast dozens of unique identifiers every time you visit a website. Persistent tracking should not be the invisible default.
 
-  class A leak;
-  class B mid;
-  class C safe;
+-   :material-home-circle:{ .lg .middle } __Local-First, Always__
 
-```
+    ---
 
-404 houses two main modules:
-- STATIC Proxy - *Synthetic Traffic and TLS Identity Camouflage*
-- Linux eBPF module
+    404 runs entirely on your machine. No cloud backends. No telemetry. Your data never touches our servers because **we don't have servers**.
 
-## STATIC Proxy
-### *Synthetic Traffic and TLS Identity Camouflage*
+-   :fontawesome-brands-github:{ .lg .middle } __Transparency Through Open Source__
 
-The heart of 404, built in Rust. 
+    ---
 
-> Native values from FingerprintJS ![here](../assets/images/cleanChrome.png).
+    Every line of code is public.
 
-> Spoofed values from FingerprintJS ![here](../assets/images/dirtyChrome.png).
+-   :material-account-school:{ .lg .middle } __Accessible Privacy Tools__
 
-The STATIC proxy is wired specifically to give the user granular control over their online fingerprint. Not just their browser fingerprint, but any device or app they choose to route through the proxy.
+    ---
 
-As it stands in v1.0, STATIC runs on `localhost:4040` by default, never exposing itself to the internet or any device other than the one that it is running on. The logic behind STATIC is pretty simple and mimics a lot of the high-level logic that [`mitmproxy`](https://www.mitmproxy.org/){target="_blank"} employs. 
+    Anti-fingerprinting is technically demanding. A major goal of 404 is making privacy accessible to those who need it most.
 
-Requests are broken into `flows`. Each `flow` passes through multiple `stages`. A `stage` is where the request/response mutation happens.
+</div>
 
-**Request stages:**
+---
 
-1. **HeaderProfileStage** - Rewrites headers based on your selected profile (User-Agent, Accept, sec-ch-ua, Accept-Language). Maintains strict ordering to match real browser behavior: remove -> replace -> replaceArbitrary -> replaceDynamic -> set -> append.
+## Why We Exist
 
-2. **AltSvcStage** - Downgrades or strips HTTP/3 advertisements to prevent protocol leakage.
+Cross-session tracking has become foundational infrastructure for the modern web. It operates without meaningful consent, is difficult to detect, and is increasingly centralized through a small number of ad-tech and fraud-prevention vendors. Nearly all internet users are now subject to continuous, non-consensual measurement; infrastructure that lends itself to population-scale profiling.
 
-3. **CspStage** - Generates CSP nonces and rewrites Content-Security-Policy headers so injected scripts execute without breaking origin policies.
+The acute impact falls on communities operating under heightened scrutiny. Journalists, immigration attorneys, human rights organizations, and researchers rely on the open web to investigate sensitive topics, communicate with peers, or gather information on behalf of vulnerable populations. In these contexts, persistent client fingerprinting enables the correlation of browser activity across sessions, sites, and networks—exposing intent, professional focus, and organizational relationships. This creates tangible risk: legal pressure, political targeting, data breaches, and chilling effects on inquiry and advocacy.
 
-4. **JsInjectionStage** - Embeds the fingerprint spoofing stack (bootstrap, globals shim, config layer, spoof scripts) at the beginning of `<head>`. Records SHA-256 hashes for CSP validation.
+Existing defensive tools no longer address this problem:
 
-5. **BehavioralNoiseStage** - Tags the flow with timing patterns for coordination between Rust and injected JavaScript.
+- **VPNs** hide your IP, but fingerprinting doesn't need it.
+- **Incognito mode** clears cookies, but your device signature remains identical.
+- **Ad blockers** stop requests, but [servers still collect device telemetry](https://unit42.paloaltonetworks.com/cname-cloaking/).
+- **Privacy Browsers** work but trade convenience and break many modern sites.
 
-**Response stages:**
+404 addresses this gap by giving individuals and organizations practical control over how their devices appear on the internet. Rather than attempting to block trackers, 404 intercepts and modifies traffic to present believable but false device profiles, reducing linkability across sessions while remaining compatible with the modern web.
 
-1. **CspStage** - Finalizes CSP headers with script hashes and nonces, handles strict-dynamic policies, preserves origin inline scripts.
+---
 
-2. **JsInjectionStage** - Performs the actual HTML mutation, decompresses responses if needed (gzip/deflate/brotli), injects scripts at the earliest safe insertion point.
+## The Problem
 
-3. **AltSvcStage** - Strips or normalizes Alt-Svc headers in responses to prevent the browser from upgrading to HTTP/3.
+### Passive Fingerprinting
 
-Each stage runs asynchronously and can inspect or mutate the request/response. The pipeline is deterministic. Same profile, same mutations, same fingerprint.
+Modern tracking techniques collect hundreds of semi-unique data points to build device profiles that persist across:
 
-> Don't believe me? Check my work... 
->
-- [FingerprintJS](https://demo.fingerprint.com/playground){target="_blank"}
-- [Browser Leaks](https://browserleaks.com/){target="_blank"}
-- [EFF - Cover Your Tracks](https://coveryourtracks.eff.org/){target="_blank"}
-- [What is my Browser](https://whatismybrowser.com/){target="_blank"}
-- [HTTP bin](https://httpbin.org/headers){target="_blank"}
+- Cookie deletion
+- Private browsing sessions  
+- VPN connections
+- Different browsers on the same device
+- Network changes
 
-## Linux eBPF module
+Commercial fingerprinting services achieve 99.5%+ accuracy in identifying returning users. This type of metadata surveillance enables adversaries to map associations, track presence, monitor organizational behavior, and correlate activity without breaking encryption.
 
-The eBPF module is, again, quite simple. It leverages powerful, fast, well documented, low-level Linux kernel hooks. By attaching carefully crafted eBPF programs to Linux's Traffic Control (tc) egress hooks, we can mutate files extensively.
+### Population-Scale Monitoring
 
-Currently, the following is implemented:
-```md
-**IPv4:**
-- TTL (Time To Live) -> forced to 255
-- TOS (Type of Service) -> set to 0x10
-- IP ID (Identification) -> randomized per packet
-- TCP window size -> 65535
-- TCP initial sequence number -> randomized (again)
-- TCP window scale -> 5
-- TCP MSS (Maximum Segment Size) -> 1460
-- TCP timestamps -> randomized
+Tracking operates on multiple layers that most privacy tools are not designed to control. If left unaddressed, passive fingerprinting will continue to normalize population-scale monitoring as an invisible default, further entrenching power imbalances between centralized tracking infrastructures and the communities they observe.
 
-**IPv6:**
-- Hop limit -> forced to 255
-- Flow label -> randomized
-```
+### The Illusion of Consent
+
+"Cookie consent" banners are theater. By the time you see them, your fingerprint has already been logged, correlated, and sold. GDPR and CCPA are steps forward, but enforcement is weak and technical evasion is complex.
+
+---
+
+## Development Status
+
+404 is in active development. Current priorities:
+
+- **More profiles** (Safari, mobile browsers, Linux configs)  
+- **Improved consistency** (reducing edge-case leaks)
+- **Better UX** (reducing manual configuration)
+- **External security audit** (for components that introduce the most technical risk)
+- **Community contributions** (documentation, testing, profile tuning)
+
+404 is not built for mass adoption, yet. It is infrastructure for individuals and organizations that need practical control over fingerprinting.
+
+---
+
+## Contributing
+
+404 is open source. Contributions are welcome in the form of:
+
+- **Testing** to identify fingerprint leaks and edge cases
+- **Development** for code, profiles, and eBPF components
+- **Research** documenting new tracking techniques and mitigations
+- **Documentation** improving onboarding and technical clarity
+
+[Contribute on GitHub](https://github.com/un-nf/404/blob/main/CONTRIBUTING.md){.md-button .md-button--primary}
+[Join the Discussion](https://github.com/un-nf/404/discussions){.md-button}
+
+---
+
+## Contact
+
+- **GitHub Issues**: Bug reports and feature requests  
+- **GitHub Discussions**: General questions and implementation discussion
+- **Email**: See [contact page](contact.md)
