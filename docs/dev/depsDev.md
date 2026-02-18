@@ -25,7 +25,7 @@ hide:
 
 !!! tip "All commands can be copy pasted into your terminal for easy usage!"
 
-??? note "Windows install"
+=== "Windows"
     
     Install via winget
 
@@ -50,7 +50,8 @@ hide:
     Restart your shell after installation. Tools should be on your PATH automatically. 
 
 
-??? note "macOS install"
+=== "macOS"
+
     Install via homebrew (recommended) 
 
     1. Open the Terminal
@@ -78,7 +79,7 @@ hide:
 
     Restart your shell after installation. Tools should be on your PATH automatically.
 
-??? note "Linux install"
+=== "Linux"
 
     Install via package manager
 

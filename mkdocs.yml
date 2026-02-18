@@ -34,6 +34,7 @@ theme:
     - navigation.tabs.sticky
     - navigation.top
     - navigation.indexes
+    - content.tabs.link
 
 plugins:
   - mkdocs-video:
@@ -58,6 +59,10 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+
+# Tabs support
+  - pymdownx.tabbed:
+      alternate_style: true
 
   - admonition
 
