@@ -13,25 +13,25 @@ hide:
 
 ## Run the proxy
 
-!!! Tip "All commands can be copy pasted into your terminal for easy usage!"
+!!! Abstract "All commands can be copy pasted into your terminal for easy usage!"
 
-Linux/macOS:
+=== "Windows:"
 
-```bash
-cd ~/git/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
-cargo run  # This will take a while on the first run (~5-minutes)
-```
+    ```bash
+    cd %USERPROFILE%\git\404\src\STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
+    cargo run  # This will take a while on the first run (~5-minutes)
+    ```
 
-Windows:
+=== "Linux/macOS:"
 
-```bash
-cd %USERPROFILE%\git\404\src\STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
-cargo run  # This will take a while on the first run (~5-minutes)
-```
+    ```bash
+    cd ~/git/404/src/STATIC_proxy # CHANGE to wherever you unzipped the 404 folder.
+    cargo run  # This will take a while on the first run (~5-minutes)
+    ```
 
 ## Trust proxy-generated CA
 
-??? note "Firefox"
+=== "Firefox"
 
     **Firefox uses its own trust store, you must trust the CA in the application:**
 
@@ -40,7 +40,7 @@ cargo run  # This will take a while on the first run (~5-minutes)
 
 
 
-??? note "Windows"
+=== "Windows"
 
     Trust the CA using `certutil`
 
@@ -56,7 +56,7 @@ cargo run  # This will take a while on the first run (~5-minutes)
     6. Select `Trusted Root Certification Authorities` and click `OK`
     7. Click `Next` then `Finish`
 
-??? note "macOS"
+=== "macOS"
 
     ```zsh
     sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain static_proxy/certs/static-ca.crt
@@ -70,7 +70,7 @@ cargo run  # This will take a while on the first run (~5-minutes)
     4. Expand "Trust" and set "When using this certificate" to "Always Trust"
 
 
-??? note "Linux"
+=== "Linux"
 
     ```bash
     # Copy CA to system trust store

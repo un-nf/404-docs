@@ -23,7 +23,7 @@ hide:
 
 ## Install dependencies & configure PATH
 
-!!! tip "All commands can be copy pasted into your terminal for easy usage!"
+!!! Abstract "All commands can be copy pasted into your terminal for easy usage!"
 
 === "Windows"
     

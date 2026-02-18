@@ -24,40 +24,42 @@ You can do this using the following commands...
 
 !!! abstract "All commands can be copy pasted into your terminal for easy usage!"
 
-**Windows**: 
+=== "**Windows**:"
 
-Open the Command Prompt
+    Open the Command Prompt
 
-- Press... :material-microsoft-windows: + r
+    - Press... :material-microsoft-windows: + r
 
-- Type "cmd" into the run dialogue box.
+    - Type "cmd" into the run dialogue box.
 
-```bash
-if not exist "%USERPROFILE%\git" mkdir "%USERPROFILE%\git"
-move "%USERPROFILE%\Downloads\404.zip" "%USERPROFILE%\git\404.zip"
-tar -xf "%USERPROFILE%\git\404.zip" -C "%USERPROFILE%\git"
-del "%USERPROFILE%\git\404.zip"
+    ```bash
+    if not exist "%USERPROFILE%\git" mkdir "%USERPROFILE%\git"
+    move "%USERPROFILE%\Downloads\404.zip" "%USERPROFILE%\git\404.zip"
+    tar -xf "%USERPROFILE%\git\404.zip" -C "%USERPROFILE%\git"
+    del "%USERPROFILE%\git\404.zip"
 
-```
+    ```
 
-**Linux/macOS**: 
+=== "**Linux/macOS**:"
 
-Open the Terminal
+    Open the Terminal
 
-- Press :material-apple-keyboard-command: + space
-- Search "Terminal" and press Enter
+    - Press :material-apple-keyboard-command: + space
+    - Search "Terminal" and press Enter
 
-```zsh
-mkdir -p "$HOME/git"
-mv "$HOME/Downloads/404.zip" "$HOME/git/404.zip"
-unzip "$HOME/git/404.zip" -d "$HOME/git"
-rm "$HOME/git/404.zip"
+    ```zsh
+    mkdir -p "$HOME/git"
+    mv "$HOME/Downloads/404.zip" "$HOME/git/404.zip"
+    unzip "$HOME/git/404.zip" -d "$HOME/git"
+    rm "$HOME/git/404.zip"
 
-```
+    ```
 
-**OR** by using the *file explorer*.
+"**OR...**" 
 
-Place the .zip file in `~/git/` and right-click on it to extract a new directory: `~/git/404`.
+    By using the *file explorer*.
+
+    Place the .zip file in `~/git/` and right-click on it to extract a new directory: `~/git/404`.
 
 ## Clone (secure)
 
@@ -65,24 +67,28 @@ The *best* option is to use your command line to download the latest version of 
 
 **1. Create a folder for 404** *or navigate to your `git` directory.*
 
-Windows:
-```
-mkdir -p %USERPROFILE%\git\
-cd %USERPROFILE%\git\
-```
+=== "Windows:"
 
-Linux/macOS:
-```
-mkdir -p ~/git/
-cd ~/git/
-```
+    ```
+    mkdir -p %USERPROFILE%\git\
+    cd %USERPROFILE%\git\
+    ```
+
+=== "Linux/macOS:"
+
+    ```
+    mkdir -p ~/git/
+    cd ~/git/
+    ```
 
 **2. Clone to your local projects/ or git/ directory**
 
-All operating systems: 
-```
+All operating systems:
+
+```bash
 git clone https://github.com/un-nf/404.git
 cd 404
+
 ```
 
 ??? question "Windows clone"
@@ -96,19 +102,19 @@ cd 404
 
     2. Create (if needed) and enter your `git` directory
 
-    ```cmd
-    if not exist "%USERPROFILE%\git" mkdir "%USERPROFILE%\git"
-    cd /d "%USERPROFILE%\git"
+        ```cmd
+        if not exist "%USERPROFILE%\git" mkdir "%USERPROFILE%\git"
+        cd /d "%USERPROFILE%\git"
 
-    ```
+        ```
 
     3. Clone and enter the project folder
 
-    ```cmd
-    git clone https://github.com/un-nf/404.git
-    cd 404
+        ```cmd
+        git clone https://github.com/un-nf/404.git
+        cd 404
 
-    ```
+        ```
 
     If `git` is not installed, install Git for Windows from https://git-scm.com/downloads/win and rerun the commands.
 
@@ -124,32 +130,32 @@ cd 404
 
     2. Verify that Git is installed
 
-    ```zsh
-    git --version
+        ```zsh
+        git --version
 
-    ```
+        ```
 
     If you see "command not found", install Apple Command Line Tools:
 
-    ```zsh
-    xcode-select --install
+        ```zsh
+        xcode-select --install
 
-    ```
+        ```
 
     3. Create (if needed) and enter your `git` directory
 
-    ```zsh
-    mkdir -p "$HOME/git"
-    cd "$HOME/git"
+        ```zsh
+        mkdir -p "$HOME/git"
+        cd "$HOME/git"
 
-    ```
+        ```
 
     4. Clone and enter the project folder
 
-    ```zsh
-    git clone https://github.com/un-nf/404.git
-    cd 404
+        ```zsh
+        git clone https://github.com/un-nf/404.git
+        cd 404
 
-    ```
+        ```
 
 [Step 2 - Download Dependencies](./depsDev.md){.md-button .md-button--primary}
