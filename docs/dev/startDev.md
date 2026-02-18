@@ -46,7 +46,9 @@ hide:
 
     ```bash
     certutil.exe -addstore root C:\\path\\to\\myCA.pem
+
     ```
+    
     ***or*** manually...
     1. Navigate to the `404/` directory and locate the `../static_proxy/certs/` directory.
     2. Double-click the file labeled `static-ca.crt` (may appear without .crt extension)
