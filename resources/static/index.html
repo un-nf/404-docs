@@ -1,0 +1,2359 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Complete technical reference for STATIC proxy—architecture, TLS fingerprinting, HTTP/2 handling, profile configuration, and troubleshooting guide.">
+      
+      
+      
+        <link rel="canonical" href="https://un-nf.github.io/404-docs/resources/static/">
+      
+      
+        <link rel="prev" href="../../dev/ebpf/">
+      
+      
+        <link rel="next" href="../ebpf/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>STATIC Proxy Guide - 404 - A Privacy Tool</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#static-proxy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="404 - A Privacy Tool" class="md-header__button md-logo" aria-label="404 - A Privacy Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            404 - A Privacy Tool
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              STATIC Proxy Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/un-nf/404" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Overview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  What is 404?
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getStart/appStart/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../dev/downloadDev/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  More Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../consent/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quick Consent & Warning
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contact/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contact Us
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="404 - A Privacy Tool" class="md-nav__button md-logo" aria-label="404 - A Privacy Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    404 - A Privacy Tool
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/un-nf/404" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../Overview/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is 404?
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    What is 404?
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/whatIs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Does 404 do?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/why404/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Why do I need 404?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getStart/appStart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App (alpha)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/downloadDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Download
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/depsDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/startDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Start STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    More Resources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    More Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-static-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What does STATIC do?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Listener
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Telemetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Plane
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Plane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protocol-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protocol Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connect-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CONNECT Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-termination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Termination
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flow Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#headerprofilestage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HeaderProfileStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#altsvcstage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AltSvcStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cspstage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CspStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsinjectionstage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsInjectionStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavioralnoisestage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BehavioralNoiseStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http11-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/1.1 Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http2-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/2 Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http3-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/3 Roadmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tls-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-bodies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streaming Bodies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Pooling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repoDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repository (Github/Codeberg)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../consent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Consent & Warning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contact Us
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-static-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What does STATIC do?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Listener
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Telemetry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Plane
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Plane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protocol-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocol Detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protocol Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connect-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CONNECT Handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-termination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Termination
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flow Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#headerprofilestage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HeaderProfileStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#altsvcstage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AltSvcStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cspstage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CspStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jsinjectionstage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JsInjectionStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavioralnoisestage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BehavioralNoiseStage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http11-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/1.1 Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http2-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/2 Engine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http3-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/3 Roadmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tls-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP/3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streaming-bodies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streaming Bodies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-pooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection Pooling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<div><h1 id="static-proxy">STATIC Proxy</h1>
+<p><strong>A ground-up Rust implementation of a fingerprint-resistant MITM proxy</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Deep Dive Ahead</p>
+<p>This page is designed for developers, researchers, and anyone who wants to understand <em>how</em> STATIC works under the hood. If you're just looking to get started, check out the <a href="../../dev/downloadDev/">Getting Started</a> guide instead.</p>
+</div>
+<hr>
+<h2 id="what-does-static-do">What does STATIC do?</h2>
+<p>Modern fingerprinting is a <strong>multi-layer problem</strong>. Spoofing just your User-Agent or randomizing canvas values creates incoherent, <em>identifiable</em> noise. STATIC exists because defeating commercial fingerprinting requires <strong>full-stack control</strong>.</p>
+<p><strong>TLS Layer</strong></p>
+<ul>
+<li>Rewrites the <code>SYN-ACK</code> handshake: cipher order, extensions, key shares</li>
+<li>Deterministic profile selection via <code>rustls</code> - non-robust</li>
+<li>JA3/JA4 string generation and validation</li>
+</ul>
+<p><strong>HTTP Layer</strong></p>
+<ul>
+<li>Native HTTP/1.1 and HTTP/2 protocol parsing</li>
+<li>Header ordering, client hints, Accept negotiation</li>
+</ul>
+<p><strong>JavaScript Layer</strong></p>
+<ul>
+<li>CSP nonce generation synchronized with injection</li>
+<li>Canvas/WebGL/Audio fingerprint spoofing</li>
+<li>Iframe boundary propagation</li>
+<li>Behavioral noise coordination between Rust and JS</li>
+</ul>
+<p><strong>Async-Native Rust Architecture</strong></p>
+<ul>
+<li><strong>Tokio-based</strong> concurrency (no thread pools, no blocking IO)</li>
+<li><strong>Zero-copy buffers</strong> with <code>BytesMut</code></li>
+<li><strong>Per-flow state isolation</strong> (no global locks in hot path)</li>
+<li><strong>Structured telemetry</strong> with <code>tracing</code> (JSON export ready)</li>
+</ul>
+<hr>
+<h2 id="architecture">Architecture</h2>
+<details class="example">
+<summary>Repository Map</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>static_proxy/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── Cargo.toml                      # Dependencies: tokio, rustls, h2, hyper, serde
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── assets/js/                      # Embedded fingerprint spoofing scripts
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── 0bootstrap.js                  # Execution control, eval/Function wrapping
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   ├── 1globals_shim.js               # Navigator/screen property interception
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   ├── 2fingerprint_spoof_v2.js       # Canvas, WebGL, audio, font spoofing
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   ├── behavioral_noise.js            # Coordinated timing/interaction patterns
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│   └── config_layer.js                # Profile injection into JS context
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>├── config/
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│   └── static.example.toml         # Listener, TLS, pipeline, telemetry config
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>├── profiles/                       # JSON profiles (Chrome/Firefox/Edge)
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│   ├── chrome_latest.json             # Schema v2: headers, TLS, behavior
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│   ├── firefox_latest.json
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   └── safari_latest.json
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>├── src/
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│   ├── main.rs                     # CLI entrypoint (clap args, tracing init)
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│   ├── app.rs                      # Wires subsystems, spawns listener
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│   │
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   ├── proxy/                      # Core proxy logic
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   │   ├── server.rs                  # TCP listener, protocol detection
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│   │   ├── connection.rs              # CONNECT handling, TLS termination, HTTP dispatch
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│   │   ├── flow.rs                    # Request/response/metadata container
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│   │   ├── pipeline.rs                # Stage orchestration trait
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│   │   ├── client.rs                  # Upstream dialer (TCP+TLS with profile plans)
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│   │   └── stages/                    # HeaderProfile, CSP, JS, AltSvc, Behavioral
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>│   │
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│   ├── tls/                        # TLS subsystem
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│   │   ├── cert.rs                    # CA generation, leaf cert cache (DashMap)
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│   │   ├── profiles.rs                # TLS planner (JA3/JA4, cipher/group selection)
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│   │   ├── fingerprint.rs             # JA3 string computation for telemetry
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│   │   └── handshake.rs               # rustls ServerConfig/ClientConfig builders
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│   │
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>│   ├── config/                     # Configuration system
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│   │   ├── settings.rs                # StaticConfig struct, TOML deserialization
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>│   │   └── profiles.rs                # Profile loader with hot reload (notify crate)
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>│   │
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>│   ├── behavior/                   # Behavioral noise engine
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>│   ├── assets.rs                   # Embedded JS files, SHA-256 precomputation
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>│   ├── telemetry.rs                # Structured logging (JSON mode, tracing spans)
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>│   └── utils/                      # Error types, logging helpers
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>│
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>└── tests/
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>    ├── unit/tls_tests.rs              # JA3 serialization, cipher filtering
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>    └── integration/proxy_tests.rs     # End-to-end flow validation
+</span></code></pre></div>
+</details>
+<hr>
+<h2 id="configuration">Configuration</h2>
+<p>STATIC reads configuration from <code>config/static.toml</code> (or via <code>--config</code> flag). The config file is broken into logical sections that control different subsystems.</p>
+<h3 id="listener"><strong>Listener</strong></h3>
+<p>Controls where STATIC binds and listens for incoming connections.</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">[listener]</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4040</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">[http3]</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">bind_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8081</span>
+</span></code></pre></div>
+<details class="warning">
+<summary>HTTP/3 Status</summary>
+<p>HTTP/3 configuration exists but is not yet implemented. STATIC currently handles HTTP/1.1 and HTTP/2 only. When enabled, this will spawn a QUIC listener using <code>quinn</code>.</p>
+</details>
+<h3 id="tls"><strong>TLS</strong></h3>
+<p>Defines paths for CA management and certificate caching.</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">[tls]</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">ca_cert_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"certs/static-ca.crt"</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">ca_key_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"certs/static-ca.key"</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">cache_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"certs/cache"</span>
+</span></code></pre></div>
+<p><strong>What happens here:</strong></p>
+<ul>
+<li>On first run, STATIC generates a CA certificate and private key</li>
+<li>Private <code>.key</code> file is stored securely, implementation varies per OS</li>
+<li>Leaf certificates (for individual domains) are cached in <code>cache_dir</code></li>
+<li>Cached certs have a 24-hour TTL and are validated on lookup</li>
+</ul>
+<h3 id="pipeline"><strong>Pipeline</strong></h3>
+<p>Controls profile loading, injection behavior, and protocol handling.</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">[pipeline]</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">profiles_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"../profiles"</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">default_profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"firefox-windows"</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">js_debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">alt_svc_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"normalize"</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Options</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>profiles_path</code></td>
+<td>Path to JSON profiles</td>
+<td>Where STATIC looks for profile definitions</td>
+</tr>
+<tr>
+<td><code>default_profile</code></td>
+<td>Profile name</td>
+<td>Fallback if no profile is selected or profile load fails</td>
+</tr>
+<tr>
+<td><code>js_debug</code></td>
+<td><code>true</code>/<code>false</code></td>
+<td>Enables verbose JS console output in injected scripts</td>
+</tr>
+<tr>
+<td><code>alt_svc_strategy</code></td>
+<td><code>normalize</code>, <code>strip</code>, <code>passthrough</code></td>
+<td>How to handle Alt-Svc headers (HTTP/3 downgrade behavior)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="telemetry"><strong>Telemetry</strong></h3>
+<p>Configures logging output format and destination.</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">[telemetry]</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"stdout"</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stdout</code></td>
+<td>Pretty-printed logs to console</td>
+</tr>
+<tr>
+<td><code>json</code></td>
+<td>Structured JSON logs (Loki/ELK ready)</td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>RUST_LOG</code> environment variable to control verbosity:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Human-readable logs</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>cargo<span class="w"> </span>run
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># JSON structured logs</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>cargo<span class="w"> </span>run<span class="w"> </span>--<span class="w"> </span>--json-logs
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Debug everything</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nv">RUST_LOG</span><span class="o">=</span><span class="nv">static_proxy</span><span class="o">=</span>debug<span class="w"> </span>cargo<span class="w"> </span>run
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># Trace TLS subsystem only</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nv">RUST_LOG</span><span class="o">=</span>static_proxy::tls<span class="o">=</span>trace<span class="w"> </span>cargo<span class="w"> </span>run
+</span></code></pre></div>
+<hr>
+<h2 id="data-plane">Data Plane</h2>
+<p>The data plane handles live traffic: protocol detection, TLS termination, request/response mutation, and upstream forwarding.</p>
+<h3 id="protocol-detection">Protocol Detection</h3>
+<p>STATIC peeks at incoming TCP connections to determine what it's dealing with:</p>
+<table>
+<thead>
+<tr>
+<th>First Bytes</th>
+<th>Protocol</th>
+<th>Handler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONNECT</code></td>
+<td>HTTP CONNECT tunnel</td>
+<td><code>handle_connect_tunnel</code></td>
+</tr>
+<tr>
+<td><code>0x16</code></td>
+<td>Direct TLS ClientHello</td>
+<td><code>accept_tls_session</code></td>
+</tr>
+<tr>
+<td><code>GET</code>/<code>POST</code>/etc</td>
+<td>HTTP/1.1 request</td>
+<td><code>handle_http1_session</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="connect-handling">CONNECT Handling</h4>
+<ol>
+<li>Parse <code>CONNECT host:port HTTP/1.1</code> from raw TCP stream</li>
+<li>Validate hostname (no IP literals, no malformed targets)</li>
+<li>Respond with <code>200 Connection Established\r\n\r\n</code></li>
+<li>Record target in <code>FlowMetadata.connect_target</code> for upstream resolution</li>
+</ol>
+<h4 id="tls-termination">TLS Termination</h4>
+<ul>
+<li>Uses <code>tokio_rustls::TlsAcceptor</code> with on-demand certificate generation</li>
+<li>Extracts SNI from <code>ServerConnection::server_name()</code> (rustls 0.23 API)</li>
+<li>Falls back to <code>connect_target</code> when SNI is missing (rare, but happens)</li>
+<li>Generates leaf certificate signed by STATIC CA, caches in <code>DashMap&lt;String, CachedCert&gt;</code></li>
+</ul>
+<h3 id="flow-model">Flow Model</h3>
+<p>A <code>Flow</code> represents a complete HTTP exchange.</p>
+<p><strong>Structure:</strong></p>
+<div class="language-rust highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">pub</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">Flow</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="nc">Uuid</span><span class="p">,</span><span class="w">                         </span><span class="c1">// UUID v7 for deterministic ordering</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">request</span><span class="p">:</span><span class="w"> </span><span class="nc">RequestParts</span><span class="p">,</span><span class="w">            </span><span class="c1">// Headers, method, URI, body buffer</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">response</span><span class="p">:</span><span class="w"> </span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">ResponseParts</span><span class="o">&gt;</span><span class="p">,</span><span class="w">  </span><span class="c1">// Populated after upstream response</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="n">metadata</span><span class="p">:</span><span class="w"> </span><span class="nc">FlowMetadata</span><span class="p">,</span><span class="w">           </span><span class="c1">// Profile, TLS, telemetry state</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="n">behavioral_noise</span><span class="p">:</span><span class="w"> </span><span class="nc">BehavioralNoiseMetadata</span><span class="p">,</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="n">fingerprint_config</span><span class="p">:</span><span class="w"> </span><span class="nc">Value</span><span class="p">,</span><span class="w">        </span><span class="c1">// Profile JSON for JS injection</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="n">timers</span><span class="p">:</span><span class="w"> </span><span class="nc">Timers</span><span class="p">,</span><span class="w">                   </span><span class="c1">// Start, stage durations</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="n">tls_plan</span><span class="p">:</span><span class="w"> </span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">TlsClientPlan</span><span class="o">&gt;</span><span class="p">,</span><span class="w">  </span><span class="c1">// Upstream TLS handshake instructions</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>FlowMetadata</strong> bridges network stack, pipeline, and telemetry:</p>
+<ul>
+<li>TLS SNI and CONNECT target</li>
+<li>Profile names (header + TLS + behavioral)</li>
+<li>CSP nonces and script SHA-256 hashes</li>
+<li>JA3/JA4 strings (computed from TLS plan)</li>
+<li>Upstream protocol (HTTP/1.1 vs HTTP/2)</li>
+<li>Stage mutation logs (breadcrumb trail for telemetry)</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Performance</p>
+<p>Buffers use <code>BytesMut</code> for zero-copy mutations during pipeline stages. Headers are reordered in-place without allocating new structures.</p>
+</div>
+<h3 id="pipeline_1">Pipeline</h3>
+<p><strong>Execution order</strong> is deterministic:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>1. HeaderProfileStage
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>   └─ User-Agent, sec-ch-ua, Accept-Language
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>   └─ Order: remove → replace → replaceArbitrary
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>            → replaceDynamic → set → append
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>2. AltSvcStage
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>   └─ Downgrade/strip HTTP/3 advertisements
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>   └─ Normalize port lists
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>3. CspStage
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>   └─ Inject CSP nonces
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>   └─ Rewrite headers to allow injected JS
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>4. JsInjectionStage
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>   └─ Embed bootstrap + shim + config + spoof
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>   └─ Record SHA-256 hashes
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>5. BehavioralNoiseStage
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>   └─ Tag flow with noise plan
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>   └─ Coordinate with JS timing patterns
+</span></code></pre></div>
+<p>Each stage implements async hooks:</p>
+<ul>
+<li><code>process_request</code> — Mutates outgoing request before upstream</li>
+<li><code>process_response_headers</code> — Mutates headers before body processing</li>
+<li><code>process_response_body</code> — Mutates HTML/JS content</li>
+<li><code>on_complete</code> — Cleanup, telemetry emission</li>
+</ul>
+<h4 id="headerprofilestage">HeaderProfileStage</h4>
+<p>Applies header transformations from the profile's <code>headers</code> block.</p>
+<p><strong>Operations (in order):</strong></p>
+<ol>
+<li><strong>remove</strong> — Delete headers by name (case-insensitive)</li>
+<li><strong>replace</strong> — Overwrite existing headers</li>
+<li><strong>replaceArbitrary</strong> — Replace with randomized values from a list</li>
+<li><strong>replaceDynamic</strong> — Template-based replacement (e.g., timestamp injection)</li>
+<li><strong>set</strong> — Add if missing, overwrite if present</li>
+<li><strong>append</strong> — Add to existing value or create new header</li>
+</ol>
+<p><strong>Why ordering matters:</strong></p>
+<p>Header order is part of the fingerprint. Real browsers send headers in a specific sequence. STATIC preserves that order from the profile.</p>
+<h4 id="altsvcstage">AltSvcStage</h4>
+<p>HTTP/3 is a fingerprint leak. If your browser advertises <code>h3</code> support but your TLS fingerprint doesn't match a browser that supports HTTP/3, you're identifiable.</p>
+<p><strong>Strategies:</strong></p>
+<ul>
+<li><strong>normalize</strong> — Rewrite <code>Alt-Svc</code> to only advertise HTTP/2</li>
+<li><strong>strip</strong> — Remove <code>Alt-Svc</code> headers entirely</li>
+<li><strong>passthrough</strong> — Leave them alone (not recommended)</li>
+</ul>
+<h4 id="cspstage">CspStage</h4>
+<p>Content Security Policy headers restrict which scripts can execute. STATIC injects JavaScript, so it needs to rewrite CSP headers to whitelist itself.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Generate a per-flow <code>nonce</code> (cryptographically random, base64-encoded)</li>
+<li>Compute SHA-256 hashes of injected scripts (precomputed at compile time)</li>
+<li>Parse existing CSP headers from the response</li>
+<li>Add <code>'nonce-&lt;value&gt;'</code> and <code>'sha256-&lt;hash&gt;'</code> to <code>script-src</code> directive</li>
+<li>Preserve <code>'strict-dynamic'</code> if already present (common in modern CSP policies)</li>
+</ol>
+<p><strong>CSP determinism:</strong></p>
+<p>Script load order matters. STATIC always injects in the same order (0bootstrap → 1globals_shim → config_layer → 2fingerprint_spoof_v2 → behavioral_noise) to ensure CSP hashes remain valid.</p>
+<h4 id="jsinjectionstage">JsInjectionStage</h4>
+<p>Embeds the fingerprint spoofing stack into HTML responses.</p>
+<p><strong>Injection point:</strong></p>
+<ul>
+<li>Near <code>&lt;/head&gt;</code> (preferred)</li>
+<li>Near <code>&lt;/body&gt;</code> (fallback)</li>
+<li>Synthesize <code>&lt;head&gt;</code> if missing (rare, but handles malformed HTML)</li>
+</ul>
+<p><strong>Injected scripts:</strong></p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">"generated-nonce"</span><span class="p">&gt;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1">// 0bootstrap.js — Execution control, prevents double-injection</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">"generated-nonce"</span><span class="p">&gt;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1">// 1globals_shim.js — Intercepts navigator/screen/window properties</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">"generated-nonce"</span><span class="p">&gt;</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1">// config_layer.js + profile JSON — Writes __STATIC_CONFIG__</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">"generated-nonce"</span><span class="p">&gt;</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="c1">// 2fingerprint_spoof_v2.js — Canvas/WebGL/Audio/Font spoofing</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">"generated-nonce"</span><span class="p">&gt;</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="c1">// behavioral_noise.js — Timing patterns, coordinated with Rust</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p><strong>Decompression:</strong></p>
+<p>Responses may be gzip/deflate/brotli-encoded. STATIC decompresses, injects, and re-compresses (or strips <code>Content-Encoding</code> and updates <code>Content-Length</code>).</p>
+<h4 id="behavioralnoisestage">BehavioralNoiseStage</h4>
+<div class="admonition warning">
+<p class="admonition-title">Experimental feature, not fully implemented!</p>
+</div>
+<p>Tags flows with timing patterns and interaction metadata. The JavaScript layer reads these patterns and coordinates behavior (e.g., randomized delays, simulated mouse movements).</p>
+<p><strong>Rust side:</strong></p>
+<ul>
+<li>Parses behavioral strategies from profile JSON</li>
+<li>Writes metadata to <code>Flow.behavioral_noise</code></li>
+<li>Marks flow as <code>behavioral_noise.enabled</code></li>
+</ul>
+<p><strong>JavaScript side:</strong></p>
+<ul>
+<li>Reads <code>__STATIC_CONFIG__.behavioral_noise</code></li>
+<li>Annotates outgoing requests with timing metadata</li>
+<li>Modifies DOM interactions to avoid deterministic patterns</li>
+</ul>
+<h3 id="http11-engine">HTTP/1.1 Engine</h3>
+<p><strong>Flow</strong> (<code>connection.rs::handle_http1_session</code>):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>parse_http_request (chunked decoder normalizes to contiguous buffer)
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>         ↓
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Stage pipeline mutates request
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>         ↓
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Upstream connect/dial
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>         ↓
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>send_request_to_upstream()
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>         ↓
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>parse_http_response (buffer complete response)
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>         ↓
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>Stage pipeline mutates response
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>         ↓
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>send_response_to_client()
+</span></code></pre></div>
+<p><strong>Edge cases handled:</strong></p>
+<ul>
+<li><strong>Bodyless status codes</strong> (1xx/204/205/304) — Skip Content-Length validation to avoid hangs</li>
+<li><strong>Chunked encoding</strong> — Normalize to contiguous buffer for pipeline processing</li>
+<li><strong>Connection: close</strong> — Properly tear down TCP stream after response</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Limitation: Streaming Bodies</p>
+<p>HTTP/1 engine currently buffers entire request/response. Large uploads/downloads may pressure memory. Streaming support is planned.</p>
+</div>
+<h3 id="http2-engine">HTTP/2 Engine</h3>
+<p><strong>Flow</strong> (<code>connection.rs::handle_http2_session</code>):</p>
+<ul>
+<li>Leverages <code>h2::server</code> for client-side HTTP/2 framing (ALPN <code>h2</code>)</li>
+<li>Each incoming stream spawns <code>process_http2_stream()</code> for per-request state isolation</li>
+</ul>
+<p><strong>Upstream branching:</strong></p>
+<ul>
+<li><strong><code>forward_h2_over_h2()</code></strong> — When origin negotiates HTTP/2 (ALPN <code>h2</code>)</li>
+<li><strong><code>forward_h2_via_http1()</code></strong> — Fallback when upstream ALPN lacks <code>h2</code></li>
+</ul>
+<p><strong>Response handling:</strong></p>
+<ul>
+<li>Buffers complete headers/body before running response stages</li>
+<li><code>sanitize_response_headers_for_h2()</code> removes hop-by-hop headers (<code>Connection</code>, <code>Transfer-Encoding</code>, etc.)</li>
+<li>Enforces <code>Content-Length</code>, normalizes lowercase header names (HTTP/2 spec requirement)</li>
+</ul>
+<p><strong>Flow control:</strong></p>
+<ul>
+<li><code>RecvStream::flow_control().release_capacity()</code> per chunk</li>
+<li>Prevents zero-window deadlocks</li>
+<li>10-second timeout guard prevents hung upstream from blocking client</li>
+</ul>
+<p><strong>Pseudo-header validation:</strong></p>
+<p>HTTP/2 requires pseudo-headers (<code>:method</code>, <code>:scheme</code>, <code>:authority</code>, <code>:path</code>) at the start of the header block. STATIC enforces this on both request and response sides.</p>
+<h3 id="http3-roadmap">HTTP/3 Roadmap</h3>
+<p><code>Http3Config</code> already exists in <code>StaticConfig</code>. Implementation pending:</p>
+<ul>
+<li><code>proxy::quic</code> module built on <code>quinn</code></li>
+<li>CONNECT-UDP handler (RFC 9298)</li>
+<li>ALPS serialization within TLS planner</li>
+<li>Telemetry labels for H3 flows</li>
+</ul>
+<hr>
+<h2 id="limitations">Limitations</h2>
+<p>STATIC is powerful but has known limitations. These are being actively worked on.</p>
+<h3 id="tls-coverage">TLS Coverage</h3>
+<p><strong>Missing from rustls/aws-lc:</strong></p>
+<ul>
+<li><strong>RSA key exchange</strong> — Only ECDHE is supported</li>
+<li><strong>GREASE ciphers/extensions</strong> — Rustls doesn't support GREASE values</li>
+<li><strong>Post-quantum hybrid key shares</strong> — PQ crypto support is experimental</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>JA3 limited to ECDHE suites until BoringSSL integration is complete. Some browser profiles (older Safari, Edge) cannot be fully emulated.</p>
+</div>
+<h3 id="http3">HTTP/3</h3>
+<p><strong>Status:</strong> Config + roadmap exist, but no QUIC listener yet.</p>
+<p><strong>Current behavior:</strong> TLS planner clamps ALPN to <code>['h2','http/1.1']</code>.</p>
+<p><strong>Planned:</strong></p>
+<ul>
+<li><code>proxy::quic</code> module built on <code>quinn</code></li>
+<li>CONNECT-UDP handler (RFC 9298)</li>
+<li>ALPS serialization for TLS 1.3</li>
+</ul>
+<h3 id="streaming-bodies">Streaming Bodies</h3>
+<p><strong>HTTP/1 engine</strong> buffers entire request/response in memory.</p>
+<p><strong>Impact:</strong> Large uploads/downloads (&gt;100MB) may pressure memory and cause high latency.</p>
+<p><strong>Planned:</strong> </p>
+<ul>
+<li>Streaming pipeline with chunked rewriter and stage API adjustments (stages would operate on body chunks instead of complete buffers).</li>
+</ul>
+<h3 id="connection-pooling">Connection Pooling</h3>
+<p><strong>Current behavior:</strong></p>
+<ul>
+<li>Upstream dials fresh TCP/TLS per request</li>
+<li>No keepalive/persistent connections</li>
+<li>No configurable timeouts</li>
+</ul>
+<p><strong>Impact:</strong> Higher latency, more TLS handshakes, easier to fingerprint by timing patterns.</p>
+<p><strong>Planned:</strong></p>
+<ul>
+<li>Connection pool with keepalive (idle timeout, max connections per host)</li>
+<li>Configurable dial/read/write timeouts</li>
+<li>Happy Eyeballs DNS resolution (parallel IPv4/IPv6)</li>
+</ul>
+<h3 id="dns-caching">DNS Caching</h3>
+<p><strong>Minimal caching</strong> implemented. Relies on OS resolver (<code>tokio::net::lookup_host</code>).</p>
+<p><strong>Planned:</strong> </p>
+<ul>
+<li>Happy Eyeballs with internal DNS cache (reduce resolution latency, improve consistency).</li>
+</ul>
+<hr></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
