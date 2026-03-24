@@ -65,26 +65,42 @@ Websites and fingerprinting vendors collect semi-unique signals and combine them
 
 ## What 404 changes
 
-#### **TLS handshake**
+<div class="grid cards" markdown>
 
-404 controls handshake behavior *as a profile decision*: extensions, ordering, ALPN, key shares, and cipher preferences are defined in the profile.
+-   :material-shield-lock:{ .lg .middle } __TLS Fingerprint__
 
-!!! note
-    TLS impersonation fidelity is adversarial and evolving. The goal is **plausible identity**.
+    ---
 
-#### **HTTP + HTTP/2**
+    404 controls handshake behavior *as a profile decision*: extensions, ordering, ALPN, key shares, and cipher preferences are defined in the profile.
 
-Normalizes and rewrites headers and header ordering to match the chosen persona.
+    !!! note
+        TLS impersonation fidelity is adversarial and evolving. The goal is **plausible identity**.
 
-- Consistent `User-Agent` + client hints  
-- Language/timezone coherence  
-- Optional downgrades/strips to reduce leak paths (e.g., `Alt-Svc` preventing accidental HTTP/3/QUIC identity drift)
+-   :material-home-circle:{ .lg .middle } __Network Telemetry__
 
-#### **JavaScript fingerprint surfaces**
+    ---
 
-Injects a profile-driven spoofing layer (canvas/WebGL/audio/fonts/media devices, etc.) while keeping the identity coherent.
+    Rewrites TCP/IP options such as MSS, Window Size/Scale, TTL, and more. These values can be passively collected and used to offer details on your network stack. Tools like nmap and p0f exploit these network telemetry signals to identify your hardware, OS, network environment, and more.
 
-!!! tip
-    Coherence beats randomness. Random noise is how you become a rare, clusterable outlier.
+-   :fontawesome-brands-github:{ .lg .middle } __HTTPS Headers__
 
----
+    ---
+
+    Normalizes and rewrites headers and header ordering to match the chosen persona.
+
+    - Consistent `User-Agent` + client hints  
+    - Language/timezone coherence  
+    - Optional downgrades/strips to reduce leak paths (e.g., `Alt-Svc` preventing accidental HTTP/3/QUIC identity drift)
+
+
+-   :material-account-school:{ .lg .middle } __JavaScript Fingerprint Surfaces__
+
+    ---
+
+    Injects a profile-driven spoofing layer (canvas/WebGL/audio/fonts/media devices, etc.) while keeping the identity coherent.
+
+    !!! tip
+        Coherence beats randomness. Random noise is how you become a rare, clusterable outlier.
+
+
+</div>
