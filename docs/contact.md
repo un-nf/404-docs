@@ -19,4 +19,5 @@ We typically respond within 24-48 hours.
 ## Other Ways to Connect
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/un-nf/404/issues)
-- **Discussions**: [Join the conversation on GitHub](https://github.com/un-nf/404/discussions)
+- **Mastodon**: [404@fedifreu.de](https://fedifreu.de/@404)
+- **Signal**: [szhhh.57](https://signal.me/#eu/kUoYtMu9z_gV6iZssf1SxcXTohS3g3phmUby5ZAAypw4JV3oJYxNzKzAAM5k2a7E)
