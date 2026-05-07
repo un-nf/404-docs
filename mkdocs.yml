@@ -2,25 +2,36 @@ site_name: 404 - A Privacy Tool
 site_url: https://un-nf.github.io/404-docs/
 repo_url: https://github.com/un-nf/404
 
+hooks:
+  - hooks/release_metadata.py
+
 nav: 
   - Home: index.md
-  - What is 404?:
+  - Desktop: getStart/appStart.md
+  - Self-Hosted/CLI:
+    - dev/index.md
+    - Windows: dev/windows.md
+    - macOS: dev/macos.md
+    - Linux: dev/linux.md
+    - Developers: dev/developers.md
+  - Developer Resources:
+    - runtime/index.md
+    - WSL Distro and Runtime Packaging: runtime/distro.md
+    - Docker and Build Pipeline: runtime/docker.md
+    - eBPF Guide: dev/ebpf.md
+    - Deep Reference: resources/index.md
+    - STATIC Runtime and Data Plane: resources/static.md
+    - Control Plane and CA State: resources/controlPlane.md
+    - Profiles and Persona Materialization: resources/profiles.md
+    - eBPF Reference: resources/ebpf.md
+    - Runtime Repository Map: resources/repoDev.md
+  - Overview:
     - Overview/index.md
     - What Does 404 do?: Overview/whatIs.md
     - Why do I need 404?: Overview/why404.md
-  - Getting Started:
-    - App (alpha): getStart/appStart.md
-  - Developer Resources:
-    - Download: dev/downloadDev.md
-    - Dependencies: dev/depsDev.md
-    - Start STATIC: dev/startDev.md
-    - eBPF Guide: dev/ebpf.md
-  - More Resources:
-    - STATIC: resources/static.md
-    - eBPF: resources/ebpf.md
-    - Repository (Github/Codeberg): resources/repoDev.md
+    - Product and Repository Model: Overview/architecture.md
   - FAQ: faq.md
-  - Quick Consent & Warning: consent.md
+  - Consent & Warning: consent.md
   - Contact Us: contact.md
 
 theme:
@@ -35,6 +46,7 @@ theme:
     - navigation.top
     - navigation.indexes
     - content.tabs.link
+    - toc.integrate
 
 plugins:
   - mkdocs-video:

@@ -1,516 +1,339 @@
 ---
-title: STATIC Proxy Guide
-description: Complete technical reference for STATIC proxy—architecture, TLS fingerprinting, HTTP/2 handling, profile configuration, and troubleshooting guide.
+title: STATIC Runtime and Data Plane
+description: Technical reference for the current STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and the limits that still matter.
 hide:
+  - toc
 ---
 
-# STATIC Proxy
+# STATIC Runtime and Data Plane
 
-**A ground-up Rust implementation of a fingerprint-resistant MITM proxy**
+STATIC is the open source runtime at the center of 404.
 
-!!! warning "Deep Dive Ahead"
-    This page is designed for developers, researchers, and anyone who wants to understand *how* STATIC works under the hood. If you're just looking to get started, check out the [Getting Started](../dev/downloadDev.md) guide instead.
-
----
-
-## What does STATIC do?
-
-Modern fingerprinting is a **multi-layer problem**. Spoofing just your User-Agent or randomizing canvas values creates incoherent, *identifiable* noise. STATIC exists because defeating commercial fingerprinting requires **full-stack control**.
-
-**TLS Layer**
-
-- Rewrites the `SYN-ACK` handshake: cipher order, extensions, key shares
-- Deterministic profile selection via `rustls` - non-robust
-- JA3/JA4 string generation and validation
-
-**HTTP Layer**
-
-- Native HTTP/1.1 and HTTP/2 protocol parsing
-- Header ordering, client hints, Accept negotiation
-
-**JavaScript Layer**
-
-- CSP nonce generation synchronized with injection
-- Canvas/WebGL/Audio fingerprint spoofing
-- Iframe boundary propagation
-- Behavioral noise coordination between Rust and JS
-
-**Async-Native Rust Architecture**
-
-- **Tokio-based** concurrency (no thread pools, no blocking IO)
-- **Zero-copy buffers** with `BytesMut`
-- **Per-flow state isolation** (no global locks in hot path)
-- **Structured telemetry** with `tracing` (JSON export ready)
+It is not the desktop app, and it is not the WSL distro by itself. It is the proxy runtime that those higher-level delivery paths wrap, package, and operate.
 
 ---
 
-## Architecture
+## What STATIC is responsible for
 
-??? Example "Repository Map"
+STATIC currently owns:
 
-    ```
-    static_proxy/
-    ├── Cargo.toml                      # Dependencies: tokio, rustls, h2, hyper, serde
-    │
-    ├── assets/js/                      # Embedded fingerprint spoofing scripts
-    │   ├── 0bootstrap.js                  # Execution control, eval/Function wrapping
-    │   ├── 1globals_shim.js               # Navigator/screen property interception
-    │   ├── 2fingerprint_spoof_v2.js       # Canvas, WebGL, audio, font spoofing
-    │   ├── behavioral_noise.js            # Coordinated timing/interaction patterns
-    │   └── config_layer.js                # Profile injection into JS context
-    │
-    ├── config/
-    │   └── static.example.toml         # Listener, TLS, pipeline, telemetry config
-    │
-    ├── profiles/                       # JSON profiles (Chrome/Firefox/Edge)
-    │   ├── chrome_latest.json             # Schema v2: headers, TLS, behavior
-    │   ├── firefox_latest.json
-    │   └── safari_latest.json
-    │
-    ├── src/
-    │   ├── main.rs                     # CLI entrypoint (clap args, tracing init)
-    │   ├── app.rs                      # Wires subsystems, spawns listener
-    │   │
-    │   ├── proxy/                      # Core proxy logic
-    │   │   ├── server.rs                  # TCP listener, protocol detection
-    │   │   ├── connection.rs              # CONNECT handling, TLS termination, HTTP dispatch
-    │   │   ├── flow.rs                    # Request/response/metadata container
-    │   │   ├── pipeline.rs                # Stage orchestration trait
-    │   │   ├── client.rs                  # Upstream dialer (TCP+TLS with profile plans)
-    │   │   └── stages/                    # HeaderProfile, CSP, JS, AltSvc, Behavioral
-    │   │
-    │   ├── tls/                        # TLS subsystem
-    │   │   ├── cert.rs                    # CA generation, leaf cert cache (DashMap)
-    │   │   ├── profiles.rs                # TLS planner (JA3/JA4, cipher/group selection)
-    │   │   ├── fingerprint.rs             # JA3 string computation for telemetry
-    │   │   └── handshake.rs               # rustls ServerConfig/ClientConfig builders
-    │   │
-    │   ├── config/                     # Configuration system
-    │   │   ├── settings.rs                # StaticConfig struct, TOML deserialization
-    │   │   └── profiles.rs                # Profile loader with hot reload (notify crate)
-    │   │
-    │   ├── behavior/                   # Behavioral noise engine
-    │   ├── assets.rs                   # Embedded JS files, SHA-256 precomputation
-    │   ├── telemetry.rs                # Structured logging (JSON mode, tracing spans)
-    │   └── utils/                      # Error types, logging helpers
-    │
-    └── tests/
-        ├── unit/tls_tests.rs              # JA3 serialization, cipher filtering
-        └── integration/proxy_tests.rs     # End-to-end flow validation
+- profile-driven proxy startup
+- HTTP proxy and TLS interception behavior
+- the shared in-memory profile store
+- the localhost control plane
+- CA generation and runtime-side custody of the private key
+- injected browser-runtime shaping
+- profile-aware transport planning for upstream fetches
 
-    ```
+If you are looking for host trust installation, host proxy settings, account flow, updater UX, or WSL distro import logic, that belongs somewhere else.
 
 ---
 
-## Configuration
+## The first important correction
 
-STATIC reads configuration from `config/static.toml` (or via `--config` flag). The config file is broken into logical sections that control different subsystems.
+Older writeups sometimes made STATIC sound broader or lower-level than it really is.
 
-### **Listener**
+What STATIC does **not** do today:
 
-Controls where STATIC binds and listens for incoming connections.
+- it does not literally rewrite your host TCP handshake in place
+- it does not guarantee exact packet-perfect parity for every requested TLS persona
+- it does not make cross-engine impersonation magically coherent just because a profile file asked for it
+- it does not replace the separate eBPF layer
+
+What it does do is still substantial:
+
+- it shapes the upstream client behavior it controls
+- it rewrites request and response state through a deterministic stage pipeline
+- it injects a coordinated browser-runtime shaping layer into HTML responses
+
+---
+
+## Current startup contract
+
+STATIC now starts from an explicit profile decision.
+
+Proxy mode expects one of these:
+
+- `--profile <name>`
+- `pipeline.default_profile` in config
+
+If neither exists, proxy mode refuses to start.
+
+That is current behavior, not a recommendation.
+
+---
+
+## Current launch modes
+
+### Sample config path
+
+If `config/static.example.toml` is present and you pass it explicitly, you get the sample-config listener shape:
+
+```bash
+cd src/STATIC_proxy
+cargo run -- --config config/static.example.toml --profile edge-windows
+```
+
+Default listener state in that sample:
+
+- listener: `127.0.0.1:4040`
+- HTTP/3 placeholder bind: `127.0.0.1:4041`
+- control plane: `127.0.0.1:4042`
+
+### Standalone binary path
+
+If no config file is provided, STATIC falls back to built-in CLI defaults and looks for `profiles/` beside the executable.
+
+```bash
+./static --list-profiles
+./static -- --profile edge-windows
+```
+
+Current built-in defaults in that mode:
+
+- listener: `127.0.0.1:8443`
+- HTTP/3 placeholder bind: `127.0.0.1:8444`
+- control plane: `127.0.0.1:8445`
+
+That is one of the biggest places older docs drifted.
+
+---
+
+## Current config sample
+
+The repository sample config is:
 
 ```toml
 [listener]
-addr = "127.0.0.1"
-port = 4040
+bind_address = "127.0.0.1"
+bind_port = 4040
+proxy_protocol = "tls"
+
+[tls]
+keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key" }
+
+[pipeline]
+profiles_path = "../profiles"
+js_debug = false
+alt_svc_strategy = "normalize"
+body_limits = { max_request_body_bytes = 16777216, max_response_body_bytes = 33554432, max_decompressed_html_bytes = 16777216 }
 
 [http3]
 enabled = false
 bind_address = "127.0.0.1"
-bind_port = 8081
-```
+bind_port = 4041
 
-??? warning "HTTP/3 Status"
-    HTTP/3 configuration exists but is not yet implemented. STATIC currently handles HTTP/1.1 and HTTP/2 only. When enabled, this will spawn a QUIC listener using `quinn`.
-
-### **TLS**
-
-Defines paths for CA management and certificate caching.
-
-```toml
-[tls]
-ca_cert_path = "certs/static-ca.crt"
-ca_key_path = "certs/static-ca.key"
-cache_dir = "certs/cache"
-
-```
-
-**What happens here:**
-
-- On first run, STATIC generates a CA certificate and private key
-- Private `.key` file is stored securely, implementation varies per OS
-- Leaf certificates (for individual domains) are cached in `cache_dir`
-- Cached certs have a 24-hour TTL and are validated on lookup
-
-### **Pipeline**
-
-Controls profile loading, injection behavior, and protocol handling.
-
-```toml
-[pipeline]
-profiles_path = "../profiles"
-default_profile = "firefox-windows"
-js_debug = false
-alt_svc_strategy = "normalize"
-```
-
-| Field | Options | Purpose |
-|-------|---------|---------|
-| `profiles_path` | Path to JSON profiles | Where STATIC looks for profile definitions |
-| `default_profile` | Profile name | Fallback if no profile is selected or profile load fails |
-| `js_debug` | `true`/`false` | Enables verbose JS console output in injected scripts |
-| `alt_svc_strategy` | `normalize`, `strip`, `passthrough` | How to handle Alt-Svc headers (HTTP/3 downgrade behavior) |
-
-### **Telemetry**
-
-Configures logging output format and destination.
-
-```toml
 [telemetry]
 mode = "stdout"
-
 ```
 
-| Mode | Output |
-|------|--------|
-| `stdout` | Pretty-printed logs to console |
-| `json` | Structured JSON logs (Loki/ELK ready) |
+Important details:
 
-Use `RUST_LOG` environment variable to control verbosity:
+- `proxy_protocol = "tls"` is the normal path
+- the control plane is configured separately and binds on `listener.bind_port + 2`
+- body buffering limits are now explicit
+- HTTP/3 config exists, but the normal runtime path is still HTTP/1.1 and HTTP/2
 
-```bash
-# Human-readable logs
-cargo run
+---
 
-# JSON structured logs
-cargo run -- --json-logs
+## Managed CA and cache paths
 
-# Debug everything
-RUST_LOG=static_proxy=debug cargo run
+This is another place older docs became misleading.
 
-# Trace TLS subsystem only
-RUST_LOG=static_proxy::tls=trace cargo run
+STATIC now resolves its managed CA and cache paths under the OS app-data directory.
+
+The legacy TLS path fields still exist as compatibility inputs, but they are no longer general-purpose override knobs.
+
+Current managed paths resolve under the OS-local data directory for the `static_proxy` application name, including:
+
+- `certs/static-ca.crt`
+- `certs/static-ca.key.dpapi` on the protected-storage path used by the current keystore backend
+- `certs/cache`
+
+If you need the exact CA certificate path at runtime, the cleanest operator-facing check is still the control plane:
+
+```text
+GET /ca/status
 ```
 
 ---
 
-## Data Plane
+## Keystore reality
 
-The data plane handles live traffic: protocol detection, TLS termination, request/response mutation, and upstream forwarding.
+The current sample config uses:
 
-### Protocol Detection
-
-STATIC peeks at incoming TCP connections to determine what it's dealing with:
-
-| First Bytes | Protocol | Handler |
-|-------------|----------|---------|
-| `CONNECT` | HTTP CONNECT tunnel | `handle_connect_tunnel` |
-| `0x16` | Direct TLS ClientHello | `accept_tls_session` |
-| `GET`/`POST`/etc | HTTP/1.1 request | `handle_http1_session` |
-
-#### CONNECT Handling
-
-1. Parse `CONNECT host:port HTTP/1.1` from raw TCP stream
-2. Validate hostname (no IP literals, no malformed targets)
-3. Respond with `200 Connection Established\r\n\r\n`
-4. Record target in `FlowMetadata.connect_target` for upstream resolution
-
-#### TLS Termination
-
-- Uses `tokio_rustls::TlsAcceptor` with on-demand certificate generation
-- Extracts SNI from `ServerConnection::server_name()` (rustls 0.23 API)
-- Falls back to `connect_target` when SNI is missing (rare, but happens)
-- Generates leaf certificate signed by STATIC CA, caches in `DashMap<String, CachedCert>`
-
-### Flow Model
-
-A `Flow` represents a complete HTTP exchange.
-
-**Structure:**
-
-```rust
-pub struct Flow {
-    id: Uuid,                         // UUID v7 for deterministic ordering
-    request: RequestParts,            // Headers, method, URI, body buffer
-    response: Option<ResponseParts>,  // Populated after upstream response
-    metadata: FlowMetadata,           // Profile, TLS, telemetry state
-    behavioral_noise: BehavioralNoiseMetadata,
-    fingerprint_config: Value,        // Profile JSON for JS injection
-    timers: Timers,                   // Start, stage durations
-    tls_plan: Option<TlsClientPlan>,  // Upstream TLS handshake instructions
-}
+```toml
+keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key" }
 ```
 
-**FlowMetadata** bridges network stack, pipeline, and telemetry:
+That is accurate for the standalone/local path.
 
-- TLS SNI and CONNECT target
-- Profile names (header + TLS + behavioral)
-- CSP nonces and script SHA-256 hashes
-- JA3/JA4 strings (computed from TLS plan)
-- Upstream protocol (HTTP/1.1 vs HTTP/2)
-- Stage mutation logs (breadcrumb trail for telemetry)
+The desktop-managed WSL path is different. There, the runtime TOML authored by the desktop shell switches to file-backed key custody inside the Linux runtime contract.
 
-!!! tip "Performance"
-    Buffers use `BytesMut` for zero-copy mutations during pipeline stages. Headers are reordered in-place without allocating new structures.
-
-### Pipeline
-
-**Execution order** is deterministic:
-
-```
-1. HeaderProfileStage
-   └─ User-Agent, sec-ch-ua, Accept-Language
-   └─ Order: remove → replace → replaceArbitrary
-            → replaceDynamic → set → append
-
-2. AltSvcStage
-   └─ Downgrade/strip HTTP/3 advertisements
-   └─ Normalize port lists
-
-3. CspStage
-   └─ Inject CSP nonces
-   └─ Rewrite headers to allow injected JS
-
-4. JsInjectionStage
-   └─ Embed bootstrap + shim + config + spoof
-   └─ Record SHA-256 hashes
-
-5. BehavioralNoiseStage
-   └─ Tag flow with noise plan
-   └─ Coordinate with JS timing patterns
-
-```
-
-Each stage implements async hooks:
-
-- `process_request` — Mutates outgoing request before upstream
-- `process_response_headers` — Mutates headers before body processing
-- `process_response_body` — Mutates HTML/JS content
-- `on_complete` — Cleanup, telemetry emission
-
-#### HeaderProfileStage
-
-Applies header transformations from the profile's `headers` block.
-
-**Operations (in order):**
-
-1. **remove** — Delete headers by name (case-insensitive)
-2. **replace** — Overwrite existing headers
-3. **replaceArbitrary** — Replace with randomized values from a list
-4. **replaceDynamic** — Template-based replacement (e.g., timestamp injection)
-5. **set** — Add if missing, overwrite if present
-6. **append** — Add to existing value or create new header
-
-**Why ordering matters:**
-
-Header order is part of the fingerprint. Real browsers send headers in a specific sequence. STATIC preserves that order from the profile.
-
-#### AltSvcStage
-
-HTTP/3 is a fingerprint leak. If your browser advertises `h3` support but your TLS fingerprint doesn't match a browser that supports HTTP/3, you're identifiable.
-
-**Strategies:**
-
-- **normalize** — Rewrite `Alt-Svc` to only advertise HTTP/2
-- **strip** — Remove `Alt-Svc` headers entirely
-- **passthrough** — Leave them alone (not recommended)
-
-#### CspStage
-
-Content Security Policy headers restrict which scripts can execute. STATIC injects JavaScript, so it needs to rewrite CSP headers to whitelist itself.
-
-**How it works:**
-
-1. Generate a per-flow `nonce` (cryptographically random, base64-encoded)
-2. Compute SHA-256 hashes of injected scripts (precomputed at compile time)
-3. Parse existing CSP headers from the response
-4. Add `'nonce-<value>'` and `'sha256-<hash>'` to `script-src` directive
-5. Preserve `'strict-dynamic'` if already present (common in modern CSP policies)
-
-**CSP determinism:**
-
-Script load order matters. STATIC always injects in the same order (0bootstrap → 1globals_shim → config_layer → 2fingerprint_spoof_v2 → behavioral_noise) to ensure CSP hashes remain valid.
-
-#### JsInjectionStage
-
-Embeds the fingerprint spoofing stack into HTML responses.
-
-**Injection point:**
-
-- Near `</head>` (preferred)
-- Near `</body>` (fallback)
-- Synthesize `<head>` if missing (rare, but handles malformed HTML)
-
-**Injected scripts:**
-
-```html
-<script nonce="generated-nonce">
-// 0bootstrap.js — Execution control, prevents double-injection
-</script>
-<script nonce="generated-nonce">
-// 1globals_shim.js — Intercepts navigator/screen/window properties
-</script>
-<script nonce="generated-nonce">
-// config_layer.js + profile JSON — Writes __STATIC_CONFIG__
-</script>
-<script nonce="generated-nonce">
-// 2fingerprint_spoof_v2.js — Canvas/WebGL/Audio/Font spoofing
-</script>
-<script nonce="generated-nonce">
-// behavioral_noise.js — Timing patterns, coordinated with Rust
-</script>
-```
-
-**Decompression:**
-
-Responses may be gzip/deflate/brotli-encoded. STATIC decompresses, injects, and re-compresses (or strips `Content-Encoding` and updates `Content-Length`).
-
-#### BehavioralNoiseStage
-
-!!! warning "Experimental feature, not fully implemented!"
-
-Tags flows with timing patterns and interaction metadata. The JavaScript layer reads these patterns and coordinates behavior (e.g., randomized delays, simulated mouse movements).
-
-**Rust side:**
-
-- Parses behavioral strategies from profile JSON
-- Writes metadata to `Flow.behavioral_noise`
-- Marks flow as `behavioral_noise.enabled`
-
-**JavaScript side:**
-
-- Reads `__STATIC_CONFIG__.behavioral_noise`
-- Annotates outgoing requests with timing metadata
-- Modifies DOM interactions to avoid deterministic patterns
-
-### HTTP/1.1 Engine
-
-**Flow** (`connection.rs::handle_http1_session`):
-
-```
-parse_http_request (chunked decoder normalizes to contiguous buffer)
-         ↓
-Stage pipeline mutates request
-         ↓
-Upstream connect/dial
-         ↓
-send_request_to_upstream()
-         ↓
-parse_http_response (buffer complete response)
-         ↓
-Stage pipeline mutates response
-         ↓
-send_response_to_client()
-```
-
-**Edge cases handled:**
-
-- **Bodyless status codes** (1xx/204/205/304) — Skip Content-Length validation to avoid hangs
-- **Chunked encoding** — Normalize to contiguous buffer for pipeline processing
-- **Connection: close** — Properly tear down TCP stream after response
-
-!!! warning "Limitation: Streaming Bodies"
-    HTTP/1 engine currently buffers entire request/response. Large uploads/downloads may pressure memory. Streaming support is planned.
-
-### HTTP/2 Engine
-
-**Flow** (`connection.rs::handle_http2_session`):
-
-- Leverages `h2::server` for client-side HTTP/2 framing (ALPN `h2`)
-- Each incoming stream spawns `process_http2_stream()` for per-request state isolation
-
-**Upstream branching:**
-
-- **`forward_h2_over_h2()`** — When origin negotiates HTTP/2 (ALPN `h2`)
-- **`forward_h2_via_http1()`** — Fallback when upstream ALPN lacks `h2`
-
-**Response handling:**
-
-- Buffers complete headers/body before running response stages
-- `sanitize_response_headers_for_h2()` removes hop-by-hop headers (`Connection`, `Transfer-Encoding`, etc.)
-- Enforces `Content-Length`, normalizes lowercase header names (HTTP/2 spec requirement)
-
-**Flow control:**
-
-- `RecvStream::flow_control().release_capacity()` per chunk
-- Prevents zero-window deadlocks
-- 10-second timeout guard prevents hung upstream from blocking client
-
-**Pseudo-header validation:**
-
-HTTP/2 requires pseudo-headers (`:method`, `:scheme`, `:authority`, `:path`) at the start of the header block. STATIC enforces this on both request and response sides.
-
-### HTTP/3 Roadmap
-
-`Http3Config` already exists in `StaticConfig`. Implementation pending:
-
-- `proxy::quic` module built on `quinn`
-- CONNECT-UDP handler (RFC 9298)
-- ALPS serialization within TLS planner
-- Telemetry labels for H3 flows
+So any documentation that implies the runtime is always on a localhost/keychain path is now wrong.
 
 ---
 
-## Limitations
+## Current modes
 
-STATIC is powerful but has known limitations. These are being actively worked on.
+STATIC can currently run in two modes:
 
-### TLS Coverage
+- `proxy`
+- `control`
 
-**Missing from rustls/aws-lc:**
+`proxy` means full data plane plus control plane.
 
-- **RSA key exchange** — Only ECDHE is supported
-- **GREASE ciphers/extensions** — Rustls doesn't support GREASE values
-- **Post-quantum hybrid key shares** — PQ crypto support is experimental
+`control` means control-only sidecar behavior.
 
-!!! warning 
-    JA3 limited to ECDHE suites until BoringSSL integration is complete. Some browser profiles (older Safari, Edge) cannot be fully emulated.
-
-### HTTP/3
-
-**Status:** Config + roadmap exist, but no QUIC listener yet.
-
-**Current behavior:** TLS planner clamps ALPN to `['h2','http/1.1']`.
-
-**Planned:**
-
-- `proxy::quic` module built on `quinn`
-- CONNECT-UDP handler (RFC 9298)
-- ALPS serialization for TLS 1.3
-
-### Streaming Bodies
-
-**HTTP/1 engine** buffers entire request/response in memory.
-
-**Impact:** Large uploads/downloads (>100MB) may pressure memory and cause high latency.
-
-**Planned:** 
-
-- Streaming pipeline with chunked rewriter and stage API adjustments (stages would operate on body chunks instead of complete buffers).
-
-### Connection Pooling
-
-**Current behavior:**
-
-- Upstream dials fresh TCP/TLS per request
-- No keepalive/persistent connections
-- No configurable timeouts
-
-**Impact:** Higher latency, more TLS handshakes, easier to fingerprint by timing patterns.
-
-**Planned:**
-
-- Connection pool with keepalive (idle timeout, max connections per host)
-- Configurable dial/read/write timeouts
-- Happy Eyeballs DNS resolution (parallel IPv4/IPv6)
-
-### DNS Caching
-
-**Minimal caching** implemented. Relies on OS resolver (`tokio::net::lookup_host`).
-
-**Planned:** 
-
-- Happy Eyeballs with internal DNS cache (reduce resolution latency, improve consistency).
+The composition root lives in `app.rs`, where STATIC loads the shared `ProfileStore`, constructs the stage pipeline, and starts the control plane with shared readiness and shutdown state.
 
 ---
+
+## Shared profile state
+
+One `ProfileStore` is loaded and shared between:
+
+- the request/response pipeline
+- the localhost control plane
+
+That is what makes active-profile reads and selection changes coherent.
+
+This is also why the docs need to talk about profile state and control routes together rather than as separate side notes.
+
+---
+
+## Current bundled profile model
+
+The shipped runtime path is family-first.
+
+That means the runtime is built around browser families first and branded variants second.
+
+Current operator guidance is simple and still correct:
+
+- use Chromium-family profiles on Chromium-family browsers
+- use Firefox-family profiles on Firefox-family browsers
+
+The runtime does not stop manual operators from making bad choices. Higher-level shells can do that if they want to.
+
+---
+
+## Request classification and protocol handling
+
+STATIC's inbound routing now distinguishes between:
+
+- direct TLS interception
+- HTTP CONNECT proxy traffic
+- plain HTTP proxy traffic
+
+That matters because older descriptions often collapsed everything into one generic HTTP proxy story.
+
+At runtime, the connection path then branches into the appropriate downstream and upstream handling path, including:
+
+- HTTP/1.1 sessions
+- HTTP/2 sessions
+- raw websocket tunneling
+- local runtime asset delivery for `__/static/runtime.js`-style support assets
+- buffered HTML mutation only when response stages actually require it
+
+---
+
+## Deterministic stage pipeline
+
+The current stage order is:
+
+1. `HeaderProfileStage`
+2. `BehavioralNoiseStage`
+3. `CspStage`
+4. `JsInjectionStage`
+5. `AltSvcStage`
+
+That order is important.
+
+- profile shaping has to exist before runtime config is embedded
+- CSP handling has to happen before the final injected script layout is sent
+- Alt-Svc handling happens after the main mutation decisions are made
+
+---
+
+## Transport boundary
+
+STATIC's transport plan is richer than the old "rewrite the handshake" phrasing suggested.
+
+The real contract is closer to this:
+
+- profile data describes the desired upstream transport shape
+- STATIC passes that plan into the current fetcher/backend boundary
+- actual wire fidelity is bounded by what the current backend can express
+
+Current plan inputs include things like:
+
+- cipher-suite ordering
+- signature-algorithm ordering
+- supported-group ordering
+- ALPN
+- extension ordering
+- delegated credentials
+- ALPS settings where applicable
+- session-resumption controls
+
+That is meaningful shaping, but it is not the same thing as promising exact packet parity with every target browser build on every stack.
+
+---
+
+## JS runtime model
+
+The JS runtime is not a pile of unrelated patch files anymore.
+
+It boots as a fixed pipeline with a shared registry and shared entropy state.
+
+High-level bootstrap order:
+
+1. runtime registry initialization
+2. native reference capture
+3. `Function.prototype.toString` masking
+4. CSP nonce capture
+5. config load and validation
+6. entropy initialization
+7. policy initialization
+8. identity, capability, spoofing, evasion, privacy, and iframe modules
+
+That structure matters because the runtime now tries much harder to keep surfaces coherent within one process lifetime instead of inventing unrelated randomness everywhere.
+
+---
+
+## Worker and iframe handling
+
+Two details matter here:
+
+### Workers
+
+Worker and SharedWorker construction is wrapped through bootstrap scripts so STATIC can carry family and identity state into the worker path.
+
+That is where worker-visible fields such as:
+
+- `navigator.userAgent`
+- `platform`
+- `languages`
+- `hardwareConcurrency`
+- Chromium-family `userAgentData` and related branding state
+
+can be shaped coherently.
+
+### Iframes
+
+Iframe propagation is same-origin and selective.
+
+The runtime mirrors selected state into compatible child contexts rather than blindly re-running the entire bootstrap path in every frame.
+
+---
+
+## Limits that still matter
+
+The honest limits are still important:
+
+- exact on-the-wire TLS parity is bounded by the current transport backend
+- service workers and already-existing worker state remain outside the strongest injected-runtime path
+- manual operators can still select incoherent family combinations if they insist on doing that
+- STATIC and the eBPF layer are still distinct systems even when packaged together
+
+Those are not edge disclaimers. They are part of the current reality and the docs should say so plainly.

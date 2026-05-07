@@ -15,6 +15,15 @@ hide:
 
 404 aims to offer protection from *commercial grade* fingerprinting tools used by ad-tech companies like Google who collect and sell your data to third parties. Paired with a VPN, 404 offers fingerprint protection from most commercial grade fingerprinting tools (dataDome, FingerprintJS, etc.)
 
+## Is 404 a desktop app or an open source repository?
+
+Both, but the division matters.
+
+- The **desktop app** is the managed product path.
+- The **runtime stack** remains the open source self-hosted path.
+
+This documentation site now covers both on purpose, with separate setup paths so those workflows do not get mixed together.
+
 ## How does 404 work?
 
 !!! Example "404 pretends to be you as well as the server." 
@@ -35,16 +44,43 @@ This means that no website you visit sees your real fingerprint, only the one di
 
 **No information ever leaves your machine and all mutation happens locally. Always.**
 
+## Does the desktop app upload my traffic anywhere?
+
+No. The desktop app manages a local runtime.
+
+The product infrastructure handles things like account state, access control, and release delivery. It is not a cloud proxy path for your browsing traffic.
+
 ## Does 404 change my IP address?
 
 !!! Failure "No."
 
-In order to change your IP address, 404 would have to *route* your traffic. This goes against our core principles of local first mutation. You can, however (and should), follow the VPN integration steps to ensure that your persona location matches that of your VPN's advertised country. 
+In order to change your IP address, 404 would have to *route* your traffic through someone else's network. That is not the product model.
+
+404 changes the fingerprint your machine presents. It does not replace a VPN.
 
 ## What is `localhost`?
 
 !!! info "Localhost is the *local* interface that 404 listens on. Every machine comes with a pre-programmed *private* address, `127.0.0.1`, that allows local services to perform necessary tasks."
 
-When you send a packet to `localhost`/`127.0.0.1`/`lo`, you are sending the packet back to its host machine. Applications pair this with a `port` (4040 in our case) to allow a computer to operate on data locally. 
+When you send a packet to `localhost`/`127.0.0.1`/`lo`, you are sending the packet back to its host machine. Applications pair this with a `port` to allow a computer to operate on data locally. 
 
-By default 404 listens on `localhost:4040` but this can be changed to any desired port. There is also functionality to change the listening interface (e.g. `0.0.0.0` for *all* interfaces), but this is *not suggested* as this opens your proxy up to all devices on your `LAN`
+The common ports now depend on how you launch the runtime:
+
+- repo sample config: `127.0.0.1:4040`
+- standalone binary with no config file: `127.0.0.1:8443`
+
+There is also functionality to change the listening interface, but binding to `0.0.0.0` should be treated as an infrastructure decision, not a casual default, because it exposes the listener beyond strict local-only use.
+
+## Does Windows still run STATIC as a native binary?
+
+By default, no.
+
+The current desktop product path on Windows uses a managed WSL2 runtime. The desktop app provisions and controls that Linux environment for you.
+
+If you are operating the open source path manually, you can still work directly with STATIC and the distro build system yourself.
+
+## Do I need an account?
+
+For the **desktop app product path**, treat the account and licensing flow as part of the current distribution model.
+
+For the **self-hosted open source path**, you can still clone, build, and run the runtime stack directly.

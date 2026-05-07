@@ -6,7 +6,7 @@ hide:
 
 # eBPF Kernel Module
 
-[Step 3 - Start Proxy](./startDev.md){.md-button .md-button--primary}
+[Linux guide](./linux.md){.md-button .md-button--primary}
 
 ## Overview
 

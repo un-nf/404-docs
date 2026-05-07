@@ -119,4 +119,4 @@ Tracking operates on multiple layers that most privacy tools are not designed to
 
 - **GitHub Issues**: Bug reports and feature requests  
 - **GitHub Discussions**: General questions and implementation discussion
-- **Email**: See [contact page](contact.md)
+- **Email**: See [contact page](../contact.md)

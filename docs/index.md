@@ -1,23 +1,62 @@
 ---
 title: 404 Proxy
-description: Reclaim your digital anonymity with a local-first spoofing proxy for TLS, headers, JavaScript, and network level fingerprinting surfaces.
+description: Product documentation for the 404 desktop application and the open source CLI application, including STATIC, the WSL distro path, and eBPF.
 hide:
   - navigation
 ---
 
 # 404 - Home
 
-## Reclaim Your **Digital Anonymity**
+## Reclaim Your **Browser Privacy**
 
 *Local by design. Illegibility on purpose.*
 
-!!! info "v1.1 available"
-    New builds are live. If you’re upgrading, skim the release notes before swapping profiles.
+!!! info "Current release line"
+    404 now has two clear entry points.
 
-    ![type:video](./assets/images/demo.mp4)
+    - The **desktop application** is the managed product path. It is proprietary, subscription-backed, and distributed through 404privacy.com.
+    - The **CLI application** remains open source under the AGPL and can still be built, run, audited, and modified directly.
+    - The latest published open source CLI release is **{{ latest_github_release_tag }}** on [GitHub Releases]({{ latest_github_release_url }}){target="_blank"}.
 
-[Get Started](./dev/downloadDev.md){.md-button .md-button--primary}
-[GitHub](https://github.com/un-nf/404){.md-button}
+---
+
+## Choose your path
+
+<div class="grid cards" markdown>
+
+-   :material-monitor-dashboard:{ .lg .middle } __Desktop App__
+
+    ---
+
+    The fastest way to get started.
+
+    Use the desktop app if you want:
+
+    - managed updates
+    - account-backed downloads and licensing
+    - Windows WSL2 runtime provisioning without touching `wsl.exe`
+    - certificate trust workflow and proxy controls in the UI
+
+    [Open the desktop documentation](./getStart/appStart.md){ .md-button .md-button--primary }
+    [Visit 404privacy.com](https://404privacy.com/){ .md-button target="_blank" }
+
+-   :material-console:{ .lg .middle } __CLI Application__
+
+    ---
+
+    The open source operator path.
+
+    Use the CLI documentation if you want:
+
+    - direct access to STATIC
+    - local source builds and manual profile control
+    - WSL distro packaging and import as infrastructure
+    - eBPF build and attach steps on Linux
+
+    [Open the CLI documentation](./dev/index.md){ .md-button }
+    [View the runtime repository](https://github.com/un-nf/404){ .md-button target="_blank" }
+
+</div>
 
 ---
 
@@ -38,10 +77,10 @@ sequenceDiagram
     404 targets *correlation*: offers coherent profiles across **TLS → headers → JS surfaces**.
 
 -   ### Cross-platform
-    Written in Rust for **Windows, macOS, Linux**. Run locally, keep control locally.
+    The runtime stays local on **Windows, macOS, and Linux**. The desktop application manages that runtime on the host side. The CLI path exposes it directly.
 
 -   ### Open source
-    Full transparency.
+    STATIC, the WSL distro build path, and the eBPF layer remain open source and auditable. The desktop application layer is documented here as a proprietary product wrapper around that open source runtime stack.
 
 ---
 
@@ -60,6 +99,12 @@ Websites and fingerprinting vendors collect semi-unique signals and combine them
 - Typing speed
 
 404 sits in the middle and **rewrites your fingerprint** before it leaves your machine.
+
+That split matters:
+
+- the desktop app is the product-facing shell
+- the STATIC runtime and eBPF layer are the open source engine
+- the worker-backed account and update surface delivers builds, auth, and release metadata
 
 ---
 
@@ -104,3 +149,15 @@ Websites and fingerprinting vendors collect semi-unique signals and combine them
 
 
 </div>
+
+    ---
+
+    ## Before you continue
+
+    If you are evaluating the desktop app as a product, read the current legal documents published at 404privacy.com:
+
+    - [Privacy Policy](https://404privacy.com/privacy/){target="_blank"}
+    - [Terms of Service](https://404privacy.com/terms/){target="_blank"}
+    - [EULA](https://404privacy.com/eula/){target="_blank"}
+
+    If you are here for the open source path, the CLI application remains documented and linked from this site.

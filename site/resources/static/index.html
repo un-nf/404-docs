@@ -1,0 +1,1853 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical reference for the current STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and the limits that still matter.">
+      
+      
+      
+        <link rel="canonical" href="https://un-nf.github.io/404-docs/resources/static/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../controlPlane/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>STATIC Runtime and Data Plane - 404 - A Privacy Tool</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#static-runtime-and-data-plane" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="404 - A Privacy Tool" class="md-header__button md-logo" aria-label="404 - A Privacy Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            404 - A Privacy Tool
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              STATIC Runtime and Data Plane
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/un-nf/404" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getStart/appStart/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Desktop
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../dev/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Self-Hosted/CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../runtime/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Overview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../consent/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Consent & Warning
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contact/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contact Us
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="404 - A Privacy Tool" class="md-nav__button md-logo" aria-label="404 - A Privacy Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    404 - A Privacy Tool
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/un-nf/404" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getStart/appStart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desktop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../dev/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Hosted/CLI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Self-Hosted/CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/macos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    macOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/developers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../runtime/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../runtime/distro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WSL Distro and Runtime Packaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../runtime/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker and Build Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC Runtime and Data Plane
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC Runtime and Data Plane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-static-is-responsible-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What STATIC is responsible for
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-first-important-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The first important correction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-startup-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current startup contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-launch-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current launch modes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current launch modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-config-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample config path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standalone-binary-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Standalone binary path
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-config-sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current config sample
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managed-ca-and-cache-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managed CA and cache paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keystore-reality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keystore reality
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-profile-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared profile state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-bundled-profile-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current bundled profile model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-classification-and-protocol-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request classification and protocol handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deterministic-stage-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deterministic stage pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transport-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transport boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#js-runtime-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JS runtime model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worker-and-iframe-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worker and iframe handling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Worker and iframe handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Workers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iframes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iframes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limits-that-still-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits that still matter
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Plane and CA State
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles and Persona Materialization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repoDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../Overview/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/whatIs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What Does 404 do?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/why404/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Why do I need 404?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product and Repository Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../consent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consent & Warning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contact Us
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+  
+  
+
+
+<div><h1 id="static-runtime-and-data-plane">STATIC Runtime and Data Plane</h1>
+<p>STATIC is the open source runtime at the center of 404.</p>
+<p>It is not the desktop app, and it is not the WSL distro by itself. It is the proxy runtime that those higher-level delivery paths wrap, package, and operate.</p>
+<hr>
+<h2 id="what-static-is-responsible-for">What STATIC is responsible for</h2>
+<p>STATIC currently owns:</p>
+<ul>
+<li>profile-driven proxy startup</li>
+<li>HTTP proxy and TLS interception behavior</li>
+<li>the shared in-memory profile store</li>
+<li>the localhost control plane</li>
+<li>CA generation and runtime-side custody of the private key</li>
+<li>injected browser-runtime shaping</li>
+<li>profile-aware transport planning for upstream fetches</li>
+</ul>
+<p>If you are looking for host trust installation, host proxy settings, account flow, updater UX, or WSL distro import logic, that belongs somewhere else.</p>
+<hr>
+<h2 id="the-first-important-correction">The first important correction</h2>
+<p>Older writeups sometimes made STATIC sound broader or lower-level than it really is.</p>
+<p>What STATIC does <strong>not</strong> do today:</p>
+<ul>
+<li>it does not literally rewrite your host TCP handshake in place</li>
+<li>it does not guarantee exact packet-perfect parity for every requested TLS persona</li>
+<li>it does not make cross-engine impersonation magically coherent just because a profile file asked for it</li>
+<li>it does not replace the separate eBPF layer</li>
+</ul>
+<p>What it does do is still substantial:</p>
+<ul>
+<li>it shapes the upstream client behavior it controls</li>
+<li>it rewrites request and response state through a deterministic stage pipeline</li>
+<li>it injects a coordinated browser-runtime shaping layer into HTML responses</li>
+</ul>
+<hr>
+<h2 id="current-startup-contract">Current startup contract</h2>
+<p>STATIC now starts from an explicit profile decision.</p>
+<p>Proxy mode expects one of these:</p>
+<ul>
+<li><code>--profile &lt;name&gt;</code></li>
+<li><code>pipeline.default_profile</code> in config</li>
+</ul>
+<p>If neither exists, proxy mode refuses to start.</p>
+<p>That is current behavior, not a recommendation.</p>
+<hr>
+<h2 id="current-launch-modes">Current launch modes</h2>
+<h3 id="sample-config-path">Sample config path</h3>
+<p>If <code>config/static.example.toml</code> is present and you pass it explicitly, you get the sample-config listener shape:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>src/STATIC_proxy
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cargo<span class="w"> </span>run<span class="w"> </span>--<span class="w"> </span>--config<span class="w"> </span>config/static.example.toml<span class="w"> </span>--profile<span class="w"> </span>edge-windows
+</span></code></pre></div>
+<p>Default listener state in that sample:</p>
+<ul>
+<li>listener: <code>127.0.0.1:4040</code></li>
+<li>HTTP/3 placeholder bind: <code>127.0.0.1:4041</code></li>
+<li>control plane: <code>127.0.0.1:4042</code></li>
+</ul>
+<h3 id="standalone-binary-path">Standalone binary path</h3>
+<p>If no config file is provided, STATIC falls back to built-in CLI defaults and looks for <code>profiles/</code> beside the executable.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./static<span class="w"> </span>--list-profiles
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./static<span class="w"> </span>--<span class="w"> </span>--profile<span class="w"> </span>edge-windows
+</span></code></pre></div>
+<p>Current built-in defaults in that mode:</p>
+<ul>
+<li>listener: <code>127.0.0.1:8443</code></li>
+<li>HTTP/3 placeholder bind: <code>127.0.0.1:8444</code></li>
+<li>control plane: <code>127.0.0.1:8445</code></li>
+</ul>
+<p>That is one of the biggest places older docs drifted.</p>
+<hr>
+<h2 id="current-config-sample">Current config sample</h2>
+<p>The repository sample config is:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">[listener]</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">bind_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4040</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">proxy_protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"tls"</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">[tls]</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">keystore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"keychain"</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"404.static_proxy"</span><span class="p">,</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ca_key"</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">[pipeline]</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">profiles_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"../profiles"</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">js_debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">alt_svc_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"normalize"</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="n">body_limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">max_request_body_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span><span class="w"> </span><span class="n">max_response_body_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">33554432</span><span class="p">,</span><span class="w"> </span><span class="n">max_decompressed_html_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">16777216</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">[http3]</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="n">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="n">bind_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4041</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="k">[telemetry]</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"stdout"</span>
+</span></code></pre></div>
+<p>Important details:</p>
+<ul>
+<li><code>proxy_protocol = "tls"</code> is the normal path</li>
+<li>the control plane is configured separately and binds on <code>listener.bind_port + 2</code></li>
+<li>body buffering limits are now explicit</li>
+<li>HTTP/3 config exists, but the normal runtime path is still HTTP/1.1 and HTTP/2</li>
+</ul>
+<hr>
+<h2 id="managed-ca-and-cache-paths">Managed CA and cache paths</h2>
+<p>This is another place older docs became misleading.</p>
+<p>STATIC now resolves its managed CA and cache paths under the OS app-data directory.</p>
+<p>The legacy TLS path fields still exist as compatibility inputs, but they are no longer general-purpose override knobs.</p>
+<p>Current managed paths resolve under the OS-local data directory for the <code>static_proxy</code> application name, including:</p>
+<ul>
+<li><code>certs/static-ca.crt</code></li>
+<li><code>certs/static-ca.key.dpapi</code> on the protected-storage path used by the current keystore backend</li>
+<li><code>certs/cache</code></li>
+</ul>
+<p>If you need the exact CA certificate path at runtime, the cleanest operator-facing check is still the control plane:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>GET /ca/status
+</span></code></pre></div>
+<hr>
+<h2 id="keystore-reality">Keystore reality</h2>
+<p>The current sample config uses:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">keystore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"keychain"</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"404.static_proxy"</span><span class="p">,</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ca_key"</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p>That is accurate for the standalone/local path.</p>
+<p>The desktop-managed WSL path is different. There, the runtime TOML authored by the desktop shell switches to file-backed key custody inside the Linux runtime contract.</p>
+<p>So any documentation that implies the runtime is always on a localhost/keychain path is now wrong.</p>
+<hr>
+<h2 id="current-modes">Current modes</h2>
+<p>STATIC can currently run in two modes:</p>
+<ul>
+<li><code>proxy</code></li>
+<li><code>control</code></li>
+</ul>
+<p><code>proxy</code> means full data plane plus control plane.</p>
+<p><code>control</code> means control-only sidecar behavior.</p>
+<p>The composition root lives in <code>app.rs</code>, where STATIC loads the shared <code>ProfileStore</code>, constructs the stage pipeline, and starts the control plane with shared readiness and shutdown state.</p>
+<hr>
+<h2 id="shared-profile-state">Shared profile state</h2>
+<p>One <code>ProfileStore</code> is loaded and shared between:</p>
+<ul>
+<li>the request/response pipeline</li>
+<li>the localhost control plane</li>
+</ul>
+<p>That is what makes active-profile reads and selection changes coherent.</p>
+<p>This is also why the docs need to talk about profile state and control routes together rather than as separate side notes.</p>
+<hr>
+<h2 id="current-bundled-profile-model">Current bundled profile model</h2>
+<p>The shipped runtime path is family-first.</p>
+<p>That means the runtime is built around browser families first and branded variants second.</p>
+<p>Current operator guidance is simple and still correct:</p>
+<ul>
+<li>use Chromium-family profiles on Chromium-family browsers</li>
+<li>use Firefox-family profiles on Firefox-family browsers</li>
+</ul>
+<p>The runtime does not stop manual operators from making bad choices. Higher-level shells can do that if they want to.</p>
+<hr>
+<h2 id="request-classification-and-protocol-handling">Request classification and protocol handling</h2>
+<p>STATIC's inbound routing now distinguishes between:</p>
+<ul>
+<li>direct TLS interception</li>
+<li>HTTP CONNECT proxy traffic</li>
+<li>plain HTTP proxy traffic</li>
+</ul>
+<p>That matters because older descriptions often collapsed everything into one generic HTTP proxy story.</p>
+<p>At runtime, the connection path then branches into the appropriate downstream and upstream handling path, including:</p>
+<ul>
+<li>HTTP/1.1 sessions</li>
+<li>HTTP/2 sessions</li>
+<li>raw websocket tunneling</li>
+<li>local runtime asset delivery for <code>__/static/runtime.js</code>-style support assets</li>
+<li>buffered HTML mutation only when response stages actually require it</li>
+</ul>
+<hr>
+<h2 id="deterministic-stage-pipeline">Deterministic stage pipeline</h2>
+<p>The current stage order is:</p>
+<ol>
+<li><code>HeaderProfileStage</code></li>
+<li><code>BehavioralNoiseStage</code></li>
+<li><code>CspStage</code></li>
+<li><code>JsInjectionStage</code></li>
+<li><code>AltSvcStage</code></li>
+</ol>
+<p>That order is important.</p>
+<ul>
+<li>profile shaping has to exist before runtime config is embedded</li>
+<li>CSP handling has to happen before the final injected script layout is sent</li>
+<li>Alt-Svc handling happens after the main mutation decisions are made</li>
+</ul>
+<hr>
+<h2 id="transport-boundary">Transport boundary</h2>
+<p>STATIC's transport plan is richer than the old "rewrite the handshake" phrasing suggested.</p>
+<p>The real contract is closer to this:</p>
+<ul>
+<li>profile data describes the desired upstream transport shape</li>
+<li>STATIC passes that plan into the current fetcher/backend boundary</li>
+<li>actual wire fidelity is bounded by what the current backend can express</li>
+</ul>
+<p>Current plan inputs include things like:</p>
+<ul>
+<li>cipher-suite ordering</li>
+<li>signature-algorithm ordering</li>
+<li>supported-group ordering</li>
+<li>ALPN</li>
+<li>extension ordering</li>
+<li>delegated credentials</li>
+<li>ALPS settings where applicable</li>
+<li>session-resumption controls</li>
+</ul>
+<p>That is meaningful shaping, but it is not the same thing as promising exact packet parity with every target browser build on every stack.</p>
+<hr>
+<h2 id="js-runtime-model">JS runtime model</h2>
+<p>The JS runtime is not a pile of unrelated patch files anymore.</p>
+<p>It boots as a fixed pipeline with a shared registry and shared entropy state.</p>
+<p>High-level bootstrap order:</p>
+<ol>
+<li>runtime registry initialization</li>
+<li>native reference capture</li>
+<li><code>Function.prototype.toString</code> masking</li>
+<li>CSP nonce capture</li>
+<li>config load and validation</li>
+<li>entropy initialization</li>
+<li>policy initialization</li>
+<li>identity, capability, spoofing, evasion, privacy, and iframe modules</li>
+</ol>
+<p>That structure matters because the runtime now tries much harder to keep surfaces coherent within one process lifetime instead of inventing unrelated randomness everywhere.</p>
+<hr>
+<h2 id="worker-and-iframe-handling">Worker and iframe handling</h2>
+<p>Two details matter here:</p>
+<h3 id="workers">Workers</h3>
+<p>Worker and SharedWorker construction is wrapped through bootstrap scripts so STATIC can carry family and identity state into the worker path.</p>
+<p>That is where worker-visible fields such as:</p>
+<ul>
+<li><code>navigator.userAgent</code></li>
+<li><code>platform</code></li>
+<li><code>languages</code></li>
+<li><code>hardwareConcurrency</code></li>
+<li>Chromium-family <code>userAgentData</code> and related branding state</li>
+</ul>
+<p>can be shaped coherently.</p>
+<h3 id="iframes">Iframes</h3>
+<p>Iframe propagation is same-origin and selective.</p>
+<p>The runtime mirrors selected state into compatible child contexts rather than blindly re-running the entire bootstrap path in every frame.</p>
+<hr>
+<h2 id="limits-that-still-matter">Limits that still matter</h2>
+<p>The honest limits are still important:</p>
+<ul>
+<li>exact on-the-wire TLS parity is bounded by the current transport backend</li>
+<li>service workers and already-existing worker state remain outside the strongest injected-runtime path</li>
+<li>manual operators can still select incoherent family combinations if they insist on doing that</li>
+<li>STATIC and the eBPF layer are still distinct systems even when packaged together</li>
+</ul>
+<p>Those are not edge disclaimers. They are part of the current reality and the docs should say so plainly.</p></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "content.tabs.link", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -6,26 +6,28 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Install and use the 404 desktop application. Covers getting started, first run behavior, trust and routing, Windows WSL2 runtime behavior, and updates and licensing.">
+      
       
       
         <link rel="canonical" href="https://un-nf.github.io/404-docs/getStart/appStart/">
       
       
-        <link rel="prev" href="../../Overview/why404/">
+        <link rel="prev" href="../..">
       
       
-        <link rel="next" href="../../dev/downloadDev/">
+        <link rel="next" href="../../dev/">
       
       
         
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>404 Start - 404 - A Privacy Tool</title>
+        <title>Desktop Application - 404 - A Privacy Tool</title>
       
     
     
@@ -42,12 +44,6 @@
       
     
     
-      
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
     
@@ -74,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-use-the-404-desktop-app" class="md-skip">
+        <a href="#desktop-application" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              404 Start
+              Desktop Application
             
           </span>
         </div>
@@ -121,6 +117,46 @@
     
     
     
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
     
     
       <div class="md-header__source">
@@ -166,41 +202,20 @@
   
   
   
-  
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../Overview/whatIs/" class="md-tabs__link">
-          
-  
-  
-  What is 404?
-
-        </a>
-      </li>
     
   
-
-      
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
-  
     
   
-  
-    
-    
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
-          
-  
-  
-  Getting Started
+  Desktop
 
-        </a>
-      </li>
-    
+      </a>
+    </li>
   
 
       
@@ -212,9 +227,33 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev/downloadDev/" class="md-tabs__link">
+        <a href="../../dev/" class="md-tabs__link">
           
   
+  
+    
+  
+  Self-Hosted/CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../runtime/" class="md-tabs__link">
+          
+  
+  
+    
   
   Developer Resources
 
@@ -232,34 +271,17 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../writeups/static/" class="md-tabs__link">
+        <a href="../../Overview/" class="md-tabs__link">
           
   
   
-  More Resources
+    
+  
+  Overview
 
         </a>
       </li>
     
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../Overview/consent/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Quick Consent & Warning
-
-      </a>
-    </li>
   
 
       
@@ -276,6 +298,44 @@
     
   
   FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../consent/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Consent & Warning
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contact/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contact Us
 
       </a>
     </li>
@@ -299,8 +359,6 @@
           
             
               
-                
-              
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -310,7 +368,9 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="404 - A Privacy Tool" class="md-nav__button md-logo" aria-label="404 - A Privacy Tool" data-md-component="logo">
       
@@ -366,174 +426,6 @@
       
   
   
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    What is 404?
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    What is 404?
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../Overview/whatIs/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    What is 404?
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../Overview/why404/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Why do I need 404?
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Getting Started
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Getting Started
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
     
   
   
@@ -553,7 +445,7 @@
   <span class="md-ellipsis">
     
   
-    App (alpha)
+    Desktop
   
 
     
@@ -571,7 +463,7 @@
   <span class="md-ellipsis">
     
   
-    App (alpha)
+    Desktop
   
 
     
@@ -597,10 +489,143 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#note" class="md-nav__link">
+  <a href="#before-you-install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Note
+        Before you install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-run-and-daily-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First Run and Daily Use
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust-certificates-and-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trust, Certificates, and Routing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-wsl2-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows WSL2 Runtime
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platform Notes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Notes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        macOS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updates-accounts-and-licensing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updates, Accounts, and Licensing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updates, Accounts, and Licensing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#desktop-application-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desktop application updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-updates-on-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime updates on Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-application-does-not-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the application does not change
       
     </span>
   </a>
@@ -611,6 +636,190 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../dev/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Hosted/CLI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Self-Hosted/CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/macos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    macOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev/developers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -631,6 +840,30 @@
   
     
     
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
       
@@ -644,8 +877,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../runtime/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -659,8 +893,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
@@ -674,20 +914,22 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../dev/downloadDev/" class="md-nav__link">
+      <a href="../../runtime/distro/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Download
+    WSL Distro and Runtime Packaging
   
 
     
@@ -708,42 +950,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/depsDev/" class="md-nav__link">
+      <a href="../../runtime/docker/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Dependencies
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dev/startDev/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Start STATIC
+    Docker and Build Pipeline
   
 
     
@@ -785,6 +999,174 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC Runtime and Data Plane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Plane and CA State
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles and Persona Materialization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/repoDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -799,6 +1181,18 @@
   
   
     
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -813,14 +1207,15 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../Overview/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
     
   
-    More Resources
+    Overview
   
 
     
@@ -828,35 +1223,43 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
-    More Resources
+    Overview
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../writeups/static/" class="md-nav__link">
+      <a href="../../Overview/whatIs/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    STATIC
+    What Does 404 do?
   
 
     
@@ -877,14 +1280,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../writeups/ebpf/" class="md-nav__link">
+      <a href="../../Overview/why404/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    eBPF
+    Why do I need 404?
   
 
     
@@ -905,14 +1308,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/repoDev/" class="md-nav__link">
+      <a href="../../Overview/architecture/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Repository (Github/Codeberg)
+    Product and Repository Model
   
 
     
@@ -929,33 +1332,6 @@
           </ul>
         </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../Overview/consent/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Quick Consent & Warning
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -987,51 +1363,66 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../consent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consent & Warning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contact Us
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
                 </div>
               </div>
             
-            
-              
-                
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#note" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Note
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
             
           
           
@@ -1040,32 +1431,197 @@
               <article class="md-content__inner md-typeset">
                 
                   
-  
-
-
-
-  
-  
-
-
-<div><h1 id="how-to-use-the-404-desktop-app">How to use the 404 Desktop App</h1>
-<h2 id="note">Note</h2>
-<p>Please see the <a href="../../dev/downloadDev/">Developer Resources</a> tab as the application is currently in development. There is a demo below!</p>
-<p><div class="video-container"><iframe src="../../assets/images/demo.mp4" style="width:100%;height:35vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p></div>
-
-
-
-
-
 
 
   
   
 
 
+<div><h1 id="desktop-application">Desktop Application</h1>
+<p>The desktop application is the managed product path for 404.</p>
+<p>It is the fastest way to get from zero to a working local runtime without having to build STATIC, package a distro, or wire system proxy settings by hand.</p>
+<div class="admonition info">
+<p class="admonition-title">What this page covers</p>
+<p>This page is for the <strong>desktop application</strong> distributed through 404privacy.com.</p>
+<p>If you want the open source CLI path instead, start here:</p>
+<p><a class="md-button" href="../../dev/">CLI Application</a></p>
+</div>
+<p><a class="md-button md-button--primary" href="https://404privacy.com/pricing/" target="_blank" rel="noopener">Get the desktop app</a>
+  <a class="md-button" href="https://404privacy.com/" target="_blank" rel="noopener">Visit 404privacy.com</a></p>
+<hr>
+<p>## Getting Started</p>
+<p>Use the desktop application if you want:</p>
+<ul>
+<li>a managed installer</li>
+<li>account-backed access and billing</li>
+<li>built-in proxy controls</li>
+<li>managed updates</li>
+<li>Windows runtime provisioning through WSL2 without working with <code>wsl.exe</code> directly</li>
+</ul>
+<p>The shortest path is:</p>
+<ol>
+<li>download the current build from 404privacy.com</li>
+<li>install the application for your platform</li>
+<li>sign in or activate access if your build path requires it</li>
+<li>choose your browser family</li>
+<li>let the application generate and trust the local CA</li>
+<li>start the engine and enable routing when you want traffic to flow through 404</li>
+</ol>
+<hr>
+<p>## What the application does</p>
+<ul>
+<li>the user interface</li>
+<li>account and auth flow</li>
+<li>runtime orchestration</li>
+<li>host trust installation</li>
+<li>host proxy routing changes</li>
+<li>desktop updates</li>
+<li>uninstall cleanup</li>
+</ul>
+<p>On Windows, it also provisions and updates the managed WSL2 distribution that runs STATIC.</p>
+<hr>
+<h2 id="before-you-install">Before you install</h2>
+<p>Read the current legal documents for the product path:</p>
+<ul>
+<li><a href="https://404privacy.com/privacy/" target="_blank" rel="noopener">Privacy Policy</a></li>
+<li><a href="https://404privacy.com/terms/" target="_blank" rel="noopener">Terms of Service</a></li>
+<li><a href="https://404privacy.com/eula/" target="_blank" rel="noopener">EULA</a></li>
+</ul>
+<p>Those documents govern the desktop application and account-backed service surface.</p>
+<p>They do <strong>not</strong> replace the AGPL terms that govern STATIC itself when you self-host the open source runtime.</p>
+<hr>
+<h2 id="first-run-and-daily-use">First Run and Daily Use</h2>
+<p>On first run, the desktop application is doing three things:</p>
+<ul>
+<li>establish local runtime configuration</li>
+<li>establish trust for TLS interception</li>
+<li>make it easy to start or stop the runtime without hand-editing OS settings</li>
+</ul>
+<p>The current onboarding flow is built around:</p>
+<ol>
+<li>choosing your browser family</li>
+<li>generating and trusting the local CA</li>
+<li>deciding whether to start the engine with or without system routing changes</li>
+</ol>
+<p>For most users, daily use is:</p>
+<ol>
+<li>open the application</li>
+<li>confirm trust and runtime status</li>
+<li>start the engine</li>
+<li>enable routing when you want traffic to flow through 404</li>
+<li>disable routing and stop the engine when you are done</li>
+</ol>
+<p>Best practice is still simple:</p>
+<ul>
+<li>Chromium-family browsers should use Chromium-family profiles</li>
+<li>Firefox-family browsers should use Firefox-family profiles</li>
+</ul>
+<hr>
+<h2 id="trust-certificates-and-routing">Trust, Certificates, and Routing</h2>
+<p>404 is a TLS-terminating local proxy. That fact drives the entire trust workflow.</p>
+<p>The runtime generates a local CA so it can mint leaf certificates for intercepted TLS sessions.</p>
+<p>The desktop application then owns the host-side trust workflow around that certificate.</p>
+<p>That split matters:</p>
+<ul>
+<li>the runtime owns certificate material generation</li>
+<li>the desktop application owns installing trust into the operating system</li>
+</ul>
+<p>Routing is not the same thing as startup.</p>
+<ul>
+<li>Starting the engine brings the runtime up.</li>
+<li>Enabling system routing tells the host OS to send traffic through it.</li>
+</ul>
+<p>Those are related, but they are not the same action.</p>
+<p>That is why the desktop UI separates engine state from system routing state.</p>
+<hr>
+<h2 id="windows-wsl2-runtime">Windows WSL2 Runtime</h2>
+<p>Windows is the clearest example of the split between the desktop application and the runtime it manages.</p>
+<p>The desktop application is the host-facing shell.</p>
+<p>The runtime is a Linux environment running inside a managed WSL2 distro named <code>404</code>.</p>
+<p>On Windows, the normal product path is:</p>
+<ol>
+<li>fetch a signed distro manifest</li>
+<li>verify it with the embedded Ed25519 public key</li>
+<li>download the referenced tarball</li>
+<li>verify the tarball hash against the signed manifest</li>
+<li>import or update the <code>404</code> WSL distro</li>
+<li>write the runtime configuration and control token the Linux service expects</li>
+<li>start the runtime and talk to STATIC through its authenticated control API</li>
+</ol>
+<p>The distro contract currently includes:</p>
+<ul>
+<li><code>/opt/404/404-init.sh</code></li>
+<li><code>/opt/404/distro-version</code></li>
+<li><code>/opt/404/win-user</code></li>
+<li><code>/opt/404/control-token</code></li>
+<li>the packaged <code>static</code> runtime binary</li>
+<li>the packaged <code>ttl_editor.o</code> object</li>
+</ul>
+<p>The Linux runtime does <strong>not</strong> take over host responsibilities that belong to the desktop application.</p>
+<p>Windows still owns:</p>
+<ul>
+<li>proxy settings</li>
+<li>trust installation into the OS</li>
+<li>auth and account flow</li>
+<li>desktop updater behavior</li>
+<li>uninstall cleanup</li>
+</ul>
+<hr>
+<h2 id="platform-notes">Platform Notes</h2>
+<h3 id="windows">Windows</h3>
+<p>The desktop application defaults to the managed WSL2 runtime described above.</p>
+<p>You do <strong>not</strong> need to import the distro manually for the normal product path.</p>
+<h3 id="macos">macOS</h3>
+<p>The desktop application currently uses the native runtime path rather than WSL2.</p>
+<p>It still owns:</p>
+<ul>
+<li>CA trust workflow</li>
+<li>proxy routing changes</li>
+<li>start and stop controls</li>
+<li>update handling</li>
+</ul>
+<h3 id="linux">Linux</h3>
+<p>The desktop documentation here is primarily written for the supported product install paths exposed publicly today.</p>
+<p>If your goal is to run the runtime directly on Linux, the self-hosted manual is the more relevant path.</p>
+<hr>
+<h2 id="updates-accounts-and-licensing">Updates, Accounts, and Licensing</h2>
+<p>The desktop application is distributed as a managed product.</p>
+<p>That means the product surface includes:</p>
+<ul>
+<li>account-backed access</li>
+<li>billing portal support</li>
+<li>authenticated desktop auth handoff</li>
+<li>managed binary delivery and updates</li>
+</ul>
+<p>Read the current product documents at:</p>
+<ul>
+<li><a href="https://404privacy.com/privacy/" target="_blank" rel="noopener">Privacy Policy</a></li>
+<li><a href="https://404privacy.com/terms/" target="_blank" rel="noopener">Terms of Service</a></li>
+<li><a href="https://404privacy.com/eula/" target="_blank" rel="noopener">EULA</a></li>
+</ul>
+<p>404 now has two update channels that should be understood separately.</p>
+<h3 id="desktop-application-updates">Desktop application updates</h3>
+<p>These update the product shell itself.</p>
+<h3 id="runtime-updates-on-windows">Runtime updates on Windows</h3>
+<p>These update the managed WSL distro the desktop application provisions and controls.</p>
+<p>Those paths are related operationally because they share a public origin, but they are not the same thing.</p>
+<hr>
+<h2 id="what-the-application-does-not-change">What the application does not change</h2>
+<p>404 is local-first. The runtime runs on your machine.</p>
+<p>The desktop application does <strong>not</strong> turn 404 into a remote proxy network or a hosted browser relay.</p>
+<p>It manages a local runtime and local OS integrations around that runtime.</p></div>
+
+
+
+
+
 
 
   
+  
+
+
+
 
 
 
@@ -1074,8 +1630,16 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
         
       </main>
       
@@ -1106,7 +1670,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "content.tabs.link", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
