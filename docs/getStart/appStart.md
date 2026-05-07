@@ -22,7 +22,7 @@ It is the fastest way to get from zero to a working local runtime without having
 
 ---
 
-  ## Getting Started
+## Getting Started
 
   Use the desktop application if you want:
 
@@ -43,7 +43,7 @@ It is the fastest way to get from zero to a working local runtime without having
 
   ---
 
-  ## What the application does
+## What the application does
 
 - the user interface
 - account and auth flow
