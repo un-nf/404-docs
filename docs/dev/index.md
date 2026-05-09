@@ -23,7 +23,7 @@ Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_relea
 
     ---
 
-    Use the WSL2 distro bundle. This is the Windows runtime path.
+    Use the Rose kernel via WSL2 bundle.
 
     [Open the Windows guide](./windows.md){ .md-button .md-button--primary }
 
@@ -31,7 +31,7 @@ Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_relea
 
     ---
 
-    Run the published STATIC binary directly, trust the generated CA, and point your browser at the local listener.
+    Download and run STATIC directly, trust the generated CA, and point your browser at the local listener.
 
     [Open the macOS guide](./macos.md){ .md-button .md-button--primary }
 
@@ -39,7 +39,7 @@ Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_relea
 
     ---
 
-    Run the published STATIC binary directly and, if you need packet-layer mutation, attach the eBPF object manually.
+    Download and run STATIC directly and, if you need packet-layer mutation, attach the eBPF object manually.
 
     [Open the Linux guide](./linux.md){ .md-button .md-button--primary }
 
@@ -55,13 +55,13 @@ Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_relea
 
 ---
 
-## What stays true across every path
+## Helpful tips
 
-- the runtime is local and operator-controlled
-- the current public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
+- All three paths are local and operator controlled
+- The current public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
 - Chromium-family browsers should stay on `chrome-windows` or `edge-windows`
 - Firefox should stay on `firefox-windows`
-- the runtime generates a local CA and you must trust it before browsers will accept proxied HTTPS
-- the runtime only affects traffic after you point your browser or operating system at its listener
+- The proxy generates a local CA and you must trust it before browsers will accept proxied HTTPS
+- 404 only affects traffic after you point your browser or operating system at its listener
 
-If you want the managed product experience instead, use [Desktop](../getStart/appStart.md).
+If you want a managed product experience, use [Desktop](../getStart/appStart.md).

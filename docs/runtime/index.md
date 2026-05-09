@@ -9,11 +9,7 @@ hide:
 
 This section is the developer-facing documentation for 404.
 
-If you want the product experience, use the Desktop tab instead. If you want the guided CLI path, use the Self-Hosted/CLI tab instead.
-
----
-
-## What lives here
+If you want the product experience, use the Desktop tab. If you want the guided CLI path, use the Self-Hosted/CLI tab.
 
 The developer documentation covers:
 
@@ -24,40 +20,20 @@ The developer documentation covers:
 
 ---
 
-## Start here if you need
+## Common Links
 
-### CLI installation and walkthrough
+### [WSL distro packaging and operation](./distro.md)
 
-Use:
+### [Docker-based distro build steps](./docker.md)
 
-- [Self-Hosted/CLI](../dev/index.md)
-
-### WSL distro packaging and operation
-
-Use:
-
-- [WSL Distro and Runtime Packaging](./distro.md)
-
-### Docker-based distro build steps
-
-Use:
-
-- [Docker and Build Pipeline](./docker.md)
-
-### Packet-layer mutation details
-
-Use:
-
-- [eBPF Guide](../dev/ebpf.md)
+### [Packet-layer mutation details](../dev/ebpf.md)
 
 ---
 
 ## Current scope
 
-!!! info "The distro path is live"
+!!! info "The 404 Linux-distro is live"
 
-    The WSL distro path is not a future note anymore.
+    The desktop app consumes a signed distro manifest, verifies the referenced tarball, imports the `404` WSL distro, and boots the Linux runtime from there on Windows.
 
-    The desktop app already consumes a signed distro manifest, verifies the referenced tarball, imports the `404` WSL distro, and boots the Linux runtime from there on Windows.
-
-That means the developer documentation has to cover more than the standalone CLI binary now.
+    This documentation contains instructions on setting up a self-hosted version of this.

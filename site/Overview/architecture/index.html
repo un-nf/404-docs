@@ -1227,56 +1227,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#why-this-documentation-is-split" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why this documentation is split
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Why this documentation is split">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#if-you-are-a-user-evaluating-or-running-the-desktop-app" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        If you are a user evaluating or running the desktop app
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#if-you-are-an-operator-developer-or-auditor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        If you are an operator, developer, or auditor
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#repository-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Repository map
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1397,42 +1347,37 @@
 
 
 <div><h1 id="product-and-repository-model">Product and Repository Model</h1>
-<p>404 is no longer one thing.</p>
-<p>It is one product experience built across three layers:</p>
+<p>Three layers:</p>
 <ol>
 <li>the <strong>desktop app</strong> users install</li>
 <li>the <strong>runtime stack</strong> that actually mutates traffic</li>
 <li>the <strong>account and release infrastructure</strong> that distributes builds and validates access</li>
 </ol>
-<p>That division should be clear because the licensing and operating model are different at each layer.</p>
 <hr>
 <h2 id="the-short-version">The short version</h2>
 <div class="admonition info">
-<p class="admonition-title">Two paths, one documentation site</p>
+<p class="admonition-title">One documentation site</p>
 <p>This site covers both:</p>
 <ul>
 <li>the <strong>proprietary desktop app</strong> distributed through 404privacy.com</li>
 <li>the <strong>open source runtime stack</strong> you can self-host, inspect, build, and modify yourself</li>
 </ul>
 </div>
-<p>The desktop app is the managed product path.</p>
-<p>The CLI application is the repository and operator path.</p>
 <hr>
 <h2 id="layer-1-desktop-app">Layer 1: Desktop app</h2>
-<p>The desktop app is the product-facing shell.</p>
-<p>It owns:</p>
+<p>The desktop app:</p>
 <ul>
-<li>the React and Tauri user interface</li>
-<li>account and session flow</li>
-<li>desktop update behavior</li>
-<li>host proxy configuration</li>
-<li>host certificate trust workflow</li>
-<li>uninstall cleanup</li>
-<li>runtime orchestration</li>
+<li>User Interface (UI)</li>
+<li>Account management</li>
+<li>Easy install</li>
+<li>Automated updates</li>
+<li>Automated proxy configuration</li>
+<li>Automated CA trust certificate trust workflow</li>
+<li>Uninstall &amp; cleanup</li>
+<li>Profile orchestration</li>
 </ul>
-<p>On Windows, the desktop app now provisions and operates a managed WSL2 Linux runtime by default.</p>
-<p>On macOS and some development paths, it still runs against the native runtime backend.</p>
-<p>This layer is proprietary. Its current public legal surface lives at:</p>
+<p>On Windows, the desktop app provisions and operates a managed WSL2 Alpine distribution.</p>
+<p>Legal documents:</p>
 <ul>
 <li><a href="https://404privacy.com/privacy/" target="_blank" rel="noopener">Privacy Policy</a></li>
 <li><a href="https://404privacy.com/terms/" target="_blank" rel="noopener">Terms of Service</a></li>
@@ -1440,22 +1385,13 @@
 </ul>
 <hr>
 <h2 id="layer-2-open-source-runtime">Layer 2: Open source runtime</h2>
-<p>The runtime stack remains the open source core.</p>
+<p>The runtime stack remains open source.</p>
 <p>That includes:</p>
 <ul>
-<li><strong>STATIC</strong>, the local TLS-terminating proxy</li>
-<li>the <strong>WSL distro packaging path</strong> used on Windows</li>
-<li>the <strong>eBPF layer</strong> used for packet-level mutation on Linux</li>
+<li><strong>STATIC</strong>: localhost TLS-terminating proxy</li>
+<li>the <strong>Rose kernel</strong> for WSL2</li>
+<li>the <strong>eBPF module</strong> used for packet-level mutation.</li>
 </ul>
-<p>This is the part of 404 that is source-available, auditable, and documented as an operator manual.</p>
-<p>If you do not want the managed desktop product path, you can still:</p>
-<ul>
-<li>build STATIC from source</li>
-<li>run the standalone binary directly</li>
-<li>package the WSL distro manually</li>
-<li>attach the eBPF classifier on Linux yourself</li>
-</ul>
-<p>That is why this site still contains a full self-hosted manual alongside the desktop app guide.</p>
 <hr>
 <h2 id="layer-3-account-and-release-infrastructure">Layer 3: Account and release infrastructure</h2>
 <p>The public product path also has an infrastructure layer behind it.</p>
@@ -1466,40 +1402,11 @@
 <li>signed desktop updater metadata delivery</li>
 <li>signed WSL distro manifest and tarball delivery</li>
 </ul>
-<p>Operationally, that layer is what turns a local runtime into a product that can ship managed builds and paid access.</p>
-<p>Architecturally, it does <strong>not</strong> change the local-first runtime model. The proxy still runs on the user's machine. The infrastructure exists to distribute binaries, manage access, and publish update metadata.</p>
+<p>This allows us to ship managed builds and service enterprise/power users.</p>
+<p>This does <strong>not</strong> change the local-first runtime model. The software still runs locally on the user's machine. </p>
 <hr>
-<h2 id="why-this-documentation-is-split">Why this documentation is split</h2>
-<p>The split is here to answer two different questions cleanly.</p>
-<h3 id="if-you-are-a-user-evaluating-or-running-the-desktop-app">If you are a user evaluating or running the desktop app</h3>
-<p>You care about:</p>
-<ul>
-<li>how to install it</li>
-<li>how first run works</li>
-<li>what Windows does with WSL2</li>
-<li>how trust and proxy routing work</li>
-<li>what account and subscription terms apply</li>
-</ul>
-<h3 id="if-you-are-an-operator-developer-or-auditor">If you are an operator, developer, or auditor</h3>
-<p>You care about:</p>
-<ul>
-<li>how to build STATIC</li>
-<li>how profiles work</li>
-<li>how the control API works</li>
-<li>how the WSL distro is packaged</li>
-<li>how the eBPF module is built and attached</li>
-</ul>
-<p>This site now keeps those two tracks separate instead of pretending they are the same workflow.</p>
-<hr>
-<h2 id="repository-map">Repository map</h2>
-<p>At a high level:</p>
-<ul>
-<li>the desktop app lives in the <code>404-APP</code> repository</li>
-<li>the open source runtime, STATIC, distro path, and eBPF module live in the <code>404</code> runtime repository</li>
-<li>the account and public update infrastructure lives in <code>404-workers</code></li>
-</ul>
-<p>If you want the product path, start in <a href="../../getStart/appStart/">Desktop</a>.</p>
-<p>If you want the CLI path, start in <a href="../../dev/">Self-Hosted/CLI</a>.</p></div>
+<p>If you need help with the 404 application, start in <a href="../../getStart/appStart/">Desktop</a>.</p>
+<p>If you need help with free installation, start in <a href="../../dev/">Self-Hosted/CLI</a>.</p></div>
 
 
 

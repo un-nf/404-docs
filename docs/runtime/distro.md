@@ -196,6 +196,17 @@ Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which
 3. best-effort attaches `ttl_editor.o` to `eth0`
 4. starts `/opt/404/static --config <path> --mode proxy`
 
+The interface name in that attach step is currently hard-coded to `eth0` inside `/opt/404/404-init.sh`.
+
+There is no manifest field or runtime TOML field for overriding it yet.
+
+If your WSL network shows up under a different interface name, the manual operator workaround is:
+
+```powershell
+wsl -d 404 -- ip link show
+wsl -d 404 -- sh -lc 'tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da obj /opt/404/ttl_editor.o sec classifier 2>/dev/null || true'
+```
+
 So manual operators need to satisfy that contract explicitly.
 
 ### Minimum manual setup after import

@@ -1,6 +1,6 @@
 ---
 title: About Us
-description: Learn about 404's mission to restore digital privacy through open-source anti-fingerprinting technology. Meet the team fighting surveillance capitalism one fingerprint at a time.
+description: Learn about 404's mission to restore digital privacy through open source anti-fingerprinting technology. Meet the team fighting surveillance capitalism one fingerprint at a time.
 hide:
 ---
 

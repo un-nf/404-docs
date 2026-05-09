@@ -9,13 +9,37 @@ This is the Windows self-hosted path.
 
 It uses the WSL2 distro bundle. This page does not document running the raw Windows STATIC binary as the normal Windows operator path.
 
+[Download for Windows x64](https://github.com/un-nf/404/releases/latest/download/404-windows-x64.zip){ .md-button .md-button--primary }
+
+The Windows operator bundle includes:
+
+- `404-distro.tar.gz`
+- `404-distro-manifest.json`
+- `404-distro-manifest.json.sig`
+- `AppData\Roaming\404\static\static.runtime.toml`
+- `AppData\Roaming\404\static\profiles\manifest.json`
+- `AppData\Roaming\404\static\profiles\firefox-windows.json`
+- `AppData\Roaming\404\static\profiles\chrome-windows.json`
+- `AppData\Roaming\404\static\profiles\edge-windows.json`
+- `AppData\Local\404\wsl\control-token`
+
+Extract `404-windows-x64.zip` directly into your Windows home folder, which is usually `C:\Users\<your-username>`.
+
+That extraction step should place:
+
+- `404-distro.tar.gz`, `404-distro-manifest.json`, and `404-distro-manifest.json.sig` in your home folder
+- the full `AppData\Roaming\404\static` tree in the right place
+- the `AppData\Local\404\wsl\control-token` file in the right place
+
 ---
 
 ## Before you start
 
 - WSL2 must be available on the machine
 - the current public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
-- choose the profile that matches your real browser family before you write the runtime config
+- the bundled runtime config defaults to `firefox-windows`
+- if you use Chrome, swap `firefox-windows` for `chrome-windows`
+- if you use Edge, swap `firefox-windows` for `edge-windows`
 - the runtime listens on `127.0.0.1:4040` on the Windows side once the distro is running
 - the local control plane uses port `4042`
 
@@ -23,103 +47,95 @@ For the exact tagged release page, use [{{ latest_github_release_tag }}]({{ late
 
 ---
 
-## 1. Download the distro bundle
+## 1. Verify the download matches the manifest
 
-If you want the stable operator path, fetch the signed manifest first and then the tarball it names:
+Run this in PowerShell:
 
 ```powershell
-$base = "https://updates.404privacy.com"
-$manifestPath = Join-Path $HOME "Downloads\404-distro-manifest.json"
-$archivePath = Join-Path $HOME "Downloads\404-distro.tar.gz"
+$manifest = Get-Content "$HOME\Downloads\404-windows-x64\404-distro-manifest.json" | ConvertFrom-Json
+$archiveHash = (Get-FileHash "$HOME\Downloads\404-windows-x64\404-distro.tar.gz" -Algorithm SHA256).Hash.ToLower()
 
-Invoke-WebRequest "$base/distro/manifest.json" -OutFile $manifestPath
-$manifest = Get-Content $manifestPath | ConvertFrom-Json
-Invoke-WebRequest "$base$($manifest.artifact_path)" -OutFile $archivePath
+"manifest version: $($manifest.version)"
+"manifest artifact path: $($manifest.artifact_path)"
+"manifest sha256: $($manifest.sha256)"
+"archive sha256:  $archiveHash"
 ```
 
-If you prefer GitHub-hosted release assets, download `404-distro.tar.gz` from [{{ latest_github_release_tag }}]({{ latest_github_release_url }}).
+The two SHA-256 values should match.
 
 ---
 
-## 2. Stage profiles, control token, and runtime config
+## 2. Extract the bundle into your Windows home folder
 
-The distro boot contract expects all runtime state on the Windows side. Create those directories first:
+Right-click `404-windows-x64.zip`, choose `Extract All...`, and set the destination to your Windows home folder.
 
-```powershell
-$profile = "edge-windows"
-$roamingRoot = Join-Path $env:APPDATA "404\static"
-$profilesDir = Join-Path $roamingRoot "profiles"
-$runtimeToml = Join-Path $roamingRoot "static.runtime.toml"
-$wslRoot = Join-Path $env:LOCALAPPDATA "404\wsl"
-$controlToken = Join-Path $wslRoot "control-token"
+In the Extract All dialog:
 
-New-Item -ItemType Directory -Force -Path $profilesDir | Out-Null
-New-Item -ItemType Directory -Force -Path $wslRoot | Out-Null
-Set-Content -Path $controlToken -Value ([guid]::NewGuid().ToString("N")) -NoNewline
-```
+1. click `Browse...`
+2. open `This PC -> Local Disk (C:) -> Users -> <your-username>`
+3. click `Select Folder`
+4. click `Extract`
 
-The release assets do not bundle the `profiles/` directory. Pull the current catalog from the runtime repository and copy it into the Windows runtime path:
+??? abstract "Powershell command"
 
-```powershell
-$repoRoot = Join-Path $env:USERPROFILE "Desktop\404-runtime"
-git clone --depth 1 https://github.com/un-nf/404.git $repoRoot
-Copy-Item -Recurse -Force "$repoRoot\src\STATIC_proxy\profiles\*" $profilesDir
-```
-
-Write the runtime config the distro expects. Change `$profile` if you want `chrome-windows` or `firefox-windows` instead:
-
-```powershell
-@"
-[listener]
-bind_address = "0.0.0.0"
-bind_port = 4040
-proxy_protocol = "tls"
-
-[control]
-bind_address = "0.0.0.0"
-token_path = "/mnt/c/Users/$env:USERNAME/AppData/Local/404/wsl/control-token"
-
-[tls]
-keystore = { mode = "file", service = "404.static_proxy", account = "ca_key" }
-
-[pipeline]
-profiles_path = "/mnt/c/Users/$env:USERNAME/AppData/Roaming/404/static/profiles"
-default_profile = "$profile"
-js_debug = false
-alt_svc_strategy = "normalize"
-
-[http3]
-enabled = false
-bind_address = "0.0.0.0"
-bind_port = 4041
-
-[telemetry]
-mode = "stdout"
-"@ | Set-Content -Path $runtimeToml
-```
+    ```powershell
+    Expand-Archive -LiteralPath "$HOME\Downloads\404-windows-x64.zip" -DestinationPath "$HOME" -Force
+    ```
 
 ---
 
-## 3. Import the distro and write the Windows username file
+## 3. Change the default profile
 
-Import the tarball into WSL2:
+!!! info "The default profile is Firefox-Windows"
+        
+    If you are using a Blink based profile, you'll have to use the `Chrome-Windows` or `Edge-Windows` profile.
 
-```powershell
-$archivePath = Join-Path $HOME "Downloads\404-distro.tar.gz"
-$installRoot = Join-Path $env:LOCALAPPDATA "404\wsl\distribution"
+- File: `%APPDATA%\404\static\static.runtime.toml`
 
-wsl --import 404 $installRoot $archivePath --version 2
+Line to change:
+
+```toml
+default_profile = "firefox-windows"
 ```
 
-Then write the username file the distro boot script reads:
+??? abstract "I want to use the Chrome profile"
+
+	Run this in PowerShell:
+
+    ```powershell
+    (Get-Content "$env:APPDATA\404\static\static.runtime.toml") -replace 'default_profile = "firefox-windows"', 'default_profile = "chrome-windows"' | Set-Content "$env:APPDATA\404\static\static.runtime.toml"
+    ```
+
+??? abstract "I want to use the Edge profile"
+
+	Run this in PowerShell:
+
+    ```powershell
+    (Get-Content "$env:APPDATA\404\static\static.runtime.toml") -replace 'default_profile = "firefox-windows"', 'default_profile = "edge-windows"' | Set-Content "$env:APPDATA\404\static\static.runtime.toml"
+    ```
+
+This default configuration is as follows:
+
+- Listener on `4040`
+- Control plane on `4042`
+- File-backed key storage
+- Profiles loaded from the local `profiles` directory beside the config file
+- control token loaded from the relative Windows local-app-data path
+
+---
+
+## 4. Import the distro and write the Windows username file
+
+Run these two commands in PowerShell:
 
 ```powershell
+wsl --import 404 "$env:LOCALAPPDATA\404\wsl\distribution" "$HOME\404-distro.tar.gz" --version 2
 wsl -d 404 -- sh -lc 'printf "%s\n" "$0" > /opt/404/win-user' $env:USERNAME
 ```
 
 ---
 
-## 4. Start the runtime
+## 5. Start the runtime and confirm start
 
 Launch the distro:
 
@@ -129,20 +145,47 @@ wsl -d 404
 
 After the distro boots, `404-init.sh` reads `static.runtime.toml`, best-effort attaches `ttl_editor.o` to `eth0`, and starts STATIC in proxy mode.
 
-If you want a quick health check from inside the distro:
+!!! note "About `eth0`"
+
+    The current distro init script hard-codes the eBPF attach step to `eth0`.
+
+    There is no separate runtime setting for that interface yet.
+
+    On a normal WSL2 setup, `eth0` is usually the right interface. If your distro uses a different name, the runtime will still start, but the packet-mutation attach step may be skipped.
+
+??? abstract "I need to attach `ttl_editor.o` to a different interface"
+
+    First, list the interfaces inside the distro:
+
+    ```powershell
+    wsl -d 404 -- ip link show
+    ```
+
+    Then attach the classifier manually, replacing `<interface>` with the correct name:
+
+    ```powershell
+    wsl -d 404 -- sh -lc 'tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da obj /opt/404/ttl_editor.o sec classifier 2>/dev/null || true'
+    ```
+
+    If you want that different interface to persist across boots, you currently have to edit `/opt/404/404-init.sh` inside the distro yourself. The bundled config does not expose an interface selector yet.
+
+Open a second PowerShell window to confirm 404 has started:
 
 ```powershell
-wsl -d 404 -- sh -lc 'TOKEN=$(cat /mnt/c/Users/'"$env:USERNAME"'/AppData/Local/404/wsl/control-token); wget -qO- --header="X-404-Control-Token: $TOKEN" http://127.0.0.1:4042/status'
+$token = Get-Content "$env:LOCALAPPDATA\404\wsl\control-token" -Raw
+Invoke-RestMethod -Headers @{ "X-404-Control-Token" = $token } http://127.0.0.1:4042/status
 ```
 
 ---
 
-## 5. Trust the generated CA on Windows
+## 6. Trust the generated CA
 
-Copy the generated CA certificate out of WSL and onto the Windows side:
+Fetch the generated CA from the local control plane and write it to disk:
 
 ```powershell
-wsl -d 404 -- sh -lc 'cp "$(find /root/.local/share -name static-ca.crt -print -quit)" "/mnt/c/Users/'"$env:USERNAME"'/AppData/Local/404/wsl/static-ca.crt"'
+$token = Get-Content "$env:LOCALAPPDATA\404\wsl\control-token" -Raw
+$ca = Invoke-RestMethod -Headers @{ "X-404-Control-Token" = $token } http://127.0.0.1:4042/ca/status
+$ca.cert_pem | Set-Content "$env:LOCALAPPDATA\404\wsl\static-ca.crt"
 ```
 
 Trust it in the Windows root store:
@@ -151,7 +194,17 @@ Trust it in the Windows root store:
 certutil.exe -addstore root "$env:LOCALAPPDATA\404\wsl\static-ca.crt"
 ```
 
-If you use Firefox, also import the same certificate in Firefox:
+Manual install:
+
+1. Open `%LOCALAPPDATA%\404\wsl` in File Explorer.
+2. Double-click `static-ca.crt`.
+3. Click `Install Certificate...`.
+4. Select `Current User` and click `Next`.
+5. Choose `Place all certificates in the following store` and click `Browse...`.
+6. Select `Trusted Root Certification Authorities` and click `OK`.
+7. Click `Next` and then `Finish`.
+
+If you use Firefox, you must import the certificate into Firefox:
 
 - Settings -> Privacy & Security -> Certificates -> View Certificates
 - Authorities -> Import
@@ -160,14 +213,14 @@ If you use Firefox, also import the same certificate in Firefox:
 
 ---
 
-## 6. Route browser traffic through the listener
+## 7. Route browser traffic through the listener
 
-The runtime listener is `127.0.0.1:4040` on the Windows side.
+The runtime listener is located at `127.0.0.1:4040`.
 
 For Chrome or Edge:
 
 - Windows Settings -> Network & internet -> Proxy
-- enable Manual proxy setup
+- Enable Manual proxy setup
 - Address: `127.0.0.1`
 - Port: `4040`
 
@@ -176,6 +229,6 @@ For Firefox:
 - Settings -> Network Settings -> Manual proxy configuration
 - HTTP Proxy: `127.0.0.1`
 - Port: `4040`
-- enable `Also use this proxy for HTTPS`
+- Check `Also use this proxy for HTTPS`
 
 At that point, browser traffic routed through the configured proxy listener will flow through the distro runtime.

@@ -489,6 +489,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#general-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General Information
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#before-you-install" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -500,35 +522,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#first-run-and-daily-use" class="md-nav__link">
+  <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
       
-        First Run and Daily Use
+        Getting started
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting started">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#trust-certificates-and-routing" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#daily-use" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trust, Certificates, and Routing
+        Daily use
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#windows-wsl2-runtime" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Windows WSL2 Runtime
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -556,6 +584,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#wsl2-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WSL2 Runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#macos" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -571,45 +610,6 @@
     <span class="md-ellipsis">
       
         Linux
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#updates-accounts-and-licensing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Updates, Accounts, and Licensing
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Updates, Accounts, and Licensing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#desktop-application-updates" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Desktop application updates
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#runtime-updates-on-windows" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Runtime updates on Windows
       
     </span>
   </a>
@@ -1438,45 +1438,48 @@
 
 
 <div><h1 id="desktop-application">Desktop Application</h1>
-<p>The desktop application is the managed product path for 404.</p>
-<p>It is the fastest way to get from zero to a working local runtime without having to build STATIC, package a distro, or wire system proxy settings by hand.</p>
+<p>The fastest way to start spoofing your fingerprint without having to manage profiles, updates, or wire system settings by hand.</p>
 <div class="admonition info">
 <p class="admonition-title">What this page covers</p>
-<p>This page is for the <strong>desktop application</strong> distributed through 404privacy.com.</p>
-<p>If you want the open source CLI path instead, start here:</p>
+<p>This page is for the <strong>desktop application</strong> distributed through <a href="https://404privacy.com/pricing/">404privacy.com</a>.</p>
+<p>If you want the free CLI application instead, start here:</p>
 <p><a class="md-button" href="../../dev/">CLI Application</a></p>
 </div>
-<p><a class="md-button md-button--primary" href="https://404privacy.com/pricing/" target="_blank" rel="noopener">Get the desktop app</a>
-  <a class="md-button" href="https://404privacy.com/" target="_blank" rel="noopener">Visit 404privacy.com</a></p>
+<p><a class="md-button md-button--primary" href="https://404privacy.com/pricing/" target="_blank" rel="noopener">Get the desktop app</a> 
+<a class="md-button" href="https://404privacy.com/account/" target="_blank" rel="noopener">login</a></p>
 <hr>
-<p>## Getting Started</p>
-<p>Use the desktop application if you want:</p>
+<h2 id="general-information">General Information</h2>
+<p>Use the desktop application for access to:</p>
 <ul>
-<li>a managed installer</li>
-<li>account-backed access and billing</li>
-<li>built-in proxy controls</li>
-<li>managed updates</li>
-<li>Windows runtime provisioning through WSL2 without working with <code>wsl.exe</code> directly</li>
+<li>Automated install</li>
+<li>Automated updates</li>
+<li>License-backed access</li>
+<li>Built-in proxy controls</li>
+<li>Automatic WSL2 setup on Windows</li>
 </ul>
-<p>The shortest path is:</p>
+<p>The simplest path is:</p>
 <ol>
-<li>download the current build from 404privacy.com</li>
-<li>install the application for your platform</li>
-<li>sign in or activate access if your build path requires it</li>
-<li>choose your browser family</li>
-<li>let the application generate and trust the local CA</li>
-<li>start the engine and enable routing when you want traffic to flow through 404</li>
+<li>Download the current build from <a href="https://404privacy.com/pricing/">404privacy.com</a></li>
+<li>Install the application for your platform</li>
+<li>Sign in to activate your license</li>
+<li>Let the application generate and trust the local CA</li>
+<li>Choose your browser family</li>
+<li>Start the application from the dashboard</li>
 </ol>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>404 is a TLS-terminating local proxy. The runtime generates a local CA so it can mint leaf certificates for intercepted TLS sessions.</p>
+</div>
 <hr>
-<p>## What the application does</p>
+<h2 id="features">Features</h2>
 <ul>
-<li>the user interface</li>
-<li>account and auth flow</li>
-<li>runtime orchestration</li>
-<li>host trust installation</li>
-<li>host proxy routing changes</li>
-<li>desktop updates</li>
-<li>uninstall cleanup</li>
+<li>User interface (UI)</li>
+<li>Account and authorization</li>
+<li>Runtime orchestration</li>
+<li>Trust installation</li>
+<li>System configuration</li>
+<li>Updates</li>
+<li>Uninstall &amp; cleanup</li>
 </ul>
 <p>On Windows, it also provisions and updates the managed WSL2 distribution that runs STATIC.</p>
 <hr>
@@ -1490,121 +1493,67 @@
 <p>Those documents govern the desktop application and account-backed service surface.</p>
 <p>They do <strong>not</strong> replace the AGPL terms that govern STATIC itself when you self-host the open source runtime.</p>
 <hr>
-<h2 id="first-run-and-daily-use">First Run and Daily Use</h2>
-<p>On first run, the desktop application is doing three things:</p>
+<h2 id="getting-started">Getting started</h2>
+<p>On first run, the desktop application does three things:</p>
 <ul>
-<li>establish local runtime configuration</li>
-<li>establish trust for TLS interception</li>
-<li>make it easy to start or stop the runtime without hand-editing OS settings</li>
+<li>Configures application</li>
+<li>Configures CA trust</li>
+<li>Configures system settings (proxy, WSL2, routing)</li>
 </ul>
-<p>The current onboarding flow is built around:</p>
+<h3 id="setup">Setup</h3>
 <ol>
-<li>choosing your browser family</li>
-<li>generating and trusting the local CA</li>
-<li>deciding whether to start the engine with or without system routing changes</li>
+<li>Choose your browser family</li>
+<li>Allow application to trust the local CA</li>
+<li>Start the engine to configure system settings</li>
 </ol>
-<p>For most users, daily use is:</p>
+<h3 id="daily-use">Daily use</h3>
 <ol>
-<li>open the application</li>
-<li>confirm trust and runtime status</li>
-<li>start the engine</li>
-<li>enable routing when you want traffic to flow through 404</li>
-<li>disable routing and stop the engine when you are done</li>
+<li>Open the application</li>
+<li>Confirm trust and runtime status</li>
+<li>Start the engine</li>
+<li>Enable routing</li>
+<li>Disable routing</li>
 </ol>
-<p>Best practice is still simple:</p>
+<div class="admonition info">
+<p class="admonition-title">Browser family</p>
 <ul>
-<li>Chromium-family browsers should use Chromium-family profiles</li>
-<li>Firefox-family browsers should use Firefox-family profiles</li>
+<li>Blink-family browsers (Chrome, Edge, Brave, Opera) should use Chromium-family profiles</li>
+<li>Gecko-family browsers (Firefox, Mullvad, Tor) should use Firefox-family profiles</li>
 </ul>
-<hr>
-<h2 id="trust-certificates-and-routing">Trust, Certificates, and Routing</h2>
-<p>404 is a TLS-terminating local proxy. That fact drives the entire trust workflow.</p>
-<p>The runtime generates a local CA so it can mint leaf certificates for intercepted TLS sessions.</p>
-<p>The desktop application then owns the host-side trust workflow around that certificate.</p>
-<p>That split matters:</p>
-<ul>
-<li>the runtime owns certificate material generation</li>
-<li>the desktop application owns installing trust into the operating system</li>
-</ul>
-<p>Routing is not the same thing as startup.</p>
-<ul>
-<li>Starting the engine brings the runtime up.</li>
-<li>Enabling system routing tells the host OS to send traffic through it.</li>
-</ul>
-<p>Those are related, but they are not the same action.</p>
-<p>That is why the desktop UI separates engine state from system routing state.</p>
-<hr>
-<h2 id="windows-wsl2-runtime">Windows WSL2 Runtime</h2>
-<p>Windows is the clearest example of the split between the desktop application and the runtime it manages.</p>
-<p>The desktop application is the host-facing shell.</p>
-<p>The runtime is a Linux environment running inside a managed WSL2 distro named <code>404</code>.</p>
-<p>On Windows, the normal product path is:</p>
-<ol>
-<li>fetch a signed distro manifest</li>
-<li>verify it with the embedded Ed25519 public key</li>
-<li>download the referenced tarball</li>
-<li>verify the tarball hash against the signed manifest</li>
-<li>import or update the <code>404</code> WSL distro</li>
-<li>write the runtime configuration and control token the Linux service expects</li>
-<li>start the runtime and talk to STATIC through its authenticated control API</li>
-</ol>
-<p>The distro contract currently includes:</p>
-<ul>
-<li><code>/opt/404/404-init.sh</code></li>
-<li><code>/opt/404/distro-version</code></li>
-<li><code>/opt/404/win-user</code></li>
-<li><code>/opt/404/control-token</code></li>
-<li>the packaged <code>static</code> runtime binary</li>
-<li>the packaged <code>ttl_editor.o</code> object</li>
-</ul>
-<p>The Linux runtime does <strong>not</strong> take over host responsibilities that belong to the desktop application.</p>
-<p>Windows still owns:</p>
-<ul>
-<li>proxy settings</li>
-<li>trust installation into the OS</li>
-<li>auth and account flow</li>
-<li>desktop updater behavior</li>
-<li>uninstall cleanup</li>
-</ul>
+</div>
 <hr>
 <h2 id="platform-notes">Platform Notes</h2>
 <h3 id="windows">Windows</h3>
 <p>The desktop application defaults to the managed WSL2 runtime described above.</p>
 <p>You do <strong>not</strong> need to import the distro manually for the normal product path.</p>
-<h3 id="macos">macOS</h3>
-<p>The desktop application currently uses the native runtime path rather than WSL2.</p>
-<p>It still owns:</p>
+<h3 id="wsl2-runtime">WSL2 Runtime</h3>
+<p>On Windows, the desktop application allows the user to interact with a WSL2 runtime.</p>
+<p>The runtime is a Linux kernel running inside a managed distro named <code>Rose</code>.</p>
+<p>The Windows application does the following:</p>
+<ol>
+<li>Fetches a signed distro manifest</li>
+<li>Verifies it with the embedded Ed25519 public key</li>
+<li>Downloads the referenced tarball</li>
+<li>Verifies the tarball hash against the signed manifest</li>
+<li>Imports or updates the <code>404</code> WSL distro</li>
+<li>Writes the runtime configuration and control token the Linux service expects</li>
+<li>Starts the runtime and talks to STATIC through an authenticated control API</li>
+</ol>
+<p>The distro currently includes:</p>
 <ul>
-<li>CA trust workflow</li>
-<li>proxy routing changes</li>
-<li>start and stop controls</li>
-<li>update handling</li>
+<li>The packaged <code>STATIC</code> binary</li>
+<li>The packaged eBPF module (<code>ttl_editor.o</code>)</li>
+<li><code>/opt/404/404-init.sh</code></li>
+<li><code>/opt/404/distro-version</code></li>
+<li><code>/opt/404/win-user</code></li>
+<li><code>/opt/404/control-token</code></li>
 </ul>
+<p>The Linux runtime does <strong>not</strong> take over host responsibilities that belong to the desktop application.</p>
+<h3 id="macos">macOS</h3>
+<p>The desktop application currently uses the native STATIC runtime path rather than WSL2.</p>
 <h3 id="linux">Linux</h3>
 <p>The desktop documentation here is primarily written for the supported product install paths exposed publicly today.</p>
 <p>If your goal is to run the runtime directly on Linux, the self-hosted manual is the more relevant path.</p>
-<hr>
-<h2 id="updates-accounts-and-licensing">Updates, Accounts, and Licensing</h2>
-<p>The desktop application is distributed as a managed product.</p>
-<p>That means the product surface includes:</p>
-<ul>
-<li>account-backed access</li>
-<li>billing portal support</li>
-<li>authenticated desktop auth handoff</li>
-<li>managed binary delivery and updates</li>
-</ul>
-<p>Read the current product documents at:</p>
-<ul>
-<li><a href="https://404privacy.com/privacy/" target="_blank" rel="noopener">Privacy Policy</a></li>
-<li><a href="https://404privacy.com/terms/" target="_blank" rel="noopener">Terms of Service</a></li>
-<li><a href="https://404privacy.com/eula/" target="_blank" rel="noopener">EULA</a></li>
-</ul>
-<p>404 now has two update channels that should be understood separately.</p>
-<h3 id="desktop-application-updates">Desktop application updates</h3>
-<p>These update the product shell itself.</p>
-<h3 id="runtime-updates-on-windows">Runtime updates on Windows</h3>
-<p>These update the managed WSL distro the desktop application provisions and controls.</p>
-<p>Those paths are related operationally because they share a public origin, but they are not the same thing.</p>
 <hr>
 <h2 id="what-the-application-does-not-change">What the application does not change</h2>
 <p>404 is local-first. The runtime runs on your machine.</p>
