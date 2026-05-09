@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://un-nf.github.io/404-docs/dev/windows/">
+        <link rel="canonical" href="https://docs.404privacy.com/dev/windows/">
       
       
         <link rel="prev" href="../">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -627,10 +627,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-optional-change-the-default-profile" class="md-nav__link">
+  <a href="#3-change-the-default-profile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Optional: change the default profile
+        3. Change the default profile
       
     </span>
   </a>
@@ -649,10 +649,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-start-the-runtime-and-confirm-it-is-alive" class="md-nav__link">
+  <a href="#5-start-the-runtime-and-confirm-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Start the runtime and confirm it is alive
+        5. Start the runtime and confirm start
       
     </span>
   </a>
@@ -660,10 +660,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-trust-the-generated-ca-on-windows" class="md-nav__link">
+  <a href="#6-trust-the-generated-ca" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6. Trust the generated CA on Windows
+        6. Trust the generated CA
       
     </span>
   </a>
@@ -675,17 +675,6 @@
     <span class="md-ellipsis">
       
         7. Route browser traffic through the listener
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-going-on-under-the-hood" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is going on under the hood
       
     </span>
   </a>
@@ -821,8 +810,6 @@
       
         
       
-        
-      
     
     
     
@@ -918,34 +905,6 @@
     
   
     Docker and Build Pipeline
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Guide
   
 
     
@@ -1431,7 +1390,7 @@
 <li>the runtime listens on <code>127.0.0.1:4040</code> on the Windows side once the distro is running</li>
 <li>the local control plane uses port <code>4042</code></li>
 </ul>
-<p>For the exact tagged release page, use <a href="https://github.com/un-nf/404/releases/latest">the latest GitHub release</a>.</p>
+<p>For the exact tagged release page, use <a href="https://github.com/un-nf/404/releases/tag/v2.5.2">v2.5.2</a>.</p>
 <hr>
 <h2 id="1-verify-the-download-matches-the-manifest">1. Verify the download matches the manifest</h2>
 <p>Run this in PowerShell:</p>
@@ -1454,39 +1413,41 @@
 <li>click <code>Select Folder</code></li>
 <li>click <code>Extract</code></li>
 </ol>
-<details>
+<details class="abstract">
 <summary>Powershell command</summary>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">Expand-Archive</span> <span class="n">-LiteralPath</span> <span class="s2">"$HOME\Downloads\404-windows-x64.zip"</span> <span class="n">-DestinationPath</span> <span class="s2">"$HOME"</span> <span class="n">-Force</span>
 </span></code></pre></div>
 </details>
 <hr>
-<h2 id="3-optional-change-the-default-profile">3. Optional: change the default profile</h2>
-<p>You only need this step if you do not want the bundled Firefox default.</p>
+<h2 id="3-change-the-default-profile">3. Change the default profile</h2>
+<div class="admonition info">
+<p class="admonition-title">The default profile is Firefox-Windows</p>
+<p>If you are using a Blink based profile, you'll have to use the <code>Chrome-Windows</code> or <code>Edge-Windows</code> profile.</p>
+</div>
 <ul>
-<li>file to edit: <code>%APPDATA%\404\static\static.runtime.toml</code></li>
+<li>File: <code>%APPDATA%\404\static\static.runtime.toml</code></li>
 </ul>
-<p>Change this line:</p>
+<p>Line to change:</p>
 <div class="language-toml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">default_profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"firefox-windows"</span>
 </span></code></pre></div>
-<p>If you use Chrome or Edge, change the <code>default_profile</code> value before continuing.</p>
-<details class="note">
-<summary>I am using Chrome</summary>
+<details class="abstract">
+<summary>I want to use the Chrome profile</summary>
 <p>Run this in PowerShell:</p>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">(</span><span class="nb">Get-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span><span class="p">)</span> <span class="o">-replace</span> <span class="s1">'default_profile = "firefox-windows"'</span><span class="p">,</span> <span class="s1">'default_profile = "chrome-windows"'</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span>
 </span></code></pre></div>
 </details>
-<details class="note">
-<summary>I am using Edge</summary>
+<details class="abstract">
+<summary>I want to use the Edge profile</summary>
 <p>Run this in PowerShell:</p>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">(</span><span class="nb">Get-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span><span class="p">)</span> <span class="o">-replace</span> <span class="s1">'default_profile = "firefox-windows"'</span><span class="p">,</span> <span class="s1">'default_profile = "edge-windows"'</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span>
 </span></code></pre></div>
 </details>
-<p>This config follows the live WSL runtime contract used by the distro path:</p>
+<p>This default configuration is as follows:</p>
 <ul>
-<li>listener on <code>4040</code></li>
-<li>control plane on <code>4042</code></li>
-<li>file-backed key storage in WSL mode</li>
-<li>profiles loaded from the local <code>profiles</code> directory beside the config file</li>
+<li>Listener on <code>4040</code></li>
+<li>Control plane on <code>4042</code></li>
+<li>File-backed key storage</li>
+<li>Profiles loaded from the local <code>profiles</code> directory beside the config file</li>
 <li>control token loaded from the relative Windows local-app-data path</li>
 </ul>
 <hr>
@@ -1496,26 +1457,42 @@
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'printf "%s\n" "$0" &gt; /opt/404/win-user'</span> <span class="nv">$env:USERNAME</span>
 </span></code></pre></div>
 <hr>
-<h2 id="5-start-the-runtime-and-confirm-it-is-alive">5. Start the runtime and confirm it is alive</h2>
+<h2 id="5-start-the-runtime-and-confirm-start">5. Start the runtime and confirm start</h2>
 <p>Launch the distro:</p>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span>
 </span></code></pre></div>
 <p>After the distro boots, <code>404-init.sh</code> reads <code>static.runtime.toml</code>, best-effort attaches <code>ttl_editor.o</code> to <code>eth0</code>, and starts STATIC in proxy mode.</p>
-<p>Open a second PowerShell window and run this health check:</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">$token</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\control-token"</span> <span class="n">-Raw</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">Invoke-RestMethod</span> <span class="n">-Headers</span> <span class="p">@{</span> <span class="s2">"X-404-Control-Token"</span> <span class="p">=</span> <span class="nv">$token</span> <span class="p">}</span> <span class="n">http</span><span class="p">://</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">4042</span><span class="p">/</span><span class="n">status</span>
+<div class="admonition note">
+<p class="admonition-title">About <code>eth0</code></p>
+<p>The current distro init script hard-codes the eBPF attach step to <code>eth0</code>.</p>
+<p>There is no separate runtime setting for that interface yet.</p>
+<p>On a normal WSL2 setup, <code>eth0</code> is usually the right interface. If your distro uses a different name, the runtime will still start, but the packet-mutation attach step may be skipped.</p>
+</div>
+<details class="abstract">
+<summary>I need to attach <code>ttl_editor.o</code> to a different interface</summary>
+<p>First, list the interfaces inside the distro:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">ip</span> <span class="n">link</span> <span class="n">show</span>
+</span></code></pre></div>
+<p>Then attach the classifier manually, replacing <code>&lt;interface&gt;</code> with the correct name:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'tc qdisc add dev &lt;interface&gt; clsact 2&gt;/dev/null || true; tc filter add dev &lt;interface&gt; egress bpf da obj /opt/404/ttl_editor.o sec classifier 2&gt;/dev/null || true'</span>
+</span></code></pre></div>
+<p>If you want that different interface to persist across boots, you currently have to edit <code>/opt/404/404-init.sh</code> inside the distro yourself. The bundled config does not expose an interface selector yet.</p>
+</details>
+<p>Open a second PowerShell window to confirm 404 has started:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nv">$token</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\control-token"</span> <span class="n">-Raw</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">Invoke-RestMethod</span> <span class="n">-Headers</span> <span class="p">@{</span> <span class="s2">"X-404-Control-Token"</span> <span class="p">=</span> <span class="nv">$token</span> <span class="p">}</span> <span class="n">http</span><span class="p">://</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">4042</span><span class="p">/</span><span class="n">status</span>
 </span></code></pre></div>
 <hr>
-<h2 id="6-trust-the-generated-ca-on-windows">6. Trust the generated CA on Windows</h2>
+<h2 id="6-trust-the-generated-ca">6. Trust the generated CA</h2>
 <p>Fetch the generated CA from the local control plane and write it to disk:</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">$token</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\control-token"</span> <span class="n">-Raw</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">$ca</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Headers</span> <span class="p">@{</span> <span class="s2">"X-404-Control-Token"</span> <span class="p">=</span> <span class="nv">$token</span> <span class="p">}</span> <span class="n">http</span><span class="p">://</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">4042</span><span class="p">/</span><span class="n">ca</span><span class="p">/</span><span class="n">status</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">$ca</span><span class="p">.</span><span class="n">cert_pem</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\static-ca.crt"</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nv">$token</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\control-token"</span> <span class="n">-Raw</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">$ca</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Headers</span> <span class="p">@{</span> <span class="s2">"X-404-Control-Token"</span> <span class="p">=</span> <span class="nv">$token</span> <span class="p">}</span> <span class="n">http</span><span class="p">://</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">4042</span><span class="p">/</span><span class="n">ca</span><span class="p">/</span><span class="n">status</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nv">$ca</span><span class="p">.</span><span class="n">cert_pem</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\static-ca.crt"</span>
 </span></code></pre></div>
 <p>Trust it in the Windows root store:</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">certutil</span><span class="p">.</span><span class="n">exe</span> <span class="n">-addstore</span> <span class="n">root</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\static-ca.crt"</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">certutil</span><span class="p">.</span><span class="n">exe</span> <span class="n">-addstore</span> <span class="n">root</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\static-ca.crt"</span>
 </span></code></pre></div>
-<p>If you want to trust it through the Windows GUI instead:</p>
+<p>Manual install:</p>
 <ol>
 <li>Open <code>%LOCALAPPDATA%\404\wsl</code> in File Explorer.</li>
 <li>Double-click <code>static-ca.crt</code>.</li>
@@ -1525,9 +1502,8 @@
 <li>Select <code>Trusted Root Certification Authorities</code> and click <code>OK</code>.</li>
 <li>Click <code>Next</code> and then <code>Finish</code>.</li>
 </ol>
-<p>If you use Firefox, also import the same certificate in Firefox:</p>
+<p>If you use Firefox, you must import the certificate into Firefox:</p>
 <ul>
-<li>type <code>about:settings#privacy</code> into the Firefox address bar and scroll to the Certificates section</li>
 <li>Settings -&gt; Privacy &amp; Security -&gt; Certificates -&gt; View Certificates</li>
 <li>Authorities -&gt; Import</li>
 <li>select <code>%LOCALAPPDATA%\404\wsl\static-ca.crt</code></li>
@@ -1535,32 +1511,22 @@
 </ul>
 <hr>
 <h2 id="7-route-browser-traffic-through-the-listener">7. Route browser traffic through the listener</h2>
-<p>The runtime listener is <code>127.0.0.1:4040</code> on the Windows side.</p>
+<p>The runtime listener is located at <code>127.0.0.1:4040</code>.</p>
 <p>For Chrome or Edge:</p>
 <ul>
 <li>Windows Settings -&gt; Network &amp; internet -&gt; Proxy</li>
-<li>enable Manual proxy setup</li>
+<li>Enable Manual proxy setup</li>
 <li>Address: <code>127.0.0.1</code></li>
 <li>Port: <code>4040</code></li>
 </ul>
 <p>For Firefox:</p>
 <ul>
-<li>type <code>about:settings#general</code> into the Firefox address bar and scroll to the bottom for Network Settings</li>
 <li>Settings -&gt; Network Settings -&gt; Manual proxy configuration</li>
 <li>HTTP Proxy: <code>127.0.0.1</code></li>
 <li>Port: <code>4040</code></li>
-<li>enable <code>Also use this proxy for HTTPS</code></li>
+<li>Check <code>Also use this proxy for HTTPS</code></li>
 </ul>
-<p>At that point, browser traffic routed through the configured proxy listener will flow through the distro runtime.</p>
-<hr>
-<h2 id="what-is-going-on-under-the-hood">What is going on under the hood</h2>
-<p>This page stays intentionally simple, but the behavior above maps directly to the live runtime contract:</p>
-<ul>
-<li>the distro archive and manifest files come from the release assets emitted by <code>404_REL/.github/workflows/distro-release.yml</code></li>
-<li>the profile files and CLI shape come from <code>404_REL/src/STATIC_proxy/README.md</code></li>
-<li>the distro boot path reads <code>static.runtime.toml</code>, loads the on-disk profile catalog, and starts STATIC in proxy mode</li>
-<li>the control plane answers on <code>127.0.0.1:4042</code> from the Windows side, which is why the status and CA commands above work without having to manually browse inside WSL</li>
-</ul></div>
+<p>At that point, browser traffic routed through the configured proxy listener will flow through the distro runtime.</p></div>
 
 
 

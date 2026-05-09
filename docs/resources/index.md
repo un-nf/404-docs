@@ -24,7 +24,7 @@ Use it when you need to answer questions like:
 - [STATIC Runtime and Data Plane](./static.md)
 - [Control Plane and CA State](./controlPlane.md)
 - [Profiles and Persona Materialization](./profiles.md)
-- [eBPF Guide](./ebpf.md)
+- [eBPF Reference](./ebpf.md)
 - [Runtime Repository Map](./repoDev.md)
 
 ---

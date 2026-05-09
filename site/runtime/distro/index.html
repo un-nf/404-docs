@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://un-nf.github.io/404-docs/runtime/distro/">
+        <link rel="canonical" href="https://docs.404privacy.com/runtime/distro/">
       
       
         <link rel="prev" href="../">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -674,8 +674,6 @@
       
         
       
-        
-      
     
     
     
@@ -1026,34 +1024,6 @@
     
   
     Docker and Build Pipeline
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../dev/ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Guide
   
 
     
@@ -1643,18 +1613,24 @@
 <li>best-effort attaches <code>ttl_editor.o</code> to <code>eth0</code></li>
 <li>starts <code>/opt/404/static --config &lt;path&gt; --mode proxy</code></li>
 </ol>
+<p>The interface name in that attach step is currently hard-coded to <code>eth0</code> inside <code>/opt/404/404-init.sh</code>.</p>
+<p>There is no manifest field or runtime TOML field for overriding it yet.</p>
+<p>If your WSL network shows up under a different interface name, the manual operator workaround is:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">ip</span> <span class="n">link</span> <span class="n">show</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'tc qdisc add dev &lt;interface&gt; clsact 2&gt;/dev/null || true; tc filter add dev &lt;interface&gt; egress bpf da obj /opt/404/ttl_editor.o sec classifier 2&gt;/dev/null || true'</span>
+</span></code></pre></div>
 <p>So manual operators need to satisfy that contract explicitly.</p>
 <h3 id="minimum-manual-setup-after-import">Minimum manual setup after import</h3>
 <h4 id="1-write-the-windows-username-file-inside-the-distro">1. Write the Windows username file inside the distro</h4>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'printf "%s\n" "$0" &gt; /opt/404/win-user'</span> <span class="nv">$env:USERNAME</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'printf "%s\n" "$0" &gt; /opt/404/win-user'</span> <span class="nv">$env:USERNAME</span>
 </span></code></pre></div>
 <h4 id="2-create-the-runtime-config-on-the-windows-side">2. Create the runtime config on the Windows side</h4>
 <p>Current expected path:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>C:\Users\&lt;WIN_USER&gt;\AppData\Roaming\404\static\static.runtime.toml
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>C:\Users\&lt;WIN_USER&gt;\AppData\Roaming\404\static\static.runtime.toml
 </span></code></pre></div>
 <p>At minimum, that runtime config needs to be internally consistent with the Linux boot path and whatever listener/control contract you want to run.</p>
 <h4 id="3-start-the-distro">3. Start the distro</h4>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span>
 </span></code></pre></div>
 <p>If the boot path is healthy, WSL boot configuration should invoke <code>/opt/404/404-init.sh</code> automatically.</p>
 <hr>

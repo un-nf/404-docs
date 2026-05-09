@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://un-nf.github.io/404-docs/dev/linux/">
+        <link rel="canonical" href="https://docs.404privacy.com/dev/linux/">
       
       
         <link rel="prev" href="../macos/">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -788,8 +788,6 @@
       
         
       
-        
-      
     
     
     
@@ -885,34 +883,6 @@
     
   
     Docker and Build Pipeline
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Guide
   
 
     
@@ -1376,10 +1346,10 @@
 <li>the local control plane defaults to <code>127.0.0.1:8445</code></li>
 <li>packet-layer mutation requires a Linux kernel and the <code>ttl_editor.o</code> object from the source tree</li>
 </ul>
-<p>For the current release page, use <a href="https://github.com/un-nf/404/releases/latest">the latest GitHub release</a>.</p>
+<p>For the current release page, use <a href="https://github.com/un-nf/404/releases/tag/v2.5.2">v2.5.2</a>.</p>
 <hr>
 <h2 id="1-stage-the-binary-and-profiles">1. Stage the binary and profiles</h2>
-<p>Download <code>static_proxy-linux-x86_64</code> from <a href="https://github.com/un-nf/404/releases/latest">the latest GitHub release</a>, then create a working directory and place the binary there as <code>static_proxy</code>:</p>
+<p>Download <code>static_proxy-linux-x86_64</code> from <a href="https://github.com/un-nf/404/releases/tag/v2.5.2">v2.5.2</a>, then create a working directory and place the binary there as <code>static_proxy</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/404-runtime"</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mv<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/Downloads/static_proxy-linux-x86_64"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/404-runtime/static_proxy"</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>chmod<span class="w"> </span>+x<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/404-runtime/static_proxy"</span>

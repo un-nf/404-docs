@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://un-nf.github.io/404-docs/dev/macos/">
+        <link rel="canonical" href="https://docs.404privacy.com/dev/macos/">
       
       
         <link rel="prev" href="../windows/">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -788,8 +788,6 @@
       
         
       
-        
-      
     
     
     
@@ -885,34 +883,6 @@
     
   
     Docker and Build Pipeline
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Guide
   
 
     
@@ -1394,7 +1364,7 @@
 <li>the bundled config listens on <code>127.0.0.1:4040</code></li>
 <li>the local control plane uses <code>127.0.0.1:4042</code></li>
 </ul>
-<p>For the current release page, use <a href="https://github.com/un-nf/404/releases/latest">the latest GitHub release</a>.</p>
+<p>For the current release page, use <a href="https://github.com/un-nf/404/releases/tag/v2.5.2">v2.5.2</a>.</p>
 <hr>
 <h2 id="1-verify-the-binary-appears-in-the-release-manifest">1. Verify the binary appears in the release manifest</h2>
 <p>Run this in Terminal:</p>
@@ -1441,10 +1411,6 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>security<span class="w"> </span>add-trusted-cert<span class="w"> </span>-d<span class="w"> </span>-r<span class="w"> </span>trustRoot<span class="w"> </span>-k<span class="w"> </span>/Library/Keychains/System.keychain<span class="w"> </span>/path/to/static-ca.crt
 </span></code></pre></div>
 <p>If you use Firefox, import the same certificate in Firefox under Settings -&gt; Privacy &amp; Security -&gt; Certificates -&gt; View Certificates -&gt; Authorities.</p>
-<ul>
-<li>type <code>about:settings#privacy</code> into the Firefox address bar and scroll to the Certificates section</li>
-<li>Authorities -&gt; Import -&gt; select the <code>static-ca.crt</code> file -&gt; enable <code>Trust this CA to identify websites</code></li>
-</ul>
 <hr>
 <h2 id="5-route-browser-traffic-through-static">5. Route browser traffic through STATIC</h2>
 <p>The bundled config listens on <code>127.0.0.1:4040</code>.</p>
@@ -1455,7 +1421,6 @@
 </ul>
 <p>For Firefox:</p>
 <ul>
-<li>type <code>about:settings#general</code> into the Firefox address bar and scroll to the bottom for Network Settings</li>
 <li>Settings -&gt; Network Settings -&gt; Manual proxy configuration</li>
 <li>HTTP Proxy: <code>127.0.0.1</code></li>
 <li>Port: <code>4040</code></li>

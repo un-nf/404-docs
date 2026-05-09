@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://un-nf.github.io/404-docs/runtime/">
+        <link rel="canonical" href="https://docs.404privacy.com/runtime/">
       
       
         <link rel="prev" href="../dev/developers/">
@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -674,8 +674,6 @@
       
         
       
-        
-      
     
     
     
@@ -774,34 +772,6 @@
     
   
     Docker and Build Pipeline
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Guide
   
 
     
@@ -1257,9 +1227,7 @@
 
 <div><h1 id="developer-resources">Developer Resources</h1>
 <p>This section is the developer-facing documentation for 404.</p>
-<p>If you want the product experience, use the Desktop tab instead. If you want the guided CLI path, use the Self-Hosted/CLI tab instead.</p>
-<hr>
-<h2 id="what-lives-here">What lives here</h2>
+<p>If you want the product experience, use the Desktop tab. If you want the guided CLI path, use the Self-Hosted/CLI tab.</p>
 <p>The developer documentation covers:</p>
 <ul>
 <li>the WSL distro artifact the Windows desktop application consumes</li>
@@ -1268,35 +1236,17 @@
 <li>deep reference pages for STATIC, the control plane, profiles, and repository boundaries</li>
 </ul>
 <hr>
-<h2 id="start-here-if-you-need">Start here if you need</h2>
-<h3 id="cli-installation-and-walkthrough">CLI installation and walkthrough</h3>
-<p>Use:</p>
-<ul>
-<li><a href="../dev/">Self-Hosted/CLI</a></li>
-</ul>
-<h3 id="wsl-distro-packaging-and-operation">WSL distro packaging and operation</h3>
-<p>Use:</p>
-<ul>
-<li><a href="distro/">WSL Distro and Runtime Packaging</a></li>
-</ul>
-<h3 id="docker-based-distro-build-steps">Docker-based distro build steps</h3>
-<p>Use:</p>
-<ul>
-<li><a href="docker/">Docker and Build Pipeline</a></li>
-</ul>
-<h3 id="packet-layer-mutation-details">Packet-layer mutation details</h3>
-<p>Use:</p>
-<ul>
-<li><a href="../dev/ebpf/">eBPF Guide</a></li>
-</ul>
+<h2 id="common-links">Common Links</h2>
+<h3 id="wsl-distro-packaging-and-operation"><a href="distro/">WSL distro packaging and operation</a></h3>
+<h3 id="docker-based-distro-build-steps"><a href="docker/">Docker-based distro build steps</a></h3>
+<h3 id="packet-layer-mutation-details"><a href="../resources/ebpf/">Packet-layer mutation details</a></h3>
 <hr>
 <h2 id="current-scope">Current scope</h2>
 <div class="admonition info">
-<p class="admonition-title">The distro path is live</p>
-<p>The WSL distro path is not a future note anymore.</p>
-<p>The desktop app already consumes a signed distro manifest, verifies the referenced tarball, imports the <code>404</code> WSL distro, and boots the Linux runtime from there on Windows.</p>
-</div>
-<p>That means the developer documentation has to cover more than the standalone CLI binary now.</p></div>
+<p class="admonition-title">The 404 Linux-distro is live</p>
+<p>The desktop app consumes a signed distro manifest, verifies the referenced tarball, imports the <code>404</code> WSL distro, and boots the Linux runtime from there on Windows.</p>
+<p>This documentation contains instructions on setting up a self-hosted version of this.</p>
+</div></div>
 
 
 

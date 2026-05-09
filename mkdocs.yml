@@ -18,7 +18,6 @@ nav:
     - runtime/index.md
     - WSL Distro and Runtime Packaging: runtime/distro.md
     - Docker and Build Pipeline: runtime/docker.md
-    - eBPF Guide: dev/ebpf.md
     - Deep Reference: resources/index.md
     - STATIC Runtime and Data Plane: resources/static.md
     - Control Plane and CA State: resources/controlPlane.md

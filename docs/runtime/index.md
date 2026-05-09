@@ -26,7 +26,7 @@ The developer documentation covers:
 
 ### [Docker-based distro build steps](./docker.md)
 
-### [Packet-layer mutation details](../dev/ebpf.md)
+### [Packet-layer mutation details](../resources/ebpf.md)
 
 ---
 
