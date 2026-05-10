@@ -18,12 +18,12 @@ nav:
     - runtime/index.md
     - WSL Distro and Runtime Packaging: runtime/distro.md
     - Docker and Build Pipeline: runtime/docker.md
-    - Deep Reference: resources/index.md
-    - STATIC Runtime and Data Plane: resources/static.md
-    - Control Plane and CA State: resources/controlPlane.md
-    - Profiles and Persona Materialization: resources/profiles.md
-    - eBPF Reference: resources/ebpf.md
-    - Runtime Repository Map: resources/repoDev.md
+    - --- References ---: resources/index.md
+    - Repository Map: resources/repoDev.md
+    - STATIC: resources/static.md
+    - eBPF: resources/ebpf.md
+    - 404 API: resources/controlPlane.md
+    - Profiles: resources/profiles.md
   - Overview:
     - Overview/index.md
     - What Does 404 do?: Overview/whatIs.md

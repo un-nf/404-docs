@@ -1,56 +1,94 @@
 ---
-title: STATIC Runtime and Data Plane
-description: Technical reference for the current STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and the limits that still matter.
+title: STATIC Proxy
+description: Technical reference for the STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and the limits that matter.
 hide:
   - toc
 ---
 
-# STATIC Runtime and Data Plane
+# Synthetic Traffic and TLS Identity Camouflage (STATIC) Proxy
 
 STATIC is the open source runtime at the center of 404.
 
-It is not the desktop app, and it is not the WSL distro by itself. It is the proxy runtime that those higher-level delivery paths wrap, package, and operate.
-
 ---
 
-## What STATIC is responsible for
+## Features
 
-STATIC currently owns:
-
-- profile-driven proxy startup
+- Profile-driven proxy startup
 - HTTP proxy and TLS interception behavior
-- the shared in-memory profile store
-- the localhost control plane
+- Shared in-memory profile store
+- Localhost control plane
 - CA generation and runtime-side custody of the private key
-- injected browser-runtime shaping
-- profile-aware transport planning for upstream fetches
+- Injected browser-runtime shaping
+- Profile-aware transport planning for upstream fetches
 
-If you are looking for host trust installation, host proxy settings, account flow, updater UX, or WSL distro import logic, that belongs somewhere else.
+For host trust installation, host proxy settings, account flow, updater UX, or WSL distro import logic, download the [desktop app](https://404privacy.com/pricing/)
+
+??? abstract "STATIC repository map"
+
+    ```text
+    src/STATIC_proxy/
+    ├── Cargo.toml                      # Rust crate manifest for STATIC
+    ├── assets/
+    │   └── js/
+    │       ├── behavioral_noise_v1.js  # Runtime-side behavioral noise helper
+    │       ├── dist/                   # Built runtime bundle embedded by Rust
+    │       └── src/
+    │           ├── capabilities/
+    │           ├── contexts/
+    │           ├── core/
+    │           ├── evasion/
+    │           ├── identity/
+    │           ├── privacy/
+    │           ├── spoofing/
+    │           └── runtime.js
+    ├── build/                         # Node/esbuild workspace for runtime.bundle.js
+    │   ├── build.js
+    │   └── package.json
+    ├── build.rs                       # Rust build hook for embedded assets
+    ├── certs/                         # Local development certificates and fixtures
+    ├── config/
+    │   ├── app.config.toml
+    │   ├── static.chrome.toml
+    │   └── static.example.toml
+    ├── profiles/
+    ├── src/
+    │   ├── app.rs
+    │   ├── assets.rs
+    │   ├── behavior/
+    │   ├── control.rs
+    │   ├── lib.rs
+    │   ├── main.rs
+    │   ├── telemetry.rs
+    │   ├── config/
+    │   ├── keystore/
+    │   ├── proxy/
+    │   ├── tls/
+    │   └── utils/
+    └── target/                        # Local build output when compiling in place
+    ```
 
 ---
 
-## The first important correction
+## Implementation
 
-Older writeups sometimes made STATIC sound broader or lower-level than it really is.
+What STATIC does:
 
-What STATIC does **not** do today:
+- Shapes the upstream client behavior it controls
+- Rewrites request and response state through a deterministic stage pipeline
+- Injects a coordinated browser-runtime shaping layer into HTML responses
 
-- it does not literally rewrite your host TCP handshake in place
-- it does not guarantee exact packet-perfect parity for every requested TLS persona
-- it does not make cross-engine impersonation magically coherent just because a profile file asked for it
-- it does not replace the separate eBPF layer
+What STATIC does **not** do:
 
-What it does do is still substantial:
-
-- it shapes the upstream client behavior it controls
-- it rewrites request and response state through a deterministic stage pipeline
-- it injects a coordinated browser-runtime shaping layer into HTML responses
+- Rewrite your host TCP handshake in place
+- Guarantee exact packet-perfect parity for every requested TLS persona
+- Make cross-engine impersonation coherent
+- Replace the separate eBPF layer
 
 ---
 
-## Current startup contract
+## Startup
 
-STATIC now starts from an explicit profile decision.
+STATIC starts with an explicit profile configuration.
 
 Proxy mode expects one of these:
 
@@ -59,22 +97,20 @@ Proxy mode expects one of these:
 
 If neither exists, proxy mode refuses to start.
 
-That is current behavior, not a recommendation.
-
 ---
 
-## Current launch modes
+## Launch
 
 ### Sample config path
 
-If `config/static.example.toml` is present and you pass it explicitly, you get the sample-config listener shape:
+To use `config/static.example.toml` (or personal config):
 
 ```bash
 cd src/STATIC_proxy
 cargo run -- --config config/static.example.toml --profile edge-windows
 ```
 
-Default listener state in that sample:
+`config/static.example.toml` defaults:
 
 - listener: `127.0.0.1:4040`
 - HTTP/3 placeholder bind: `127.0.0.1:4041`
@@ -89,68 +125,60 @@ If no config file is provided, STATIC falls back to built-in CLI defaults and lo
 ./static -- --profile edge-windows
 ```
 
-Current built-in defaults in that mode:
+Defaults:
 
 - listener: `127.0.0.1:8443`
 - HTTP/3 placeholder bind: `127.0.0.1:8444`
 - control plane: `127.0.0.1:8445`
 
-That is one of the biggest places older docs drifted.
+??? abstract "static.example.toml"
 
----
+    ```toml
+    [listener]
+    bind_address = "127.0.0.1"
+    bind_port = 4040
+    proxy_protocol = "tls"
 
-## Current config sample
+    [tls]
+    keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key" }
 
-The repository sample config is:
+    [pipeline]
+    profiles_path = "../profiles"
+    js_debug = false
+    alt_svc_strategy = "normalize"
+    body_limits = { max_request_body_bytes = 16777216, max_response_body_bytes = 33554432, max_decompressed_html_bytes = 16777216 }
 
-```toml
-[listener]
-bind_address = "127.0.0.1"
-bind_port = 4040
-proxy_protocol = "tls"
+    [http3]
+    enabled = false
+    bind_address = "127.0.0.1"
+    bind_port = 4041
 
-[tls]
-keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key" }
+    [telemetry]
+    mode = "stdout"
+    ```
 
-[pipeline]
-profiles_path = "../profiles"
-js_debug = false
-alt_svc_strategy = "normalize"
-body_limits = { max_request_body_bytes = 16777216, max_response_body_bytes = 33554432, max_decompressed_html_bytes = 16777216 }
+    Important details:
 
-[http3]
-enabled = false
-bind_address = "127.0.0.1"
-bind_port = 4041
-
-[telemetry]
-mode = "stdout"
-```
-
-Important details:
-
-- `proxy_protocol = "tls"` is the normal path
-- the control plane is configured separately and binds on `listener.bind_port + 2`
-- body buffering limits are now explicit
-- HTTP/3 config exists, but the normal runtime path is still HTTP/1.1 and HTTP/2
+    - `proxy_protocol = "tls"` is the normal path
+    - the control plane is configured separately and binds on `listener.bind_port + 2`
+    - body buffering limits are explicit
+    - HTTP/3 config exists, but the normal runtime path is HTTP/1.1 and HTTP/2
 
 ---
 
 ## Managed CA and cache paths
 
-This is another place older docs became misleading.
+STATIC resolves its managed CA and cache paths under the OS app-data directory.
 
-STATIC now resolves its managed CA and cache paths under the OS app-data directory.
+!!! bug "The legacy TLS path fields exist as compatibility inputs"
 
-The legacy TLS path fields still exist as compatibility inputs, but they are no longer general-purpose override knobs.
-
-Current managed paths resolve under the OS-local data directory for the `static_proxy` application name, including:
+Managed paths resolve under the OS-local data directory for the `static_proxy` application name, including:
 
 - `certs/static-ca.crt`
-- `certs/static-ca.key.dpapi` on the protected-storage path used by the current keystore backend
+- `certs/static-ca.key.dpapi` on the protected-storage path used by the keystore backend
 - `certs/cache`
 
-If you need the exact CA certificate path at runtime, the cleanest operator-facing check is still the control plane:
+If you need the exact CA certificate path at runtime, the cleanest user-facing check is the control plane:
 
 ```text
 GET /ca/status
@@ -158,9 +186,9 @@ GET /ca/status
 
 ---
 
-## Keystore reality
+## Keystore
 
-The current sample config uses:
+The sample config uses:
 
 ```toml
 keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key" }
@@ -168,15 +196,13 @@ keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key"
 
 That is accurate for the standalone/local path.
 
-The desktop-managed WSL path is different. There, the runtime TOML authored by the desktop shell switches to file-backed key custody inside the Linux runtime contract.
-
-So any documentation that implies the runtime is always on a localhost/keychain path is now wrong.
+For WSL, the runtime TOML authored by the desktop shell switches to file-backed key custody inside the Linux runtime contract.
 
 ---
 
-## Current modes
+## Modes
 
-STATIC can currently run in two modes:
+STATIC can run in two modes:
 
 - `proxy`
 - `control`
@@ -189,57 +215,54 @@ The composition root lives in `app.rs`, where STATIC loads the shared `ProfileSt
 
 ---
 
-## Shared profile state
+## Shared profiles
 
-One `ProfileStore` is loaded and shared between:
+One `ProfileStore` is loaded and shared between the:
 
-- the request/response pipeline
-- the localhost control plane
+- Request/response pipeline
+- Localhost control plane
 
 That is what makes active-profile reads and selection changes coherent.
 
-This is also why the docs need to talk about profile state and control routes together rather than as separate side notes.
-
 ---
 
-## Current bundled profile model
+## Bundled profile model
 
-The shipped runtime path is family-first.
+The profile model is built around browser families first and branded variants second.
 
-That means the runtime is built around browser families first and branded variants second.
+Simply:
 
-Current operator guidance is simple and still correct:
+- Use Chromium-family profiles on Blink-family browsers
+- Use Firefox-family profiles on Gecko-family browsers
 
-- use Chromium-family profiles on Chromium-family browsers
-- use Firefox-family profiles on Firefox-family browsers
+    
+!!! Warning
 
-The runtime does not stop manual operators from making bad choices. Higher-level shells can do that if they want to.
+    STATIC does not stop users from misconfiguring the software. Cross-family spoofing is brittle, so ensure proper configuration.
 
 ---
 
 ## Request classification and protocol handling
 
-STATIC's inbound routing now distinguishes between:
+STATIC's inbound routing distinguishes between:
 
-- direct TLS interception
+- Direct TLS interception
 - HTTP CONNECT proxy traffic
-- plain HTTP proxy traffic
+- Plain HTTP proxy traffic
 
-That matters because older descriptions often collapsed everything into one generic HTTP proxy story.
-
-At runtime, the connection path then branches into the appropriate downstream and upstream handling path, including:
+At runtime, the connection path branches into downstream and upstream handling paths, including:
 
 - HTTP/1.1 sessions
 - HTTP/2 sessions
-- raw websocket tunneling
-- local runtime asset delivery for `__/static/runtime.js`-style support assets
-- buffered HTML mutation only when response stages actually require it
+- Raw websocket tunneling
+- Local runtime asset delivery for `__/static/runtime.js`-style support assets
+- Buffered HTML mutation only when response stages actually require it
 
 ---
 
 ## Deterministic stage pipeline
 
-The current stage order is:
+Stage order:
 
 1. `HeaderProfileStage`
 2. `BehavioralNoiseStage`
@@ -247,67 +270,57 @@ The current stage order is:
 4. `JsInjectionStage`
 5. `AltSvcStage`
 
-That order is important.
+This satisfies the following requirements:
 
-- profile shaping has to exist before runtime config is embedded
-- CSP handling has to happen before the final injected script layout is sent
+- Profile shaping must exist before runtime config is embedded
+- CSP handling must happen before the final injected script layout is sent
 - Alt-Svc handling happens after the main mutation decisions are made
 
 ---
 
 ## Transport boundary
 
-STATIC's transport plan is richer than the old "rewrite the handshake" phrasing suggested.
+STATIC's transport plan is as follows
 
-The real contract is closer to this:
+- Profile data describes the desired upstream transport shape
+- STATIC passes that plan into the fetcher/backend boundary
+- Actual wire fidelity is bound by what the backend can express
 
-- profile data describes the desired upstream transport shape
-- STATIC passes that plan into the current fetcher/backend boundary
-- actual wire fidelity is bounded by what the current backend can express
+Plan inputs:
 
-Current plan inputs include things like:
-
-- cipher-suite ordering
-- signature-algorithm ordering
-- supported-group ordering
+- Cipher-suite ordering
+- Signature-algorithm ordering
+- Supported-group ordering
 - ALPN
-- extension ordering
-- delegated credentials
+- Extension ordering
+- Delegated credentials
 - ALPS settings where applicable
-- session-resumption controls
-
-That is meaningful shaping, but it is not the same thing as promising exact packet parity with every target browser build on every stack.
+- Session-resumption controls
 
 ---
 
 ## JS runtime model
 
-The JS runtime is not a pile of unrelated patch files anymore.
+The JS runtime boots as a fixed pipeline with a shared registry and entropy state.
 
-It boots as a fixed pipeline with a shared registry and shared entropy state.
+Bootstrap order:
 
-High-level bootstrap order:
-
-1. runtime registry initialization
-2. native reference capture
+1. Runtime registry initialization
+2. Native reference capture
 3. `Function.prototype.toString` masking
 4. CSP nonce capture
-5. config load and validation
-6. entropy initialization
-7. policy initialization
-8. identity, capability, spoofing, evasion, privacy, and iframe modules
-
-That structure matters because the runtime now tries much harder to keep surfaces coherent within one process lifetime instead of inventing unrelated randomness everywhere.
+5. Config load and validation
+6. Entropy initialization
+7. Policy initialization
+8. Identity, capability, spoofing, evasion, privacy, and iframe modules
 
 ---
 
 ## Worker and iframe handling
 
-Two details matter here:
-
 ### Workers
 
-Worker and SharedWorker construction is wrapped through bootstrap scripts so STATIC can carry family and identity state into the worker path.
+Worker and SharedWorker construction is wrapped through bootstrap scripts so STATIC can propagate family and identity state into the worker path.
 
 That is where worker-visible fields such as:
 
@@ -327,13 +340,9 @@ The runtime mirrors selected state into compatible child contexts rather than bl
 
 ---
 
-## Limits that still matter
+## Limitations
 
-The honest limits are still important:
-
-- exact on-the-wire TLS parity is bounded by the current transport backend
-- service workers and already-existing worker state remain outside the strongest injected-runtime path
-- manual operators can still select incoherent family combinations if they insist on doing that
-- STATIC and the eBPF layer are still distinct systems even when packaged together
-
-Those are not edge disclaimers. They are part of the current reality and the docs should say so plainly.
+- Exact on-the-wire TLS parity is bounded by the curent transport backend
+- Service workers and already-existing worker state remain outside the strongest injected-runtime path
+- Users can select incoherent family combinations if they insist on doing that
+- STATIC and the eBPF layer are distinct systems even when packaged together

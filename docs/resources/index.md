@@ -1,20 +1,18 @@
 ---
-title: Deep Reference
+title: References
 description: Technical reference entry point for the STATIC runtime, control plane, profile model, eBPF layer, and repository boundaries.
 hide:
   - toc
 ---
 
-# Deep Reference
+# References
 
-This section is for readers who want the implementation-facing view rather than the setup path.
+The following section is for readers who want more details about how 404 works or who may have questions like
 
-Use it when you need to answer questions like:
-
-- what does STATIC actually promise today
-- which defaults are real and which ones are legacy leftovers
-- how does the localhost control plane work
-- what is profile state versus runtime policy versus seeded persona materialization
+- What does STATIC do?
+- Which defaults are safe to change?
+- How does the localhost control plane work?
+- What is profile state versus runtime policy versus seeded persona materialization?
 - what exactly is packaged into the WSL runtime path
 
 ---
@@ -24,13 +22,5 @@ Use it when you need to answer questions like:
 - [STATIC Runtime and Data Plane](./static.md)
 - [Control Plane and CA State](./controlPlane.md)
 - [Profiles and Persona Materialization](./profiles.md)
-- [eBPF Reference](./ebpf.md)
+- [eBPF](./ebpf.md)
 - [Runtime Repository Map](./repoDev.md)
-
----
-
-## Scope
-
-These pages are deliberately narrower and more exact than the getting-started docs.
-
-They try to stay close to the current source tree, release workflows, and runtime contracts instead of repeating older broad explanations that no longer describe the live system cleanly.

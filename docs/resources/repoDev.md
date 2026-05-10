@@ -7,72 +7,54 @@ hide:
 
 # Runtime Repository Map
 
-The documentation split only makes sense if the repository split is also clear.
+404 maintains multiple repositories that interact with each other.
 
 ---
 
-## The open source runtime repository
+## Open source repository - [404](https://github.com/un-nf/404)
 
 Primary runtime source:
 
 - [GitHub](https://github.com/un-nf/404){target="_blank"}
 - [Codeberg](https://codeberg.org/szh/404){target="_blank"}
 
-This is where the open source runtime lives.
-
-That includes:
+Contains the following components:
 
 - STATIC
-- the profile catalog
-- the WSL distro packaging path
-- the eBPF object and build path
+- Profile catalog
+- WSL distro packaging path
+- eBPF object and build path
 
 ---
 
-## The desktop repository
+## Desktop repository - [Proprietary Application](https://404privacy.com/pricing/)
 
-The desktop shell lives separately.
+Contains the following components:
 
-It owns:
+- Tauri application
+- React UI
+- Automated host trust installation
+- Automated host proxy configuration
+- Automated desktop updates
+- Windows WSL distro lifecycle
 
-- the Tauri app
-- the React UI
-- host trust installation
-- host proxy state
-- desktop updates
-- Windows WSL distro lifecycle from the app side
-
-The desktop repo is the product-facing shell over the runtime, not the primary source of truth for STATIC itself.
+The desktop repo is the product-facing shell.
 
 ---
 
-## The worker repository
+## Worker repository
 
 The worker-backed service surface exists to deliver:
 
-- account and licensing routes
-- authenticated download routes
-- desktop updater metadata and payloads
-- public distro manifest and tarball routes
+- Account and licensing routes
+- Authenticated download routes
+- Desktop updater metadata and payloads
+- Public distro manifest and tarball routes
 
-Public runtime-facing routes now include:
+Public runtime-facing routes:
 
 - `/distro/manifest.json`
 - `/distro/manifest.json.sig`
 - `/distro/<tag>/404-distro.tar.gz`
 - `/distro/<tag>/manifest.json`
 - `/distro/<tag>/manifest.json.sig`
-
-That matters because the docs can no longer pretend the self-hosted and product release surfaces are unrelated.
-
----
-
-## Why this page exists
-
-There are now three different kinds of documentation questions:
-
-1. how do I use the product
-2. how do I run the runtime myself
-3. where does a specific contract actually live
-
-This page is for the third question.

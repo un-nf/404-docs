@@ -1,15 +1,13 @@
 ---
-title: Control Plane and CA State
-description: Technical reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.
+title: Control Plane and API Documentation
+description: API reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.
 hide:
   - toc
 ---
 
-# Control Plane and CA State
+# Control Plane and API
 
-STATIC no longer behaves like a single opaque proxy process with no operator surface.
-
-It has an authenticated localhost control plane that the desktop app already uses on the live path.
+STATIC has an authenticated localhost control plane that the [desktop app](https://404privacy.com/product/) uses.
 
 ---
 
@@ -21,16 +19,16 @@ The control plane binds on:
 listener.bind_port + 2
 ```
 
-That means:
+So..
 
-- sample config listener `4040` -> control plane `4042`
-- standalone CLI default listener `8443` -> control plane `8445`
+- Sample config listener `4040` -> control plane `4042`
+- Standalone CLI default listener `8443` -> control plane `8445`
 
 HTTP/3 is a separate listener concept. It is **not** the control plane.
 
 ---
 
-## Authentication model
+## Authentication
 
 When `control.token_path` is configured, STATIC reads a shared token from disk and requires it on control routes via:
 
@@ -38,7 +36,9 @@ When `control.token_path` is configured, STATIC reads a shared token from disk a
 X-404-Control-Token
 ```
 
-If no token path is configured, the control plane can run without that header on a local-only operator path. The desktop app does not rely on that weaker mode.
+!!! info "Unauthorized Control"
+    
+    If no token path is configured, the control plane can run without that header on a local-only path. The desktop app does not share that functionality.
 
 ---
 
@@ -58,32 +58,28 @@ The current control plane exposes:
 
 ---
 
-## What matters most in practice
+## Important notes
 
 ### `GET /status`
 
 Use this to confirm:
 
-- runtime mode
-- whether the process currently considers itself ready
+- Runtime mode
+- Process readiness
 
 ### `GET /ca/status`
 
 Returns:
 
-- the managed CA certificate path
-- whether the certificate exists
-- the certificate PEM itself
-
-This is what makes the current host-trust bridge workable. The Linux runtime keeps private key custody, but the desktop app can still retrieve the public certificate material it needs to install trust on the host.
+- Certificate PEM
+- Managed CA certificate path
+- Whether the certificate exists
 
 ### `POST /ca/init`
 
 Initializes CA material if needed and returns the same response shape as `GET /ca/status`.
 
 ### Profile routes
-
-These are now part of the real runtime state model, not a future idea.
 
 - `GET /profiles/catalog` exposes the discovered profile catalog plus the active profile
 - `GET /profiles/active` exposes the selected profile only
@@ -92,17 +88,19 @@ These are now part of the real runtime state model, not a future idea.
 
 ---
 
-## Desktop integration status
+## Desktop integration
 
-The desktop app already relies on the control plane for:
+The desktop app relies on the control plane for:
 
-- readiness and lifecycle
+- Readiness and lifecycle
 - CA bootstrap and CA status
-- telemetry snapshots
-- active profile reads
-- profile validation
+- Telemetry snapshots
+- Active profile reads
+- Profile validation
 
-It does **not** fully consume the catalog and selection endpoints yet. That matters because the control plane is ahead of the desktop UI in this area.
+!!! example "Roadmap item"
+
+    The desktop app does **not** fully consume the catalog and selection endpoints yet. The control plane is ahead of the desktop UI here.
 
 ---
 
@@ -134,8 +132,10 @@ Replace `4042` with whatever your actual control port is.
 
 ---
 
-## Current limitation
+## Limitations
 
-The control plane is local and useful, but it is still a host-coupled service contract. It is not yet a polished standalone operator API with a stable public compatibility story documented version by version.
+The control plane is still a host-coupled service contract. It is not yet a polished standalone operator API with stable public compatibility.
 
-That is why higher-level compatibility and contract-version policy still belongs in release planning rather than being overstated here.
+!!! example "Roadmap item"
+
+    API changes will be noted in release notes located [here](https://github.com/un-nf/404/tree/main/.REL_notes).

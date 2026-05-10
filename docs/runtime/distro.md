@@ -5,24 +5,24 @@ hide:
   - toc
 ---
 
-# WSL Distro and Runtime Packaging
+# Rose Kernel & WSL Distro Packaging
 
 This page is part of the **open source self-hosted/runtime manual**.
 
-It documents the Linux runtime artifact that the Windows desktop app consumes by default, but you can also work with that artifact directly as an operator.
+It documents the Linux runtime artifact that the Windows desktop app consumes by default, so you can also work with that artifact directly for development or testing.
 
 ---
 
-## What this artifact is
+## What is Rose?
 
-The current distro path packages an Alpine-based WSL-importable root filesystem that contains:
+The current distro path packages an Alpine-based WSL-importable root filesystem that contains the:
 
-- the musl STATIC binary
-- the compiled `ttl_editor.o` object
-- the Linux-side startup entrypoint
-- the boot configuration WSL needs to start that runtime
+- Musl STATIC binary
+- Compiled `ttl_editor.o` object
+- Linux-side startup entrypoint
+- Boot configuration
 
-This is not just a side experiment anymore. It is the production runtime path for Windows.
+!!! Tip "Available on Windows"
 
 ---
 
@@ -36,12 +36,12 @@ The public update origin exposes:
 - `/distro/<tag>/manifest.json`
 - `/distro/<tag>/manifest.json.sig`
 
-The stable manifest points at a versioned immutable tarball path.
+The manifest points at a versioned, immutable tarball path.
 
-The desktop app verifies:
+The desktop app verifies the:
 
-- the manifest signature
-- the tarball hash inside the signed manifest
+- Manifest signature
+- Tarball hash inside the signed manifest
 
 The current release-manifest shape is:
 
@@ -58,11 +58,11 @@ The current release-manifest shape is:
 
 ## Download the published distro
 
-For most users, the desktop app should be the thing that downloads and verifies the distro.
+For most users, the desktop app downloads and verifies the distro.
 
-If you want the artifact directly as an operator, treat the public origin as a manifest-first contract.
+If you want to download the artifact directly, treat the public origin as a manifest-first contract.
 
-Typical fetch sequence:
+Fetch sequence:
 
 ```bash
 BASE_URL="https://updates.404privacy.com"
@@ -77,26 +77,20 @@ Then read the manifest and fetch the referenced tarball path:
 curl -O "$BASE_URL/distro/v1.2.3/404-distro.tar.gz"
 ```
 
-!!! warning "What this page does not pretend to solve"
-
-    The public operator walkthrough for independent signature verification should stay aligned with the final public-key distribution story.
-
-    Anything that needs a more formal public-key verification guide belongs in `PLAN.md` until that operator story is frozen cleanly.
-
 ---
 
 ## Build it locally
 
-The distro build is a CI-backed packaging path now, not a hand-waved future workflow.
+The distro build is a CI-backed packaging path.
 
-The release job currently does this:
+The release job currently:
 
-1. build the musl STATIC binary for `x86_64-unknown-linux-musl`
-2. build `src/ebpf/ttl_editor.o`
-3. package `dist/404-distro.tar.gz`
-4. generate `dist/distro/manifest.json`
-5. sign that manifest
-6. publish stable and versioned objects
+1. Builds the musl STATIC binary for `x86_64-unknown-linux-musl`
+2. Builds `src/ebpf/ttl_editor.o`
+3. Packages `dist/404-distro.tar.gz`
+4. Generates `dist/distro/manifest.json`
+5. Signs that manifest
+6. Publishes stable and versioned objects
 
 If you want to mirror the local parts of that path yourself, this is the closest manual sequence.
 
@@ -179,7 +173,7 @@ It stages the rootfs, copies the artifacts into a temporary Docker context, writ
 
 ## Import it manually on Windows
 
-For most users, the desktop app should do this for you.
+For most users, the desktop app will do this for you.
 
 If you are operating the runtime directly, the lower-level import shape is the normal WSL import pattern:
 
@@ -189,25 +183,25 @@ wsl --import 404 C:\path\to\install-root C:\path\to\404-distro.tar.gz --version 
 
 After import, the runtime still expects the desktop-style boot contract.
 
-Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which does this:
+Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which:
 
-1. reads the Windows username from `/opt/404/win-user`
-2. resolves the runtime config at `/mnt/c/Users/<WIN_USER>/AppData/Roaming/404/static/static.runtime.toml`
-3. best-effort attaches `ttl_editor.o` to `eth0`
-4. starts `/opt/404/static --config <path> --mode proxy`
+1. Reads the Windows username from `/opt/404/win-user`
+2. Resolves the runtime config at `/mnt/c/Users/<WIN_USER>/AppData/Roaming/404/static/static.runtime.toml`
+3. Best-effort attaches `ttl_editor.o` to `eth0`
+4. Starts `/opt/404/static --config <path> --mode proxy`
 
-The interface name in that attach step is currently hard-coded to `eth0` inside `/opt/404/404-init.sh`.
+??? warning "Interface is hard-coded to eth0" 
+  
+    The interface name in the attach step is currently hard-coded to `eth0` inside `/opt/404/404-init.sh`.
 
-There is no manifest field or runtime TOML field for overriding it yet.
+    There is no manifest field or runtime TOML field for overriding it yet.
 
-If your WSL network shows up under a different interface name, the manual operator workaround is:
+    If your WSL network shows up under a different interface name, the manual operator workaround is:
 
-```powershell
-wsl -d 404 -- ip link show
-wsl -d 404 -- sh -lc 'tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da obj /opt/404/ttl_editor.o sec classifier 2>/dev/null || true'
-```
-
-So manual operators need to satisfy that contract explicitly.
+    ```powershell
+    wsl -d 404 -- ip link show
+    wsl -d 404 -- sh -lc 'tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da obj /opt/404/ttl_editor.o sec classifier 2>/dev/null || true'
+    ```
 
 ### Minimum manual setup after import
 
@@ -237,9 +231,9 @@ If the boot path is healthy, WSL boot configuration should invoke `/opt/404/404-
 
 ---
 
-## What is actually inside the tarball
+## What is inside the tarball
 
-The current rootfs contract includes:
+The current rootfs includes:
 
 - `/opt/404/win-user`
 - `/opt/404/distro-version`
@@ -249,7 +243,7 @@ The current rootfs contract includes:
 - `/etc/wsl.conf`
 - the Windows-side runtime TOML reachable under `/mnt/c/...`
 
-That is why this artifact is more than "a binary download in a tarball." It is a bootable runtime environment with assumptions.
+This artifact is a bootable runtime environment.
 
 ---
 
