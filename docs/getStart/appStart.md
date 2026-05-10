@@ -146,13 +146,3 @@ The desktop application uses the native STATIC runtime path rather than WSL2.
 The desktop documentation here is primarily written for the supported product install paths exposed publicly today.
 
 If your goal is to run the runtime directly on Linux, the self-hosted manual is the more relevant path.
-
----
-
-## What the application does not change
-
-404 is local-first. The runtime runs on your machine.
-
-The desktop application does **not** turn 404 into a remote proxy network or a hosted browser relay.
-
-It manages a local runtime and local OS integrations around that runtime.
