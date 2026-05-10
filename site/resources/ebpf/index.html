@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Canonical reference for 404's eBPF layer, including its current runtime role, packet mutations, Linux requirements, build and attach steps, verification, and VM-forwarding notes.">
+        <meta name="description" content="Tehnical reference for 404's eBPF layer, including its current runtime role, packet mutations, Linux requirements, build and attach steps, verification, and VM-forwarding notes.">
       
       
       
         <link rel="canonical" href="https://docs.404privacy.com/resources/ebpf/">
       
       
-        <link rel="prev" href="../profiles/">
+        <link rel="prev" href="../static/">
       
       
-        <link rel="next" href="../repoDev/">
+        <link rel="next" href="../controlPlane/">
       
       
         
@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -799,7 +801,35 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
+    --- References ---
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repoDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repository Map
   
 
     
@@ -827,63 +857,7 @@
   <span class="md-ellipsis">
     
   
-    STATIC Runtime and Data Plane
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../controlPlane/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Control Plane and CA State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../profiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Profiles and Persona Materialization
+    STATIC
   
 
     
@@ -920,7 +894,7 @@
   <span class="md-ellipsis">
     
   
-    eBPF Reference
+    eBPF
   
 
     
@@ -938,7 +912,7 @@
   <span class="md-ellipsis">
     
   
-    eBPF Reference
+    eBPF
   
 
     
@@ -964,10 +938,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-it-does-today" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it does today
+        Overview
       
     </span>
   </a>
@@ -975,10 +949,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-it-fits" class="md-nav__link">
+  <a href="#implementation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where it fits
+        Implementation
       
     </span>
   </a>
@@ -997,10 +971,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration-model" class="md-nav__link">
+  <a href="#configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration model
+        Configuration
       
     </span>
   </a>
@@ -1041,21 +1015,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vm-forwarding-pattern" class="md-nav__link">
+  <a href="#vm-forwarding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VM forwarding pattern
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#important-limitation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Important limitation
+        VM forwarding
       
     </span>
   </a>
@@ -1078,14 +1041,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../repoDev/" class="md-nav__link">
+      <a href="../controlPlane/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Runtime Repository Map
+    404 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles
   
 
     
@@ -1372,40 +1363,27 @@
 
 
 <div><h1 id="ebpf">eBPF</h1>
-<div class="admonition info">
-<p class="admonition-title">Current role</p>
-<p>The eBPF layer is real and currently wired into the Linux runtime path.</p>
-<p>It is part of the open source CLI application and runtime toolchain, not a separate hosted service.</p>
+<div class="admonition tip">
+<p class="admonition-title">Role</p>
+<p>The eBPF layer is wired into the Linux runtime path and is part of the open source CLI application and runtime toolchain.</p>
 </div>
 <hr>
-<h2 id="what-it-does-today">What it does today</h2>
-<p>The current module attaches to Linux Traffic Control (<code>tc</code>) egress hooks and rewrites packet-level values that can be used for passive OS and stack fingerprinting.</p>
-<p>Current implemented behavior:</p>
-<div class="language-md highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gs">**IPv4:**</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">-</span><span class="w"> </span>TTL (Time To Live) -&gt; forced to 255
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">-</span><span class="w"> </span>TOS (Type of Service) -&gt; set to 0x10
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">-</span><span class="w"> </span>IP ID (Identification) -&gt; randomized per packet
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">-</span><span class="w"> </span>TCP window size -&gt; 65535
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">-</span><span class="w"> </span>TCP initial sequence number -&gt; randomized
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">-</span><span class="w"> </span>TCP window scale -&gt; 5
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">-</span><span class="w"> </span>TCP MSS (Maximum Segment Size) -&gt; 1460
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">-</span><span class="w"> </span>TCP timestamps -&gt; randomized
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gs">**IPv6:**</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">-</span><span class="w"> </span>Hop limit -&gt; forced to 255
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">-</span><span class="w"> </span>Flow label -&gt; randomized
-</span></code></pre></div>
+<h2 id="overview">Overview</h2>
+<p>The eBPF module attaches to Linux Traffic Control (<code>tc</code>) egress hooks and rewrites packet-level values that can be used for passive OS and stack fingerprinting via tools like p0f or nmap.</p>
 <p><img alt="tcpdump output" src="../../assets/images/tcpdump_output.png"></p>
 <hr>
-<h2 id="where-it-fits">Where it fits</h2>
-<p>The eBPF layer is not a replacement for STATIC. It complements STATIC.</p>
+<h2 id="implementation">Implementation</h2>
+<p>The eBPF layer complements STATIC.</p>
 <ul>
 <li>STATIC handles TLS, HTTP, injected runtime shaping, and control-plane behavior.</li>
-<li>The eBPF layer handles lower-level packet mutation on Linux.</li>
+<li>The eBPF layer handles lower-level packet mutation on Linux via the Rose kernel.</li>
 </ul>
 <p>On Windows, the managed desktop product path reaches this Linux layer through the WSL2 runtime.</p>
 <p>On CLI-managed Linux paths, you can build and attach it directly yourself.</p>
-<p>This layer matters because mismatches between network fingerprints and higher-level browser identity can still expose the host as synthetic or misaligned traffic.</p>
+<div class="admonition note">
+<p class="admonition-title">Why both?</p>
+<p>Mismatches between network fingerprints and higher-level browser identity can still expose the host as synthetic or misaligned traffic.</p>
+</div>
 <hr>
 <h2 id="kernel-and-toolchain-requirements">Kernel and toolchain requirements</h2>
 <p>You need a Linux environment with:</p>
@@ -1422,27 +1400,92 @@
 <li><code>/usr/include/linux/bpf.h</code></li>
 </ul>
 <hr>
-<h2 id="configuration-model">Configuration model</h2>
-<p>The packet policy is still not fully profile-driven in the way the higher-level runtime is.</p>
-<p>Today, the important mutation values are still assigned through globals in <code>src/ebpf/ttl_editor.c</code> rather than being fully driven by the selected runtime profile.</p>
-<p>Typical values currently enforced by the implementation are:</p>
-<ul>
-<li>IPv4 TTL <code>255</code></li>
-<li>TOS <code>0x10</code></li>
-<li>randomized IP ID</li>
-<li>TCP window size <code>65535</code></li>
-<li>TCP window scale <code>5</code></li>
-<li>TCP MSS <code>1460</code></li>
-<li>randomized TCP sequence numbers and timestamps</li>
-<li>IPv6 hop limit <code>255</code></li>
-<li>randomized IPv6 flow label</li>
-</ul>
-<p>If you are modifying the object manually before a local build, the relevant constants live near the top of <code>src/ebpf/ttl_editor.c</code>.</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">#define FORCE_TTL 255</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="cp">#define SPOOF_TCP_WINDOW_SIZE 65535</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="cp">#define SPOOF_TCP_MSS 1460</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="cp">#define SPOOF_TCP_WINDOW_SCALE 5</span>
+<h2 id="configuration">Configuration</h2>
+<blockquote>
+<p>IP/TCP packet header values are assigned via global variables at the top of <code>src/ebpf/ttl_editor.c</code>. They <em>do not</em> align with values passed from <code>profiles.json</code>, this is a major pitfall of the current version and will be integrated with dynamic <code>bpfmaps</code> in a future release.</p>
+</blockquote>
+<p><em>Modify hardcoded globals to desired values before compiling.</em></p>
+<div class="admonition note">
+<p class="admonition-title">Native OS Options:</p>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>TTL</th>
+<th>Window Size</th>
+<th>Window Scale</th>
+<th>ISN</th>
+<th>MSS*</th>
+<th>Timestamps</th>
+<th>TCP Option Order</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td>128</td>
+<td>64 kb (64240 bytes)</td>
+<td>8</td>
+<td>Randomized</td>
+<td>Varies based on connection</td>
+<td>Not used</td>
+<td>MSS,NOP,WS,NOP,NOP,SACK</td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td>64</td>
+<td>64 kb (65535 bytes)</td>
+<td>6</td>
+<td>Randomized</td>
+<td>Varies based on connection</td>
+<td>Internal counter</td>
+<td>MSS,NOP,WS,NOP,NOP,TS,SACK,EOL</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>64</td>
+<td>64 kb (65535 bytes - 5840 bytes for 2.4/2.6 kernels)</td>
+<td>7</td>
+<td>Randomized</td>
+<td>Varies based on connection</td>
+<td>Internal counter - sometimes randomized</td>
+<td>MSS,SACK,TS,NOP,WS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>1. Open <code>ttl_editor.c</code> and modify the <code>#define</code> values at the top:</strong> <em>(optional)</em></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#define FORCE_TTL 255</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#define SPOOF_TCP_WINDOW_SIZE 65535</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cp">#define SPOOF_TCP_MSS 1460</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cp">#define SPOOF_TCP_WINDOW_SCALE 5</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">// etc.</span>
 </span></code></pre></div>
+<div class="admonition example">
+<p class="admonition-title">Roadmap item</p>
+<p>The packet policy is still not fully profile-driven in the way the higher-level runtime is.</p>
+</div>
+<p>Today, the important mutation values are still assigned through globals in <code>src/ebpf/ttl_editor.c</code> rather than being fully driven by the selected runtime profile.</p>
+<div class="admonition abstract">
+<p class="admonition-title">Default Implementation Options</p>
+<p>IPv4:</p>
+<ul>
+<li>TTL (Time To Live) → forced to 255</li>
+<li>TOS (Type of Service) → set to 0x10</li>
+<li>IP ID (Identification) → randomized per packet</li>
+<li>TCP window size → 65535</li>
+<li>TCP initial sequence number → randomized (again)</li>
+<li>TCP window scale → 5</li>
+<li>TCP MSS (Maximum Segment Size) → 1460</li>
+<li>TCP timestamps → randomized</li>
+</ul>
+<p>IPv6:</p>
+<ul>
+<li>Hop limit → forced to 255</li>
+<li>Flow label → randomized</li>
+<li>TCP parameters (same as IPv4)</li>
+</ul>
+</div>
 <hr>
 <h2 id="build-path">Build path</h2>
 <p>The Makefile in <code>src/ebpf</code> builds:</p>
@@ -1450,58 +1493,56 @@
 <li><code>ttl_editor.o</code></li>
 </ul>
 <p>Typical local invocation:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>-C<span class="w"> </span>src/ebpf<span class="w"> </span>clean<span class="w"> </span>all
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>-C<span class="w"> </span>src/ebpf<span class="w"> </span>clean<span class="w"> </span>all
 </span></code></pre></div>
 <p>You can also build it from inside the directory directly:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>src/ebpf
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>make<span class="w"> </span>deps-install
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>make
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">cd</span><span class="w"> </span>src/ebpf
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>make<span class="w"> </span>deps-install
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>make
 </span></code></pre></div>
+<blockquote>
 <p>This is the same object that is packaged into the WSL distro build path.</p>
+</blockquote>
 <hr>
 <h2 id="attach-path">Attach path</h2>
-<p>Typical attach sequence:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>tc<span class="w"> </span>qdisc<span class="w"> </span>add<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>clsact
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>tc<span class="w"> </span>filter<span class="w"> </span>add<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>egress<span class="w"> </span>bpf<span class="w"> </span>da<span class="w"> </span>obj<span class="w"> </span>ttl_editor.o<span class="w"> </span>sec<span class="w"> </span>classifier
+<p>Attach:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>tc<span class="w"> </span>qdisc<span class="w"> </span>add<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>clsact
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>tc<span class="w"> </span>filter<span class="w"> </span>add<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>egress<span class="w"> </span>bpf<span class="w"> </span>da<span class="w"> </span>obj<span class="w"> </span>ttl_editor.o<span class="w"> </span>sec<span class="w"> </span>classifier
 </span></code></pre></div>
-<p>Removal:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>tc<span class="w"> </span>filter<span class="w"> </span>del<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>egress
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>sudo<span class="w"> </span>tc<span class="w"> </span>qdisc<span class="w"> </span>del<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>clsact
+<p>Remove:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>tc<span class="w"> </span>filter<span class="w"> </span>del<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>egress
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>tc<span class="w"> </span>qdisc<span class="w"> </span>del<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>clsact
 </span></code></pre></div>
 <hr>
 <h2 id="verify-and-inspect">Verify and inspect</h2>
 <p>Verify attachment:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>tc<span class="w"> </span>filter<span class="w"> </span>show<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>egress
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>tc<span class="w"> </span>filter<span class="w"> </span>show<span class="w"> </span>dev<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>egress
 </span></code></pre></div>
 <p>Inspect outgoing traffic:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-Q<span class="w"> </span>out
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-c<span class="w"> </span><span class="m">20</span><span class="w"> </span>-Q<span class="w"> </span>out<span class="w"> </span><span class="s1">'tcp[tcpflags] &amp; tcp-syn != 0'</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-nn<span class="w"> </span>-Q<span class="w"> </span>out<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">'ttl|win|mss|wscale'</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-XX<span class="w"> </span>-Q<span class="w"> </span>out
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-Q<span class="w"> </span>out<span class="w"> </span>port<span class="w"> </span><span class="m">443</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-Q<span class="w"> </span>out
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-c<span class="w"> </span><span class="m">20</span><span class="w"> </span>-Q<span class="w"> </span>out<span class="w"> </span><span class="s1">'tcp[tcpflags] &amp; tcp-syn != 0'</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-nn<span class="w"> </span>-Q<span class="w"> </span>out<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">'ttl|win|mss|wscale'</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-XX<span class="w"> </span>-Q<span class="w"> </span>out
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>&lt;interface&gt;<span class="w"> </span>-vvv<span class="w"> </span>-Q<span class="w"> </span>out<span class="w"> </span>port<span class="w"> </span><span class="m">443</span>
 </span></code></pre></div>
 <hr>
-<h2 id="vm-forwarding-pattern">VM forwarding pattern</h2>
+<h2 id="vm-forwarding">VM forwarding</h2>
 <p>If you want to expose a host machine through a Linux VM that is running the packet layer, use a bridged adapter for internet access and a host-only adapter between the host and guest.</p>
 <p>On the Linux guest, enable IPv4 and IPv6 forwarding and apply the normal forwarding and NAT rules for the host-only and bridged interfaces.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.ipv4.ip_forward<span class="o">=</span><span class="m">1</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"net.ipv4.ip_forward=1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.ipv6.conf.all.forwarding<span class="o">=</span><span class="m">1</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"net.ipv6.conf.all.forwarding=1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>sudo<span class="w"> </span>iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-i<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>sudo<span class="w"> </span>iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-o<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>sudo<span class="w"> </span>ip6tables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-i<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>sudo<span class="w"> </span>ip6tables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-o<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>POSTROUTING<span class="w"> </span>-o<span class="w"> </span>&lt;bridged-interface&gt;<span class="w"> </span>-j<span class="w"> </span>MASQUERADE
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>sudo<span class="w"> </span>ip6tables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>POSTROUTING<span class="w"> </span>-o<span class="w"> </span>&lt;bridged-interface&gt;<span class="w"> </span>-j<span class="w"> </span>MASQUERADE
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.ipv4.ip_forward<span class="o">=</span><span class="m">1</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"net.ipv4.ip_forward=1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.ipv6.conf.all.forwarding<span class="o">=</span><span class="m">1</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"net.ipv6.conf.all.forwarding=1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/sysctl.conf
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>sudo<span class="w"> </span>iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-i<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>sudo<span class="w"> </span>iptables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-o<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>sudo<span class="w"> </span>ip6tables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-i<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>sudo<span class="w"> </span>ip6tables<span class="w"> </span>-A<span class="w"> </span>FORWARD<span class="w"> </span>-o<span class="w"> </span>&lt;host-only-interface&gt;<span class="w"> </span>-j<span class="w"> </span>ACCEPT
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>POSTROUTING<span class="w"> </span>-o<span class="w"> </span>&lt;bridged-interface&gt;<span class="w"> </span>-j<span class="w"> </span>MASQUERADE
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>sudo<span class="w"> </span>ip6tables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>POSTROUTING<span class="w"> </span>-o<span class="w"> </span>&lt;bridged-interface&gt;<span class="w"> </span>-j<span class="w"> </span>MASQUERADE
 </span></code></pre></div>
-<p>On the host, point the default route at the guest's host-only adapter IP.</p>
-<hr>
-<h2 id="important-limitation">Important limitation</h2>
-<p>The packet policy is still not fully profile-driven in the way the higher-level runtime is.</p>
-<p>The broader product direction is to keep userspace identity and kernel-level mutation moving toward the same selected profile state, but you should not read the current implementation as fully live-reconfigurable parity yet.</p></div>
+<p>On the host, point the default route at the guest's host-only adapter IP.</p></div>
 
 
 

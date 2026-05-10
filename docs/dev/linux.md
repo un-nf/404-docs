@@ -14,7 +14,7 @@ It covers both the proxy runtime and the manual eBPF attach path.
 ## Before you start
 
 - the release asset is `static_proxy-linux-x86_64`
-- the current public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
+- the public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
 - the standalone local listener defaults to `127.0.0.1:8443`
 - the local control plane defaults to `127.0.0.1:8445`
 - packet-layer mutation requires a Linux kernel and the `ttl_editor.o` object from the source tree
@@ -87,7 +87,7 @@ The default standalone listener is `127.0.0.1:8443`.
 
 For Firefox:
 
-- Settings -> Network Settings -> Manual proxy configuration
+- Settings → Network Settings → Manual proxy configuration
 - HTTP Proxy: `127.0.0.1`
 - Port: `8443`
 - enable `Also use this proxy for HTTPS`

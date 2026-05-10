@@ -126,7 +126,7 @@ The Windows application does the following:
 6. Writes the runtime configuration and control token the Linux service expects
 7. Starts the runtime and talks to STATIC through an authenticated control API
 
-The distro currently includes:
+The distro contains:
 
 - The packaged `STATIC` binary
 - The packaged eBPF module (`ttl_editor.o`)
@@ -139,7 +139,7 @@ The Linux runtime does **not** take over host responsibilities that belong to th
 
 ### macOS
 
-The desktop application currently uses the native STATIC runtime path rather than WSL2.
+The desktop application uses the native STATIC runtime path rather than WSL2.
 
 ### Linux
 

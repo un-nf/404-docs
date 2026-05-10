@@ -21,8 +21,8 @@ listener.bind_port + 2
 
 So..
 
-- Sample config listener `4040` -> control plane `4042`
-- Standalone CLI default listener `8443` -> control plane `8445`
+- Sample config listener `4040` → control plane `4042`
+- Standalone CLI default listener `8443` → control plane `8445`
 
 HTTP/3 is a separate listener concept. It is **not** the control plane.
 

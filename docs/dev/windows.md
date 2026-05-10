@@ -36,7 +36,7 @@ That extraction step should place:
 ## Before you start
 
 - WSL2 must be available on the machine
-- the current public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
+- the public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
 - the bundled runtime config defaults to `firefox-windows`
 - if you use Chrome, swap `firefox-windows` for `chrome-windows`
 - if you use Edge, swap `firefox-windows` for `edge-windows`
@@ -72,7 +72,7 @@ Right-click `404-windows-x64.zip`, choose `Extract All...`, and set the destinat
 In the Extract All dialog:
 
 1. click `Browse...`
-2. open `This PC -> Local Disk (C:) -> Users -> <your-username>`
+2. open `This PC → Local Disk (C:) → Users → <your-username>`
 3. click `Select Folder`
 4. click `Extract`
 
@@ -147,7 +147,7 @@ After the distro boots, `404-init.sh` reads `static.runtime.toml`, best-effort a
 
 !!! note "About `eth0`"
 
-    The current distro init script hard-codes the eBPF attach step to `eth0`.
+    The distro init script hard-codes the eBPF attach step to `eth0`.
 
     There is no separate runtime setting for that interface yet.
 
@@ -206,8 +206,8 @@ Manual install:
 
 If you use Firefox, you must import the certificate into Firefox:
 
-- Settings -> Privacy & Security -> Certificates -> View Certificates
-- Authorities -> Import
+- Settings → Privacy & Security → Certificates → View Certificates
+- Authorities → Import
 - select `%LOCALAPPDATA%\404\wsl\static-ca.crt`
 - enable `Trust this CA to identify websites`
 
@@ -219,14 +219,14 @@ The runtime listener is located at `127.0.0.1:4040`.
 
 For Chrome or Edge:
 
-- Windows Settings -> Network & internet -> Proxy
+- Windows Settings → Network & internet → Proxy
 - Enable Manual proxy setup
 - Address: `127.0.0.1`
 - Port: `4040`
 
 For Firefox:
 
-- Settings -> Network Settings -> Manual proxy configuration
+- Settings → Network Settings → Manual proxy configuration
 - HTTP Proxy: `127.0.0.1`
 - Port: `4040`
 - Check `Also use this proxy for HTTPS`

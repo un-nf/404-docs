@@ -18,7 +18,7 @@ hide:
 
 ```mermaid
 flowchart LR
-  %% Zig-zag layout: left -> middle -> right
+  %% Zig-zag layout: left → middle → right
   A["BROWSER_SIGNAL<br/><b>[LEAKING]</b><br/>User-Agent: Mozilla/5.0 on macOS<br/>CanvasID: 9b:17:2f:aa:…<br/>Fonts: 178 enumerated<br/>TLS: ClientHello: unique-ish"]
 
   B["404_PROXY<br/><b>[INTERCEPT]</b><br/><br/>• Rewrite TLS plan<br/>• Normalize headers + ordering<br/>• Inject JS spoofing stack (profile JSON)"]
@@ -59,7 +59,7 @@ The proxy stays local. It is not a hosted browser relay or a remote proxy servic
 
 Requests are broken into `flows`. Each `flow` passes through multiple `stages`. A `stage` is where the request/response mutation happens.
 
-The current stage order is deterministic:
+Stage order:
 
 1. **HeaderProfileStage** rewrites headers based on the selected profile.
 2. **BehavioralNoiseStage** tags the flow with timing patterns for coordination with the injected runtime.
@@ -70,7 +70,7 @@ The current stage order is deterministic:
 Each stage runs asynchronously and can inspect or mutate the request/response. The pipeline is deterministic. Same profile, same mutations, same fingerprint.
 
 > Don't believe me? Check my work... 
->
+
 - [FingerprintJS](https://demo.fingerprint.com/playground){target="_blank"}
 - [Browser Leaks](https://browserleaks.com/){target="_blank"}
 - [EFF - Cover Your Tracks](https://coveryourtracks.eff.org/){target="_blank"}
@@ -81,19 +81,20 @@ Each stage runs asynchronously and can inspect or mutate the request/response. T
 
 The eBPF module uses Linux Traffic Control (`tc`) egress hooks to mutate packets before they leave the machine.
 
-Currently, the following is implemented:
+The following is implemented:
+
 ```md
 **IPv4:**
-- TTL (Time To Live) -> forced to 255
-- TOS (Type of Service) -> set to 0x10
-- IP ID (Identification) -> randomized per packet
-- TCP window size -> 65535
-- TCP initial sequence number -> randomized (again)
-- TCP window scale -> 5
-- TCP MSS (Maximum Segment Size) -> 1460
-- TCP timestamps -> randomized
+- TTL (Time To Live) → forced to 255
+- TOS (Type of Service) → set to 0x10
+- IP ID (Identification) → randomized per packet
+- TCP window size → 65535
+- TCP initial sequence number → randomized (again)
+- TCP window scale → 5
+- TCP MSS (Maximum Segment Size) → 1460
+- TCP timestamps → randomized
 
 **IPv6:**
-- Hop limit -> forced to 255
-- Flow label -> randomized
+- Hop limit → forced to 255
+- Flow label → randomized
 ```

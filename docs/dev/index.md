@@ -58,7 +58,7 @@ Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_relea
 ## Helpful tips
 
 - All three paths are local and operator controlled
-- The current public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
+- The public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
 - Chromium-family browsers should stay on `chrome-windows` or `edge-windows`
 - Firefox should stay on `firefox-windows`
 - The proxy generates a local CA and you must trust it before browsers will accept proxied HTTPS

@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -792,119 +794,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/static/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    STATIC Runtime and Data Plane
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/controlPlane/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Control Plane and CA State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/profiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Profiles and Persona Materialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Reference
+    --- References ---
   
 
     
@@ -932,7 +822,119 @@
   <span class="md-ellipsis">
     
   
-    Runtime Repository Map
+    Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    404 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles
   
 
     
@@ -1327,7 +1329,7 @@
 <p><div class="video-container"><iframe src="../../assets/images/demo.mp4" style="width:100%;height:35vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p>
 <h2 id="your-personality-cloud">Your “Personality Cloud”</h2>
 <pre class="mermaid"><code>flowchart LR
-  %% Zig-zag layout: left -&gt; middle -&gt; right
+  %% Zig-zag layout: left - middle → right
   A["BROWSER_SIGNAL&lt;br/&gt;&lt;b&gt;[LEAKING]&lt;/b&gt;&lt;br/&gt;User-Agent: Mozilla/5.0 on macOS&lt;br/&gt;CanvasID: 9b:17:2f:aa:…&lt;br/&gt;Fonts: 178 enumerated&lt;br/&gt;TLS: ClientHello: unique-ish"]
 
   B["404_PROXY&lt;br/&gt;&lt;b&gt;[INTERCEPT]&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;• Rewrite TLS plan&lt;br/&gt;• Normalize headers + ordering&lt;br/&gt;• Inject JS spoofing stack (profile JSON)"]
@@ -1360,7 +1362,7 @@
 <p>With the sample config, STATIC listens on <code>127.0.0.1:4040</code> by default. If you run the standalone binary without a config file, it falls back to built-in CLI defaults and listens on <code>127.0.0.1:8443</code>.</p>
 <p>The proxy stays local. It is not a hosted browser relay or a remote proxy service.</p>
 <p>Requests are broken into <code>flows</code>. Each <code>flow</code> passes through multiple <code>stages</code>. A <code>stage</code> is where the request/response mutation happens.</p>
-<p>The current stage order is deterministic:</p>
+<p>Stage order:</p>
 <ol>
 <li><strong>HeaderProfileStage</strong> rewrites headers based on the selected profile.</li>
 <li><strong>BehavioralNoiseStage</strong> tags the flow with timing patterns for coordination with the injected runtime.</li>
@@ -1371,6 +1373,7 @@
 <p>Each stage runs asynchronously and can inspect or mutate the request/response. The pipeline is deterministic. Same profile, same mutations, same fingerprint.</p>
 <blockquote>
 <p>Don't believe me? Check my work... </p>
+</blockquote>
 <ul>
 <li><a href="https://demo.fingerprint.com/playground" target="_blank" rel="noopener">FingerprintJS</a></li>
 <li><a href="https://browserleaks.com/" target="_blank" rel="noopener">Browser Leaks</a></li>
@@ -1378,23 +1381,22 @@
 <li><a href="https://whatismybrowser.com/" target="_blank" rel="noopener">What is my Browser</a></li>
 <li><a href="https://httpbin.org/headers" target="_blank" rel="noopener">HTTP bin</a></li>
 </ul>
-</blockquote>
 <h2 id="linux-ebpf-module">Linux eBPF module</h2>
 <p>The eBPF module uses Linux Traffic Control (<code>tc</code>) egress hooks to mutate packets before they leave the machine.</p>
-<p>Currently, the following is implemented:
-</p><div class="language-md highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gs">**IPv4:**</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">-</span><span class="w"> </span>TTL (Time To Live) -&gt; forced to 255
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">-</span><span class="w"> </span>TOS (Type of Service) -&gt; set to 0x10
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">-</span><span class="w"> </span>IP ID (Identification) -&gt; randomized per packet
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">-</span><span class="w"> </span>TCP window size -&gt; 65535
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">-</span><span class="w"> </span>TCP initial sequence number -&gt; randomized (again)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">-</span><span class="w"> </span>TCP window scale -&gt; 5
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">-</span><span class="w"> </span>TCP MSS (Maximum Segment Size) -&gt; 1460
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">-</span><span class="w"> </span>TCP timestamps -&gt; randomized
+<p>The following is implemented:</p>
+<div class="language-md highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gs">**IPv4:**</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">-</span><span class="w"> </span>TTL (Time To Live) → forced to 255
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">-</span><span class="w"> </span>TOS (Type of Service) → set to 0x10
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">-</span><span class="w"> </span>IP ID (Identification) → randomized per packet
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">-</span><span class="w"> </span>TCP window size → 65535
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">-</span><span class="w"> </span>TCP initial sequence number → randomized (again)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">-</span><span class="w"> </span>TCP window scale → 5
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">-</span><span class="w"> </span>TCP MSS (Maximum Segment Size) → 1460
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">-</span><span class="w"> </span>TCP timestamps → randomized
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="gs">**IPv6:**</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">-</span><span class="w"> </span>Hop limit -&gt; forced to 255
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">-</span><span class="w"> </span>Flow label -&gt; randomized
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">-</span><span class="w"> </span>Hop limit → forced to 255
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">-</span><span class="w"> </span>Flow label → randomized
 </span></code></pre></div></div>
 
 

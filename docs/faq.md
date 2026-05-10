@@ -17,7 +17,7 @@ hide:
 
 ## Is 404 a desktop app or an open source repository?
 
-Both, but the division matters.
+[Both](./resources/repoDev.md).
 
 - The **desktop app** is the managed product path.
 - The **runtime stack** remains the open source self-hosted path.

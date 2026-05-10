@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -70,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#wsl-distro-and-runtime-packaging" class="md-skip">
+        <a href="#rose-kernel-wsl-distro-packaging" class="md-skip">
           Skip to content
         </a>
       
@@ -796,10 +798,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-this-artifact-is" class="md-nav__link">
+  <a href="#what-is-rose" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What this artifact is
+        What is Rose?
       
     </span>
   </a>
@@ -979,10 +981,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-is-actually-inside-the-tarball" class="md-nav__link">
+  <a href="#what-is-inside-the-tarball" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What is actually inside the tarball
+        What is inside the tarball
       
     </span>
   </a>
@@ -1051,119 +1053,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/static/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    STATIC Runtime and Data Plane
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/controlPlane/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Control Plane and CA State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/profiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Profiles and Persona Materialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Reference
+    --- References ---
   
 
     
@@ -1191,7 +1081,119 @@
   <span class="md-ellipsis">
     
   
-    Runtime Repository Map
+    Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    404 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles
   
 
     
@@ -1477,19 +1479,21 @@
   
 
 
-<div><h1 id="wsl-distro-and-runtime-packaging">WSL Distro and Runtime Packaging</h1>
+<div><h1 id="rose-kernel-wsl-distro-packaging">Rose Kernel &amp; WSL Distro Packaging</h1>
 <p>This page is part of the <strong>open source self-hosted/runtime manual</strong>.</p>
-<p>It documents the Linux runtime artifact that the Windows desktop app consumes by default, but you can also work with that artifact directly as an operator.</p>
+<p>It documents the Linux runtime artifact that the Windows desktop app consumes by default, so you can also work with that artifact directly for development or testing.</p>
 <hr>
-<h2 id="what-this-artifact-is">What this artifact is</h2>
-<p>The current distro path packages an Alpine-based WSL-importable root filesystem that contains:</p>
+<h2 id="what-is-rose">What is Rose?</h2>
+<p>The current distro path packages an Alpine-based WSL-importable root filesystem that contains the:</p>
 <ul>
-<li>the musl STATIC binary</li>
-<li>the compiled <code>ttl_editor.o</code> object</li>
-<li>the Linux-side startup entrypoint</li>
-<li>the boot configuration WSL needs to start that runtime</li>
+<li>Musl STATIC binary</li>
+<li>Compiled <code>ttl_editor.o</code> object</li>
+<li>Linux-side startup entrypoint</li>
+<li>Boot configuration</li>
 </ul>
-<p>This is not just a side experiment anymore. It is the production runtime path for Windows.</p>
+<div class="admonition tip">
+<p class="admonition-title">Available on Windows</p>
+</div>
 <hr>
 <h2 id="public-release-contract">Public release contract</h2>
 <p>The public update origin exposes:</p>
@@ -1500,11 +1504,11 @@
 <li><code>/distro/&lt;tag&gt;/manifest.json</code></li>
 <li><code>/distro/&lt;tag&gt;/manifest.json.sig</code></li>
 </ul>
-<p>The stable manifest points at a versioned immutable tarball path.</p>
-<p>The desktop app verifies:</p>
+<p>The manifest points at a versioned, immutable tarball path.</p>
+<p>The desktop app verifies the:</p>
 <ul>
-<li>the manifest signature</li>
-<li>the tarball hash inside the signed manifest</li>
+<li>Manifest signature</li>
+<li>Tarball hash inside the signed manifest</li>
 </ul>
 <p>The current release-manifest shape is:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
@@ -1516,9 +1520,9 @@
 </span></code></pre></div>
 <hr>
 <h2 id="download-the-published-distro">Download the published distro</h2>
-<p>For most users, the desktop app should be the thing that downloads and verifies the distro.</p>
-<p>If you want the artifact directly as an operator, treat the public origin as a manifest-first contract.</p>
-<p>Typical fetch sequence:</p>
+<p>For most users, the desktop app downloads and verifies the distro.</p>
+<p>If you want to download the artifact directly, treat the public origin as a manifest-first contract.</p>
+<p>Fetch sequence:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">BASE_URL</span><span class="o">=</span><span class="s2">"https://updates.404privacy.com"</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>curl<span class="w"> </span>-O<span class="w"> </span><span class="s2">"</span><span class="nv">$BASE_URL</span><span class="s2">/distro/manifest.json"</span>
@@ -1527,22 +1531,17 @@
 <p>Then read the manifest and fetch the referenced tarball path:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-O<span class="w"> </span><span class="s2">"</span><span class="nv">$BASE_URL</span><span class="s2">/distro/v1.2.3/404-distro.tar.gz"</span>
 </span></code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">What this page does not pretend to solve</p>
-<p>The public operator walkthrough for independent signature verification should stay aligned with the final public-key distribution story.</p>
-<p>Anything that needs a more formal public-key verification guide belongs in <code>PLAN.md</code> until that operator story is frozen cleanly.</p>
-</div>
 <hr>
 <h2 id="build-it-locally">Build it locally</h2>
-<p>The distro build is a CI-backed packaging path now, not a hand-waved future workflow.</p>
-<p>The release job currently does this:</p>
+<p>The distro build is a CI-backed packaging path.</p>
+<p>The release job currently:</p>
 <ol>
-<li>build the musl STATIC binary for <code>x86_64-unknown-linux-musl</code></li>
-<li>build <code>src/ebpf/ttl_editor.o</code></li>
-<li>package <code>dist/404-distro.tar.gz</code></li>
-<li>generate <code>dist/distro/manifest.json</code></li>
-<li>sign that manifest</li>
-<li>publish stable and versioned objects</li>
+<li>Builds the musl STATIC binary for <code>x86_64-unknown-linux-musl</code></li>
+<li>Builds <code>src/ebpf/ttl_editor.o</code></li>
+<li>Packages <code>dist/404-distro.tar.gz</code></li>
+<li>Generates <code>dist/distro/manifest.json</code></li>
+<li>Signs that manifest</li>
+<li>Publishes stable and versioned objects</li>
 </ol>
 <p>If you want to mirror the local parts of that path yourself, this is the closest manual sequence.</p>
 <h3 id="1-install-the-musl-and-linux-build-dependencies">1. Install the musl and Linux build dependencies</h3>
@@ -1601,25 +1600,27 @@
 <p>It stages the rootfs, copies the artifacts into a temporary Docker context, writes <code>/opt/404/distro-version</code>, builds a temporary image, then uses <code>docker create</code> and <code>docker export</code> to emit the final WSL-importable tarball.</p>
 <hr>
 <h2 id="import-it-manually-on-windows">Import it manually on Windows</h2>
-<p>For most users, the desktop app should do this for you.</p>
+<p>For most users, the desktop app will do this for you.</p>
 <p>If you are operating the runtime directly, the lower-level import shape is the normal WSL import pattern:</p>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">wsl</span> <span class="p">-</span><span class="n">-import</span> <span class="n">404</span> <span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="nb">install-root</span> <span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">404-distro</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span> <span class="p">-</span><span class="n">-version</span> <span class="n">2</span>
 </span></code></pre></div>
 <p>After import, the runtime still expects the desktop-style boot contract.</p>
-<p>Current boot behavior inside the distro comes from <code>/opt/404/404-init.sh</code>, which does this:</p>
+<p>Current boot behavior inside the distro comes from <code>/opt/404/404-init.sh</code>, which:</p>
 <ol>
-<li>reads the Windows username from <code>/opt/404/win-user</code></li>
-<li>resolves the runtime config at <code>/mnt/c/Users/&lt;WIN_USER&gt;/AppData/Roaming/404/static/static.runtime.toml</code></li>
-<li>best-effort attaches <code>ttl_editor.o</code> to <code>eth0</code></li>
-<li>starts <code>/opt/404/static --config &lt;path&gt; --mode proxy</code></li>
+<li>Reads the Windows username from <code>/opt/404/win-user</code></li>
+<li>Resolves the runtime config at <code>/mnt/c/Users/&lt;WIN_USER&gt;/AppData/Roaming/404/static/static.runtime.toml</code></li>
+<li>Best-effort attaches <code>ttl_editor.o</code> to <code>eth0</code></li>
+<li>Starts <code>/opt/404/static --config &lt;path&gt; --mode proxy</code></li>
 </ol>
-<p>The interface name in that attach step is currently hard-coded to <code>eth0</code> inside <code>/opt/404/404-init.sh</code>.</p>
+<details class="warning">
+<summary>Interface is hard-coded to eth0</summary>
+<p>The interface name in the attach step is currently hard-coded to <code>eth0</code> inside <code>/opt/404/404-init.sh</code>.</p>
 <p>There is no manifest field or runtime TOML field for overriding it yet.</p>
 <p>If your WSL network shows up under a different interface name, the manual operator workaround is:</p>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">ip</span> <span class="n">link</span> <span class="n">show</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'tc qdisc add dev &lt;interface&gt; clsact 2&gt;/dev/null || true; tc filter add dev &lt;interface&gt; egress bpf da obj /opt/404/ttl_editor.o sec classifier 2&gt;/dev/null || true'</span>
 </span></code></pre></div>
-<p>So manual operators need to satisfy that contract explicitly.</p>
+</details>
 <h3 id="minimum-manual-setup-after-import">Minimum manual setup after import</h3>
 <h4 id="1-write-the-windows-username-file-inside-the-distro">1. Write the Windows username file inside the distro</h4>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="n">404</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'printf "%s\n" "$0" &gt; /opt/404/win-user'</span> <span class="nv">$env:USERNAME</span>
@@ -1634,8 +1635,8 @@
 </span></code></pre></div>
 <p>If the boot path is healthy, WSL boot configuration should invoke <code>/opt/404/404-init.sh</code> automatically.</p>
 <hr>
-<h2 id="what-is-actually-inside-the-tarball">What is actually inside the tarball</h2>
-<p>The current rootfs contract includes:</p>
+<h2 id="what-is-inside-the-tarball">What is inside the tarball</h2>
+<p>The current rootfs includes:</p>
 <ul>
 <li><code>/opt/404/win-user</code></li>
 <li><code>/opt/404/distro-version</code></li>
@@ -1645,7 +1646,7 @@
 <li><code>/etc/wsl.conf</code></li>
 <li>the Windows-side runtime TOML reachable under <code>/mnt/c/...</code></li>
 </ul>
-<p>That is why this artifact is more than "a binary download in a tarball." It is a bootable runtime environment with assumptions.</p>
+<p>This artifact is a bootable runtime environment.</p>
 <hr>
 <h2 id="if-you-only-want-to-run-static">If you only want to run STATIC</h2>
 <p>Use the simpler self-hosted path instead:</p>

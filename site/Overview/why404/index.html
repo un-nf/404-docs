@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -792,119 +794,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/static/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    STATIC Runtime and Data Plane
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/controlPlane/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Control Plane and CA State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/profiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Profiles and Persona Materialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Reference
+    --- References ---
   
 
     
@@ -932,7 +822,119 @@
   <span class="md-ellipsis">
     
   
-    Runtime Repository Map
+    Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    404 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles
   
 
     
@@ -1179,10 +1181,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-shouldnt-i-install-and-run-this-on-my-machine" class="md-nav__link">
+  <a href="#limitations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why shouldn't I install and run this on my machine?
+        Limitations
       
     </span>
   </a>
@@ -1372,16 +1374,20 @@
 <p>This isn't just a tool. It's proof that illegibility is technically feasible.</p>
 <p>As governments worldwide push for mandatory surveillance (Chat Control in the EU, client-side scanning proposals, "lawful access" backdoors), and as AI makes behavioral profiling trivial at scale, the ability to be untrackable becomes existential.</p>
 <p>404 demonstrates that privacy through illegibility isn't theoretical. It's implementable, it works, and it's available to anyone.</p>
-<h2 id="why-shouldnt-i-install-and-run-this-on-my-machine">Why <em>shouldn't</em> I install and run this on my machine?</h2>
-<p>This repository, in its current state, is built for researchers, developers, and privacy advocates who understand the trade-offs and are comfortable with...</p>
-<p><strong><em>Manual configuration</em></strong> - Profiles require review and occasional tweaking based on your use-case and threat model. If you're confused about configuration, feel free to reach out in an <a href="mailto:404co@proton.me">email</a>, open a <a href="https://github.com/un-nf/404/issues" target="_blank" rel="noopener">GitHub issue</a>, or <a href="https://discord.gg/X9QrVm6dqS" target="_blank" rel="noopener">submit a ticket</a> in the Discord.</p>
-<p><strong><em>!Occasional! breakage</em></strong> - Breakage is honestly limited to having to manually solve a captcha every now and again. Still, some websites will break, some login flows will fail, some features won't work. This is the nature of deep protocol mutation. If there's something critical, open a <a href="https://github.com/un-nf/404/issues" target="_blank" rel="noopener">GitHub issue</a> and I will try to find a workaround.</p>
-<p><strong><em>Active maintenance</em></strong> - Browser updates change fingerprinting surfaces. Profiles need updating. You can't just "set it and forget it." I will update as frequently as I can.</p>
-<p><strong><em>Technical comlexity</em></strong> - It's a lot. I know, but honestly it kind of just works right now. It <em>may</em> get you rate-limited or flagged as a bot (I haven't been yet, and I run this jawn every day), but you should be able to pass Captchas and prove you're a human -- no, the pole is not a part of the 'street light.'</p>
-<blockquote>
+<h2 id="limitations">Limitations</h2>
+<p><strong><em>Manual configuration</em></strong> - Profiles require review and occasional tweaking based on your use-case and threat model. If you're confused about configuration, feel free to reach out in an <a href="mailto:support@404privacy.com">email</a>, open a <a href="https://github.com/un-nf/404/issues" target="_blank" rel="noopener">GitHub issue</a>, or <a href="https://discord.gg/X9QrVm6dqS" target="_blank" rel="noopener">submit a ticket</a> in the Discord.</p>
+<p><strong><em>!Occasional! breakage</em></strong> - Breakage is limited but expected. This is the nature of deep protocol mutation. If there's something critical, open a <a href="https://github.com/un-nf/404/issues" target="_blank" rel="noopener">GitHub issue</a> and I will try to find a fix.</p>
+<div class="admonition success">
+<p class="admonition-title">Tutanota mail + DDG already fixed due to user feedback</p>
+</div>
+<p><strong><em>Active maintenance</em></strong> - Browser updates change fingerprinting surfaces. Profiles need updating. You can't just "set it and forget it." I update as frequently as I can.</p>
+<div class="admonition warning">
+<p class="admonition-title">Long term effects</p>
 <p>I do not know the long term effects on account usage. I have been logging-in via this proxy using my personal Google, Microsoft, and Apple accounts for the last 9-ish months, and I have experienced <em>no</em> retaliation (bans and whatnot). That is <em>not</em> to say you will have the same experience. <strong>I <em>strongly</em> recommend that you use alternate/disposable accounts if you're going to be testing OAuth or other login flows.</strong></p>
-</blockquote>
-<p><em>I am not a cybersecurity engineer. I hammered this together and may have missed something important. Feel free to reach out with security vulnerabilities @ 404co@proton.me</em></p></div>
+</div>
+<blockquote>
+<p><em>I am not a cybersecurity engineer. I hammered this together and may have missed something important. Feel free to reach out with security vulnerabilities @ 404co@proton.me</em></p>
+</blockquote></div>
 
 
 

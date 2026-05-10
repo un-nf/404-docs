@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Technical reference for the current STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and the limits that still matter.">
+        <meta name="description" content="Technical reference for the STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and the limits that matter.">
       
       
       
         <link rel="canonical" href="https://docs.404privacy.com/resources/static/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../repoDev/">
       
       
-        <link rel="next" href="../controlPlane/">
+        <link rel="next" href="../ebpf/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>STATIC Runtime and Data Plane - 404 - A Privacy Tool</title>
+        <title>STATIC Proxy - 404 - A Privacy Tool</title>
       
     
     
@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -70,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#static-runtime-and-data-plane" class="md-skip">
+        <a href="#synthetic-traffic-and-tls-identity-camouflage-static-proxy" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              STATIC Runtime and Data Plane
+              STATIC Proxy
             
           </span>
         </div>
@@ -799,7 +801,35 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
+    --- References ---
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repoDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repository Map
   
 
     
@@ -836,7 +866,7 @@
   <span class="md-ellipsis">
     
   
-    STATIC Runtime and Data Plane
+    STATIC
   
 
     
@@ -854,7 +884,7 @@
   <span class="md-ellipsis">
     
   
-    STATIC Runtime and Data Plane
+    STATIC
   
 
     
@@ -880,10 +910,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-static-is-responsible-for" class="md-nav__link">
+  <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What STATIC is responsible for
+        Features
       
     </span>
   </a>
@@ -891,10 +921,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-first-important-correction" class="md-nav__link">
+  <a href="#implementation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The first important correction
+        Implementation
       
     </span>
   </a>
@@ -902,10 +932,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-startup-contract" class="md-nav__link">
+  <a href="#startup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current startup contract
+        Startup
       
     </span>
   </a>
@@ -913,15 +943,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-launch-modes" class="md-nav__link">
+  <a href="#launch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current launch modes
+        Launch
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Current launch modes">
+    <nav class="md-nav" aria-label="Launch">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -952,17 +982,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-config-sample" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Current config sample
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#managed-ca-and-cache-paths" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -974,10 +993,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#keystore-reality" class="md-nav__link">
+  <a href="#keystore" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Keystore reality
+        Keystore
       
     </span>
   </a>
@@ -985,10 +1004,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-modes" class="md-nav__link">
+  <a href="#modes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current modes
+        Modes
       
     </span>
   </a>
@@ -996,10 +1015,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#shared-profile-state" class="md-nav__link">
+  <a href="#shared-profiles" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Shared profile state
+        Shared profiles
       
     </span>
   </a>
@@ -1007,10 +1026,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-bundled-profile-model" class="md-nav__link">
+  <a href="#bundled-profile-model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current bundled profile model
+        Bundled profile model
       
     </span>
   </a>
@@ -1101,10 +1120,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#limits-that-still-matter" class="md-nav__link">
+  <a href="#limitations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limits that still matter
+        Limitations
       
     </span>
   </a>
@@ -1127,6 +1146,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../controlPlane/" class="md-nav__link">
         
   
@@ -1134,7 +1181,7 @@
   <span class="md-ellipsis">
     
   
-    Control Plane and CA State
+    404 API
   
 
     
@@ -1162,63 +1209,7 @@
   <span class="md-ellipsis">
     
   
-    Profiles and Persona Materialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../repoDev/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Runtime Repository Map
+    Profiles
   
 
     
@@ -1504,56 +1495,95 @@
   
 
 
-<div><h1 id="static-runtime-and-data-plane">STATIC Runtime and Data Plane</h1>
+<div><h1 id="synthetic-traffic-and-tls-identity-camouflage-static-proxy">Synthetic Traffic and TLS Identity Camouflage (STATIC) Proxy</h1>
 <p>STATIC is the open source runtime at the center of 404.</p>
-<p>It is not the desktop app, and it is not the WSL distro by itself. It is the proxy runtime that those higher-level delivery paths wrap, package, and operate.</p>
 <hr>
-<h2 id="what-static-is-responsible-for">What STATIC is responsible for</h2>
-<p>STATIC currently owns:</p>
+<h2 id="features">Features</h2>
 <ul>
-<li>profile-driven proxy startup</li>
+<li>Profile-driven proxy startup</li>
 <li>HTTP proxy and TLS interception behavior</li>
-<li>the shared in-memory profile store</li>
-<li>the localhost control plane</li>
+<li>Shared in-memory profile store</li>
+<li>Localhost control plane</li>
 <li>CA generation and runtime-side custody of the private key</li>
-<li>injected browser-runtime shaping</li>
-<li>profile-aware transport planning for upstream fetches</li>
+<li>Injected browser-runtime shaping</li>
+<li>Profile-aware transport planning for upstream fetches</li>
 </ul>
-<p>If you are looking for host trust installation, host proxy settings, account flow, updater UX, or WSL distro import logic, that belongs somewhere else.</p>
+<p>For host trust installation, host proxy settings, account flow, updater UX, or WSL distro import logic, download the <a href="https://404privacy.com/pricing/">desktop app</a></p>
+<details class="abstract">
+<summary>STATIC repository map</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>src/STATIC_proxy/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── Cargo.toml                      # Rust crate manifest for STATIC
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── assets/
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   └── js/
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│       ├── behavioral_noise_v1.js  # Runtime-side behavioral noise helper
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│       ├── dist/                   # Built runtime bundle embedded by Rust
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│       └── src/
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│           ├── capabilities/
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│           ├── contexts/
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│           ├── core/
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│           ├── evasion/
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│           ├── identity/
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│           ├── privacy/
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│           ├── spoofing/
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│           └── runtime.js
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>├── build/                         # Node/esbuild workspace for runtime.bundle.js
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│   ├── build.js
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│   └── package.json
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>├── build.rs                       # Rust build hook for embedded assets
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>├── certs/                         # Local development certificates and fixtures
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>├── config/
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│   ├── app.config.toml
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│   ├── static.chrome.toml
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│   └── static.example.toml
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>├── profiles/
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>├── src/
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>│   ├── app.rs
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│   ├── assets.rs
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│   ├── behavior/
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>│   ├── control.rs
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│   ├── lib.rs
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│   ├── main.rs
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│   ├── telemetry.rs
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│   ├── config/
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│   ├── keystore/
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│   ├── proxy/
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>│   ├── tls/
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│   └── utils/
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>└── target/                        # Local build output when compiling in place
+</span></code></pre></div>
+</details>
 <hr>
-<h2 id="the-first-important-correction">The first important correction</h2>
-<p>Older writeups sometimes made STATIC sound broader or lower-level than it really is.</p>
-<p>What STATIC does <strong>not</strong> do today:</p>
+<h2 id="implementation">Implementation</h2>
+<p>What STATIC does:</p>
 <ul>
-<li>it does not literally rewrite your host TCP handshake in place</li>
-<li>it does not guarantee exact packet-perfect parity for every requested TLS persona</li>
-<li>it does not make cross-engine impersonation magically coherent just because a profile file asked for it</li>
-<li>it does not replace the separate eBPF layer</li>
+<li>Shapes the upstream client behavior it controls</li>
+<li>Rewrites request and response state through a deterministic stage pipeline</li>
+<li>Injects a coordinated browser-runtime shaping layer into HTML responses</li>
 </ul>
-<p>What it does do is still substantial:</p>
+<p>What STATIC does <strong>not</strong> do:</p>
 <ul>
-<li>it shapes the upstream client behavior it controls</li>
-<li>it rewrites request and response state through a deterministic stage pipeline</li>
-<li>it injects a coordinated browser-runtime shaping layer into HTML responses</li>
+<li>Rewrite your host TCP handshake in place</li>
+<li>Guarantee exact packet-perfect parity for every requested TLS persona</li>
+<li>Make cross-engine impersonation coherent</li>
+<li>Replace the separate eBPF layer</li>
 </ul>
 <hr>
-<h2 id="current-startup-contract">Current startup contract</h2>
-<p>STATIC now starts from an explicit profile decision.</p>
+<h2 id="startup">Startup</h2>
+<p>STATIC starts with an explicit profile configuration.</p>
 <p>Proxy mode expects one of these:</p>
 <ul>
 <li><code>--profile &lt;name&gt;</code></li>
 <li><code>pipeline.default_profile</code> in config</li>
 </ul>
 <p>If neither exists, proxy mode refuses to start.</p>
-<p>That is current behavior, not a recommendation.</p>
 <hr>
-<h2 id="current-launch-modes">Current launch modes</h2>
+<h2 id="launch">Launch</h2>
 <h3 id="sample-config-path">Sample config path</h3>
-<p>If <code>config/static.example.toml</code> is present and you pass it explicitly, you get the sample-config listener shape:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>src/STATIC_proxy
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cargo<span class="w"> </span>run<span class="w"> </span>--<span class="w"> </span>--config<span class="w"> </span>config/static.example.toml<span class="w"> </span>--profile<span class="w"> </span>edge-windows
+<p>To use <code>config/static.example.toml</code> (or personal config):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>src/STATIC_proxy
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>cargo<span class="w"> </span>run<span class="w"> </span>--<span class="w"> </span>--config<span class="w"> </span>config/static.example.toml<span class="w"> </span>--profile<span class="w"> </span>edge-windows
 </span></code></pre></div>
-<p>Default listener state in that sample:</p>
+<p><code>config/static.example.toml</code> defaults:</p>
 <ul>
 <li>listener: <code>127.0.0.1:4040</code></li>
 <li>HTTP/3 placeholder bind: <code>127.0.0.1:4041</code></li>
@@ -1561,73 +1591,72 @@
 </ul>
 <h3 id="standalone-binary-path">Standalone binary path</h3>
 <p>If no config file is provided, STATIC falls back to built-in CLI defaults and looks for <code>profiles/</code> beside the executable.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./static<span class="w"> </span>--list-profiles
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./static<span class="w"> </span>--<span class="w"> </span>--profile<span class="w"> </span>edge-windows
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./static<span class="w"> </span>--list-profiles
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./static<span class="w"> </span>--<span class="w"> </span>--profile<span class="w"> </span>edge-windows
 </span></code></pre></div>
-<p>Current built-in defaults in that mode:</p>
+<p>Defaults:</p>
 <ul>
 <li>listener: <code>127.0.0.1:8443</code></li>
 <li>HTTP/3 placeholder bind: <code>127.0.0.1:8444</code></li>
 <li>control plane: <code>127.0.0.1:8445</code></li>
 </ul>
-<p>That is one of the biggest places older docs drifted.</p>
-<hr>
-<h2 id="current-config-sample">Current config sample</h2>
-<p>The repository sample config is:</p>
-<div class="language-toml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">[listener]</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">bind_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4040</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">proxy_protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"tls"</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">[tls]</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">keystore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"keychain"</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"404.static_proxy"</span><span class="p">,</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ca_key"</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">[pipeline]</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">profiles_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"../profiles"</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">js_debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">alt_svc_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"normalize"</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="n">body_limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">max_request_body_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span><span class="w"> </span><span class="n">max_response_body_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">33554432</span><span class="p">,</span><span class="w"> </span><span class="n">max_decompressed_html_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">16777216</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">[http3]</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="n">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="n">bind_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4041</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="k">[telemetry]</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"stdout"</span>
+<details class="abstract">
+<summary>static.example.toml</summary>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">[listener]</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">bind_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4040</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">proxy_protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"tls"</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">[tls]</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">keystore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"keychain"</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"404.static_proxy"</span><span class="p">,</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ca_key"</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">[pipeline]</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">profiles_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"../profiles"</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">js_debug</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">alt_svc_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"normalize"</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">body_limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">max_request_body_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">16777216</span><span class="p">,</span><span class="w"> </span><span class="n">max_response_body_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">33554432</span><span class="p">,</span><span class="w"> </span><span class="n">max_decompressed_html_bytes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">16777216</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="k">[http3]</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="n">bind_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="n">bind_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4041</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">[telemetry]</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"stdout"</span>
 </span></code></pre></div>
 <p>Important details:</p>
 <ul>
 <li><code>proxy_protocol = "tls"</code> is the normal path</li>
 <li>the control plane is configured separately and binds on <code>listener.bind_port + 2</code></li>
-<li>body buffering limits are now explicit</li>
-<li>HTTP/3 config exists, but the normal runtime path is still HTTP/1.1 and HTTP/2</li>
+<li>body buffering limits are explicit</li>
+<li>HTTP/3 config exists, but the normal runtime path is HTTP/1.1 and HTTP/2</li>
 </ul>
+</details>
 <hr>
 <h2 id="managed-ca-and-cache-paths">Managed CA and cache paths</h2>
-<p>This is another place older docs became misleading.</p>
-<p>STATIC now resolves its managed CA and cache paths under the OS app-data directory.</p>
-<p>The legacy TLS path fields still exist as compatibility inputs, but they are no longer general-purpose override knobs.</p>
-<p>Current managed paths resolve under the OS-local data directory for the <code>static_proxy</code> application name, including:</p>
+<p>STATIC resolves its managed CA and cache paths under the OS app-data directory.</p>
+<div class="admonition bug">
+<p class="admonition-title">The legacy TLS path fields exist as compatibility inputs</p>
+</div>
+<p>Managed paths resolve under the OS-local data directory for the <code>static_proxy</code> application name, including:</p>
 <ul>
 <li><code>certs/static-ca.crt</code></li>
-<li><code>certs/static-ca.key.dpapi</code> on the protected-storage path used by the current keystore backend</li>
+<li><code>certs/static-ca.key.dpapi</code> on the protected-storage path used by the keystore backend</li>
 <li><code>certs/cache</code></li>
 </ul>
-<p>If you need the exact CA certificate path at runtime, the cleanest operator-facing check is still the control plane:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>GET /ca/status
+<p>If you need the exact CA certificate path at runtime, the cleanest user-facing check is the control plane:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>GET /ca/status
 </span></code></pre></div>
 <hr>
-<h2 id="keystore-reality">Keystore reality</h2>
-<p>The current sample config uses:</p>
-<div class="language-toml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">keystore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"keychain"</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"404.static_proxy"</span><span class="p">,</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ca_key"</span><span class="w"> </span><span class="p">}</span>
+<h2 id="keystore">Keystore</h2>
+<p>The sample config uses:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">keystore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"keychain"</span><span class="p">,</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"404.static_proxy"</span><span class="p">,</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">"ca_key"</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <p>That is accurate for the standalone/local path.</p>
-<p>The desktop-managed WSL path is different. There, the runtime TOML authored by the desktop shell switches to file-backed key custody inside the Linux runtime contract.</p>
-<p>So any documentation that implies the runtime is always on a localhost/keychain path is now wrong.</p>
+<p>For WSL, the runtime TOML authored by the desktop shell switches to file-backed key custody inside the Linux runtime contract.</p>
 <hr>
-<h2 id="current-modes">Current modes</h2>
-<p>STATIC can currently run in two modes:</p>
+<h2 id="modes">Modes</h2>
+<p>STATIC can run in two modes:</p>
 <ul>
 <li><code>proxy</code></li>
 <li><code>control</code></li>
@@ -1636,44 +1665,44 @@
 <p><code>control</code> means control-only sidecar behavior.</p>
 <p>The composition root lives in <code>app.rs</code>, where STATIC loads the shared <code>ProfileStore</code>, constructs the stage pipeline, and starts the control plane with shared readiness and shutdown state.</p>
 <hr>
-<h2 id="shared-profile-state">Shared profile state</h2>
-<p>One <code>ProfileStore</code> is loaded and shared between:</p>
+<h2 id="shared-profiles">Shared profiles</h2>
+<p>One <code>ProfileStore</code> is loaded and shared between the:</p>
 <ul>
-<li>the request/response pipeline</li>
-<li>the localhost control plane</li>
+<li>Request/response pipeline</li>
+<li>Localhost control plane</li>
 </ul>
 <p>That is what makes active-profile reads and selection changes coherent.</p>
-<p>This is also why the docs need to talk about profile state and control routes together rather than as separate side notes.</p>
 <hr>
-<h2 id="current-bundled-profile-model">Current bundled profile model</h2>
-<p>The shipped runtime path is family-first.</p>
-<p>That means the runtime is built around browser families first and branded variants second.</p>
-<p>Current operator guidance is simple and still correct:</p>
+<h2 id="bundled-profile-model">Bundled profile model</h2>
+<p>The profile model is built around browser families first and branded variants second.</p>
+<p>Simply:</p>
 <ul>
-<li>use Chromium-family profiles on Chromium-family browsers</li>
-<li>use Firefox-family profiles on Firefox-family browsers</li>
+<li>Use Chromium-family profiles on Blink-family browsers</li>
+<li>Use Firefox-family profiles on Gecko-family browsers</li>
 </ul>
-<p>The runtime does not stop manual operators from making bad choices. Higher-level shells can do that if they want to.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>STATIC does not stop users from misconfiguring the software. Cross-family spoofing is brittle, so ensure proper configuration.</p>
+</div>
 <hr>
 <h2 id="request-classification-and-protocol-handling">Request classification and protocol handling</h2>
-<p>STATIC's inbound routing now distinguishes between:</p>
+<p>STATIC's inbound routing distinguishes between:</p>
 <ul>
-<li>direct TLS interception</li>
+<li>Direct TLS interception</li>
 <li>HTTP CONNECT proxy traffic</li>
-<li>plain HTTP proxy traffic</li>
+<li>Plain HTTP proxy traffic</li>
 </ul>
-<p>That matters because older descriptions often collapsed everything into one generic HTTP proxy story.</p>
-<p>At runtime, the connection path then branches into the appropriate downstream and upstream handling path, including:</p>
+<p>At runtime, the connection path branches into downstream and upstream handling paths, including:</p>
 <ul>
 <li>HTTP/1.1 sessions</li>
 <li>HTTP/2 sessions</li>
-<li>raw websocket tunneling</li>
-<li>local runtime asset delivery for <code>__/static/runtime.js</code>-style support assets</li>
-<li>buffered HTML mutation only when response stages actually require it</li>
+<li>Raw websocket tunneling</li>
+<li>Local runtime asset delivery for <code>__/static/runtime.js</code>-style support assets</li>
+<li>Buffered HTML mutation only when response stages actually require it</li>
 </ul>
 <hr>
 <h2 id="deterministic-stage-pipeline">Deterministic stage pipeline</h2>
-<p>The current stage order is:</p>
+<p>Stage order:</p>
 <ol>
 <li><code>HeaderProfileStage</code></li>
 <li><code>BehavioralNoiseStage</code></li>
@@ -1681,54 +1710,49 @@
 <li><code>JsInjectionStage</code></li>
 <li><code>AltSvcStage</code></li>
 </ol>
-<p>That order is important.</p>
+<p>This satisfies the following requirements:</p>
 <ul>
-<li>profile shaping has to exist before runtime config is embedded</li>
-<li>CSP handling has to happen before the final injected script layout is sent</li>
+<li>Profile shaping must exist before runtime config is embedded</li>
+<li>CSP handling must happen before the final injected script layout is sent</li>
 <li>Alt-Svc handling happens after the main mutation decisions are made</li>
 </ul>
 <hr>
 <h2 id="transport-boundary">Transport boundary</h2>
-<p>STATIC's transport plan is richer than the old "rewrite the handshake" phrasing suggested.</p>
-<p>The real contract is closer to this:</p>
+<p>STATIC's transport plan is as follows</p>
 <ul>
-<li>profile data describes the desired upstream transport shape</li>
-<li>STATIC passes that plan into the current fetcher/backend boundary</li>
-<li>actual wire fidelity is bounded by what the current backend can express</li>
+<li>Profile data describes the desired upstream transport shape</li>
+<li>STATIC passes that plan into the fetcher/backend boundary</li>
+<li>Actual wire fidelity is bound by what the backend can express</li>
 </ul>
-<p>Current plan inputs include things like:</p>
+<p>Plan inputs:</p>
 <ul>
-<li>cipher-suite ordering</li>
-<li>signature-algorithm ordering</li>
-<li>supported-group ordering</li>
+<li>Cipher-suite ordering</li>
+<li>Signature-algorithm ordering</li>
+<li>Supported-group ordering</li>
 <li>ALPN</li>
-<li>extension ordering</li>
-<li>delegated credentials</li>
+<li>Extension ordering</li>
+<li>Delegated credentials</li>
 <li>ALPS settings where applicable</li>
-<li>session-resumption controls</li>
+<li>Session-resumption controls</li>
 </ul>
-<p>That is meaningful shaping, but it is not the same thing as promising exact packet parity with every target browser build on every stack.</p>
 <hr>
 <h2 id="js-runtime-model">JS runtime model</h2>
-<p>The JS runtime is not a pile of unrelated patch files anymore.</p>
-<p>It boots as a fixed pipeline with a shared registry and shared entropy state.</p>
-<p>High-level bootstrap order:</p>
+<p>The JS runtime boots as a fixed pipeline with a shared registry and entropy state.</p>
+<p>Bootstrap order:</p>
 <ol>
-<li>runtime registry initialization</li>
-<li>native reference capture</li>
+<li>Runtime registry initialization</li>
+<li>Native reference capture</li>
 <li><code>Function.prototype.toString</code> masking</li>
 <li>CSP nonce capture</li>
-<li>config load and validation</li>
-<li>entropy initialization</li>
-<li>policy initialization</li>
-<li>identity, capability, spoofing, evasion, privacy, and iframe modules</li>
+<li>Config load and validation</li>
+<li>Entropy initialization</li>
+<li>Policy initialization</li>
+<li>Identity, capability, spoofing, evasion, privacy, and iframe modules</li>
 </ol>
-<p>That structure matters because the runtime now tries much harder to keep surfaces coherent within one process lifetime instead of inventing unrelated randomness everywhere.</p>
 <hr>
 <h2 id="worker-and-iframe-handling">Worker and iframe handling</h2>
-<p>Two details matter here:</p>
 <h3 id="workers">Workers</h3>
-<p>Worker and SharedWorker construction is wrapped through bootstrap scripts so STATIC can carry family and identity state into the worker path.</p>
+<p>Worker and SharedWorker construction is wrapped through bootstrap scripts so STATIC can propagate family and identity state into the worker path.</p>
 <p>That is where worker-visible fields such as:</p>
 <ul>
 <li><code>navigator.userAgent</code></li>
@@ -1742,15 +1766,13 @@
 <p>Iframe propagation is same-origin and selective.</p>
 <p>The runtime mirrors selected state into compatible child contexts rather than blindly re-running the entire bootstrap path in every frame.</p>
 <hr>
-<h2 id="limits-that-still-matter">Limits that still matter</h2>
-<p>The honest limits are still important:</p>
+<h2 id="limitations">Limitations</h2>
 <ul>
-<li>exact on-the-wire TLS parity is bounded by the current transport backend</li>
-<li>service workers and already-existing worker state remain outside the strongest injected-runtime path</li>
-<li>manual operators can still select incoherent family combinations if they insist on doing that</li>
-<li>STATIC and the eBPF layer are still distinct systems even when packaged together</li>
-</ul>
-<p>Those are not edge disclaimers. They are part of the current reality and the docs should say so plainly.</p></div>
+<li>Exact on-the-wire TLS parity is bounded by the curent transport backend</li>
+<li>Service workers and already-existing worker state remain outside the strongest injected-runtime path</li>
+<li>Users can select incoherent family combinations if they insist on doing that</li>
+<li>STATIC and the eBPF layer are distinct systems even when packaged together</li>
+</ul></div>
 
 
 

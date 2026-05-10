@@ -38,6 +38,8 @@ theme:
   font: false
   palette:
     scheme: slate
+    primary: custom
+    accent: custom
   features:
     - content.code.copy
     - navigation.tabs
@@ -54,6 +56,9 @@ plugins:
         height: "35vw"
   - privacy
   - search
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - attr_list

@@ -11,11 +11,9 @@ This page documents the **open source** distro build pipeline.
 
 ---
 
-## The current packaging model
+## Packaging
 
 The WSL runtime is built from an Alpine-based Docker image and exported as a flat root filesystem tarball.
-
-That distinction is important.
 
 !!! warning "Use `docker export`, not `docker save`"
 
@@ -26,9 +24,7 @@ That distinction is important.
 
 ---
 
-## Local prerequisites
-
-You need:
+## Dependencies
 
 - `docker`
 - a Linux or Linux-capable build environment for the musl binary and eBPF object
@@ -36,10 +32,6 @@ You need:
 - `src/ebpf/ttl_editor.o`
 
 The STATIC binary must be musl-targeted. A glibc-targeted Linux build is the wrong input for the Alpine-based rootfs.
-
----
-
-## Build the required inputs first
 
 ### Build the runtime bundle dependencies
 
@@ -76,19 +68,19 @@ That Makefile currently checks for:
 
 ---
 
-## What the local build script does
+## build.sh
 
 `./distro/build.sh`:
 
-1. stages the rootfs files
-2. copies the musl STATIC binary into the build context
-3. copies `ttl_editor.o` into the build context
-4. writes `/opt/404/distro-version`
-5. builds the temporary Docker image
-6. creates a container from that image
-7. exports the filesystem and gzips it into `dist/404-distro.tar.gz`
+1. Stages the rootfs files
+2. Copies the musl STATIC binary into the build context
+3. Copies `ttl_editor.o` into the build context
+4. Writes `/opt/404/distro-version`
+5. Builds the temporary Docker image
+6. Creates a container from that image
+7. Exports the filesystem and gzips it into `dist/404-distro.tar.gz`
 
-Typical invocation:
+Usage:
 
 ```bash
 ./distro/build.sh \
@@ -101,7 +93,7 @@ Typical invocation:
 
 ---
 
-## If you want to inspect the resulting tarball
+## Inspect the resulting tarball
 
 After packaging:
 
@@ -109,7 +101,7 @@ After packaging:
 tar -tzf dist/404-distro.tar.gz | head -100
 ```
 
-You should see the runtime files that matter, including:
+Make sure you see the following files:
 
 - `opt/404/static`
 - `opt/404/ttl_editor.o`
@@ -121,7 +113,7 @@ You should see the runtime files that matter, including:
 
 ## Manual Docker export path
 
-If you want to understand what `build.sh` is abstracting, the manual shape is:
+`build.sh` responsibilities:
 
 1. stage `rootfs/` plus the built artifacts into a temporary Docker build context
 2. `docker build` that context
@@ -129,37 +121,27 @@ If you want to understand what `build.sh` is abstracting, the manual shape is:
 4. `docker export` that container
 5. gzip the export stream
 
-That is the exact idea the script is wrapping.
+!!! note "Expected output"
 
-The important point is still the same: the output must be a flat root filesystem tarball, not a Docker image archive.
+    The output must be a flat root filesystem tarball, not a Docker image archive.
 
 ---
 
 ## CI shape
 
-The tagged distro release path does the same broad work in automation:
+The tagged distro release path automates this process:
 
-1. build the musl STATIC binary
-2. build the eBPF object
-3. package the distro tarball
-4. generate the stable manifest
-5. sign the manifest with `DISTRO_MANIFEST_SIGNING_KEY`
-6. publish stable and versioned objects to the public update origin
+1. Builds the musl STATIC binary
+2. Build the eBPF object
+3. Package the distro tarball
+4. Generate the stable manifest
+5. Sign the manifest with `DISTRO_MANIFEST_SIGNING_KEY`
+6. Publish stable and versioned objects to the public update origin
 
-The tagged release workflow currently publishes:
+The tagged release workflow publishes:
 
-- stable `distro/manifest.json`
-- stable `distro/manifest.json.sig`
-- versioned `distro/<tag>/404-distro.tar.gz`
-- versioned `distro/<tag>/manifest.json`
-- versioned `distro/<tag>/manifest.json.sig`
-
----
-
-## Why this page exists separately from STATIC build docs
-
-Running STATIC is one workflow.
-
-Packaging the Linux runtime artifact that Windows consumes is a different workflow.
-
-They share code and build inputs, but they solve different problems and deserve separate docs.
+- Stable `distro/manifest.json`
+- Stable `distro/manifest.json.sig`
+- Versioned `distro/<tag>/404-distro.tar.gz`
+- Versioned `distro/<tag>/manifest.json`
+- Versioned `distro/<tag>/manifest.json.sig`

@@ -2,98 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.404privacy.com/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/consent/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/contact/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/faq/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/Overview/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/Overview/architecture/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/Overview/whatIs/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/Overview/why404/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/dev/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/dev/developers/</loc>
-         <lastmod>2026-05-09</lastmod>
-    </url>
-    <url>
-         <loc>https://docs.404privacy.com/dev/ebpf/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/dev/linux/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/dev/macos/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/dev/windows/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/getStart/appStart/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/resources/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/resources/controlPlane/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/resources/ebpf/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/resources/profiles/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/resources/repoDev/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/resources/static/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/runtime/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/runtime/distro/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
     <url>
          <loc>https://docs.404privacy.com/runtime/docker/</loc>
-         <lastmod>2026-05-09</lastmod>
+         <lastmod>2026-05-10</lastmod>
     </url>
 </urlset>

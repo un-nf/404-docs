@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -910,119 +912,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/static/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    STATIC Runtime and Data Plane
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/controlPlane/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Control Plane and CA State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/profiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Profiles and Persona Materialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../resources/ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Reference
+    --- References ---
   
 
     
@@ -1050,7 +940,119 @@
   <span class="md-ellipsis">
     
   
-    Runtime Repository Map
+    Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    404 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles
   
 
     
@@ -1341,15 +1343,15 @@
 <h2 id="before-you-start">Before you start</h2>
 <ul>
 <li>the release asset is <code>static_proxy-linux-x86_64</code></li>
-<li>the current public profile catalog is <code>chrome-windows</code>, <code>edge-windows</code>, and <code>firefox-windows</code></li>
+<li>the public profile catalog is <code>chrome-windows</code>, <code>edge-windows</code>, and <code>firefox-windows</code></li>
 <li>the standalone local listener defaults to <code>127.0.0.1:8443</code></li>
 <li>the local control plane defaults to <code>127.0.0.1:8445</code></li>
 <li>packet-layer mutation requires a Linux kernel and the <code>ttl_editor.o</code> object from the source tree</li>
 </ul>
-<p>For the current release page, use <a href="https://github.com/un-nf/404/releases/tag/v2.5.2">v2.5.2</a>.</p>
+<p>For the current release page, use <a href="https://github.com/un-nf/404/releases/latest">the latest GitHub release</a>.</p>
 <hr>
 <h2 id="1-stage-the-binary-and-profiles">1. Stage the binary and profiles</h2>
-<p>Download <code>static_proxy-linux-x86_64</code> from <a href="https://github.com/un-nf/404/releases/tag/v2.5.2">v2.5.2</a>, then create a working directory and place the binary there as <code>static_proxy</code>:</p>
+<p>Download <code>static_proxy-linux-x86_64</code> from <a href="https://github.com/un-nf/404/releases/latest">the latest GitHub release</a>, then create a working directory and place the binary there as <code>static_proxy</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/404-runtime"</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mv<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/Downloads/static_proxy-linux-x86_64"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/404-runtime/static_proxy"</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>chmod<span class="w"> </span>+x<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/404-runtime/static_proxy"</span>
@@ -1384,7 +1386,7 @@
 <p>The default standalone listener is <code>127.0.0.1:8443</code>.</p>
 <p>For Firefox:</p>
 <ul>
-<li>Settings -&gt; Network Settings -&gt; Manual proxy configuration</li>
+<li>Settings → Network Settings → Manual proxy configuration</li>
 <li>HTTP Proxy: <code>127.0.0.1</code></li>
 <li>Port: <code>8443</code></li>
 <li>enable <code>Also use this proxy for HTTPS</code></li>

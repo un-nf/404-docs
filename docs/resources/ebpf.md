@@ -13,7 +13,7 @@ hide:
 
 ---
 
-## What it does
+## Overview
 
 The eBPF module attaches to Linux Traffic Control (`tc`) egress hooks and rewrites packet-level values that can be used for passive OS and stack fingerprinting via tools like p0f or nmap.
 
@@ -83,7 +83,7 @@ You need a Linux environment with:
     
     The packet policy is still not fully profile-driven in the way the higher-level runtime is.
 
-Today, the important mutation values are still assigned through globals in `src/ebpf/ttl_editor.c` rather than being fully driven by the selected runtime profile.
+    Mutation values are still assigned through globals in `src/ebpf/ttl_editor.c` rather than being fully driven by the selected runtime profile.
 
 !!! abstract "Default Implementation Options"
 

@@ -8,7 +8,7 @@ hide:
 
 ## Who We Are
 
-404 is a local TLS-terminating proxy built to address cross-session tracking through active fingerprint spoofing. It's currently maintained by a solo developer with a background in systems engineering, computational modeling, and education.
+404 is a local TLS-terminating proxy built to address cross-session tracking through active fingerprint spoofing. It's maintained by a solo developer with a background in systems engineering, computational modeling, and education.
 
 The project was founded in 2024 after recognizing that existing privacy tools (e.g. VPNs, private browsing modes, ad blockers) no longer address passive fingerprinting techniques that operate across multiple layers of the network stack. 404 is an attempt to give individuals and organizations practical control over how their devices appear on the web.
 
@@ -84,20 +84,6 @@ Tracking operates on multiple layers that most privacy tools are not designed to
 ### The Illusion of Consent
 
 "Cookie consent" banners are theater. By the time you see them, your fingerprint has already been logged, correlated, and sold. GDPR and CCPA are steps forward, but enforcement is weak and technical evasion is complex.
-
----
-
-## Development Status
-
-404 is in active development. Current priorities:
-
-- **More profiles** (Safari, mobile browsers, Linux configs)  
-- **Improved consistency** (reducing edge-case leaks)
-- **Better UX** (reducing manual configuration)
-- **External security audit** (for components that introduce the most technical risk)
-- **Community contributions** (documentation, testing, profile tuning)
-
-404 is not built for mass adoption, yet. It is infrastructure for individuals and organizations that need practical control over fingerprinting.
 
 ---
 

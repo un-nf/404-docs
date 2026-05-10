@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://docs.404privacy.com/Overview/">
       
       
-        <link rel="prev" href="../resources/repoDev/">
+        <link rel="prev" href="../resources/profiles/">
       
       
         <link rel="next" href="whatIs/">
@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -792,119 +794,7 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../resources/static/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    STATIC Runtime and Data Plane
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../resources/controlPlane/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Control Plane and CA State
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../resources/profiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Profiles and Persona Materialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../resources/ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Reference
+    --- References ---
   
 
     
@@ -932,7 +822,119 @@
   <span class="md-ellipsis">
     
   
-    Runtime Repository Map
+    Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    404 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles
   
 
     
@@ -1223,7 +1225,7 @@
 
 <div><h1 id="about-us">About Us</h1>
 <h2 id="who-we-are">Who We Are</h2>
-<p>404 is a local TLS-terminating proxy built to address cross-session tracking through active fingerprint spoofing. It's currently maintained by a solo developer with a background in systems engineering, computational modeling, and education.</p>
+<p>404 is a local TLS-terminating proxy built to address cross-session tracking through active fingerprint spoofing. It's maintained by a solo developer with a background in systems engineering, computational modeling, and education.</p>
 <p>The project was founded in 2024 after recognizing that existing privacy tools (e.g. VPNs, private browsing modes, ad blockers) no longer address passive fingerprinting techniques that operate across multiple layers of the network stack. 404 is an attempt to give individuals and organizations practical control over how their devices appear on the web.</p>
 <hr>
 <h2 id="our-ethos">Our Ethos</h2>
@@ -1279,17 +1281,6 @@
 <p>Tracking operates on multiple layers that most privacy tools are not designed to control. If left unaddressed, passive fingerprinting will continue to normalize population-scale monitoring as an invisible default, further entrenching power imbalances between centralized tracking infrastructures and the communities they observe.</p>
 <h3 id="the-illusion-of-consent">The Illusion of Consent</h3>
 <p>"Cookie consent" banners are theater. By the time you see them, your fingerprint has already been logged, correlated, and sold. GDPR and CCPA are steps forward, but enforcement is weak and technical evasion is complex.</p>
-<hr>
-<h2 id="development-status">Development Status</h2>
-<p>404 is in active development. Current priorities:</p>
-<ul>
-<li><strong>More profiles</strong> (Safari, mobile browsers, Linux configs)  </li>
-<li><strong>Improved consistency</strong> (reducing edge-case leaks)</li>
-<li><strong>Better UX</strong> (reducing manual configuration)</li>
-<li><strong>External security audit</strong> (for components that introduce the most technical risk)</li>
-<li><strong>Community contributions</strong> (documentation, testing, profile tuning)</li>
-</ul>
-<p>404 is not built for mass adoption, yet. It is infrastructure for individuals and organizations that need practical control over fingerprinting.</p>
 <hr>
 <h2 id="contributing">Contributing</h2>
 <p>404 is open source. Contributions are welcome in the form of:</p>

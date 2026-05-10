@@ -7,11 +7,11 @@ description: Install dependencies and build the open source 404 runtime from sou
 
 This page is for source builds, packaging work, and local development.
 
-If you only want to run published artifacts, go back to [Self-Hosted and CLI](./index.md).
+If you only want to download & run published artifacts, go to [Self-Hosted and CLI](./index.md).
 
 ---
 
-## Repository layout that matters
+## Repository layout
 
 - `src/STATIC_proxy/` contains the Rust proxy, local control plane, JS build assets, and the public `profiles/` catalog
 - `src/ebpf/` contains the Linux packet-mutation program and its build tooling
@@ -120,7 +120,7 @@ That produces a WSL-importable root filesystem tarball at `dist/404-distro.tar.g
 
 ## Use the published guides after you build
 
-- for manual Windows operation of that tarball, use [Windows](./windows.md)
-- for direct local binary usage on macOS, use [macOS](./macos.md)
-- for direct local binary usage and eBPF attachment on Linux, use [Linux](./linux.md)
-- for the deeper packaging contract and publication model, use [WSL Distro and Runtime Packaging](../runtime/distro.md)
+- For manual Windows operation of that tarball, use [Windows](./windows.md)
+- For direct local binary usage on macOS, use [macOS](./macos.md)
+- For direct local binary usage and eBPF attachment on Linux, use [Linux](./linux.md)
+- For the packaging contract and publication model, use [Linux for Windows](../runtime/distro.md)

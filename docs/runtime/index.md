@@ -7,26 +7,28 @@ hide:
 
 # Developer Resources
 
-This section is the developer-facing documentation for 404.
+> Developer-facing documentation for 404.
 
-If you want the product experience, use the Desktop tab. If you want the guided CLI path, use the Self-Hosted/CLI tab.
+If you want the easiest possible experience, use the [404 application](https://404privacy.com/pricing/). If you want the guided CLI path, use the [Self-Hosted/CLI](../dev/index.md) documentation.
 
-The developer documentation covers:
+This documentation covers:
 
-- the WSL distro artifact the Windows desktop application consumes
-- the Docker packaging path that builds that distro rootfs tarball
-- the Linux eBPF layer
-- deep reference pages for STATIC, the control plane, profiles, and repository boundaries
+- WSL distro artifact & Rose kernel
+- Docker packaging path
+- eBPF layer
+- [Reference pages](../resources/index.md) for [STATIC](../resources/static.md), [APIs](../resources/controlPlane.md), [profiles](../resources/profiles.md), and [repository boundaries](../resources/repoDev.md)
 
 ---
 
 ## Common Links
 
-### [WSL distro packaging and operation](./distro.md)
+### [Understanding 404](../resources/repoDev.md)
 
-### [Docker-based distro build steps](./docker.md)
+### [Linux on Windows (WSL)](./distro.md)
 
-### [Packet-layer mutation details](../resources/ebpf.md)
+### [Docker build](./docker.md)
+
+### [TCP/IP Fingerprint Mutation](../resources/ebpf.md)
 
 ---
 

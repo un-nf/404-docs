@@ -6,14 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Technical reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.">
+        <meta name="description" content="API reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.">
       
       
       
         <link rel="canonical" href="https://docs.404privacy.com/resources/controlPlane/">
       
       
-        <link rel="prev" href="../static/">
+        <link rel="prev" href="../ebpf/">
       
       
         <link rel="next" href="../profiles/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>Control Plane and CA State - 404 - A Privacy Tool</title>
+        <title>Control Plane and API Documentation - 404 - A Privacy Tool</title>
       
     
     
@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -61,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -70,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#control-plane-and-ca-state" class="md-skip">
+        <a href="#control-plane-and-api" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Control Plane and CA State
+              Control Plane and API Documentation
             
           </span>
         </div>
@@ -799,7 +801,35 @@
   <span class="md-ellipsis">
     
   
-    Deep Reference
+    --- References ---
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../repoDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repository Map
   
 
     
@@ -827,7 +857,35 @@
   <span class="md-ellipsis">
     
   
-    STATIC Runtime and Data Plane
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
   
 
     
@@ -864,7 +922,7 @@
   <span class="md-ellipsis">
     
   
-    Control Plane and CA State
+    404 API
   
 
     
@@ -882,7 +940,7 @@
   <span class="md-ellipsis">
     
   
-    Control Plane and CA State
+    404 API
   
 
     
@@ -919,10 +977,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#authentication-model" class="md-nav__link">
+  <a href="#authentication" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Authentication model
+        Authentication
       
     </span>
   </a>
@@ -941,15 +999,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-matters-most-in-practice" class="md-nav__link">
+  <a href="#important-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What matters most in practice
+        Important notes
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="What matters most in practice">
+    <nav class="md-nav" aria-label="Important notes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1002,10 +1060,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#desktop-integration-status" class="md-nav__link">
+  <a href="#desktop-integration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Desktop integration status
+        Desktop integration
       
     </span>
   </a>
@@ -1035,10 +1093,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-limitation" class="md-nav__link">
+  <a href="#limitations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current limitation
+        Limitations
       
     </span>
   </a>
@@ -1068,63 +1126,7 @@
   <span class="md-ellipsis">
     
   
-    Profiles and Persona Materialization
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ebpf/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    eBPF Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../repoDev/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Runtime Repository Map
+    Profiles
   
 
     
@@ -1410,26 +1412,28 @@
   
 
 
-<div><h1 id="control-plane-and-ca-state">Control Plane and CA State</h1>
-<p>STATIC no longer behaves like a single opaque proxy process with no operator surface.</p>
-<p>It has an authenticated localhost control plane that the desktop app already uses on the live path.</p>
+<div><h1 id="control-plane-and-api">Control Plane and API</h1>
+<p>STATIC has an authenticated localhost control plane that the <a href="https://404privacy.com/product/">desktop app</a> uses.</p>
 <hr>
 <h2 id="bind-and-port-rules">Bind and port rules</h2>
 <p>The control plane binds on:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>listener.bind_port + 2
 </span></code></pre></div>
-<p>That means:</p>
+<p>So..</p>
 <ul>
-<li>sample config listener <code>4040</code> -&gt; control plane <code>4042</code></li>
-<li>standalone CLI default listener <code>8443</code> -&gt; control plane <code>8445</code></li>
+<li>Sample config listener <code>4040</code> → control plane <code>4042</code></li>
+<li>Standalone CLI default listener <code>8443</code> → control plane <code>8445</code></li>
 </ul>
 <p>HTTP/3 is a separate listener concept. It is <strong>not</strong> the control plane.</p>
 <hr>
-<h2 id="authentication-model">Authentication model</h2>
+<h2 id="authentication">Authentication</h2>
 <p>When <code>control.token_path</code> is configured, STATIC reads a shared token from disk and requires it on control routes via:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>X-404-Control-Token
 </span></code></pre></div>
-<p>If no token path is configured, the control plane can run without that header on a local-only operator path. The desktop app does not rely on that weaker mode.</p>
+<div class="admonition info">
+<p class="admonition-title">Unauthorized Control</p>
+<p>If no token path is configured, the control plane can run without that header on a local-only path. The desktop app does not share that functionality.</p>
+</div>
 <hr>
 <h2 id="current-routes">Current routes</h2>
 <p>The current control plane exposes:</p>
@@ -1445,25 +1449,23 @@
 <li><code>POST /profiles/validate</code></li>
 </ul>
 <hr>
-<h2 id="what-matters-most-in-practice">What matters most in practice</h2>
+<h2 id="important-notes">Important notes</h2>
 <h3 id="get-status"><code>GET /status</code></h3>
 <p>Use this to confirm:</p>
 <ul>
-<li>runtime mode</li>
-<li>whether the process currently considers itself ready</li>
+<li>Runtime mode</li>
+<li>Process readiness</li>
 </ul>
 <h3 id="get-castatus"><code>GET /ca/status</code></h3>
 <p>Returns:</p>
 <ul>
-<li>the managed CA certificate path</li>
-<li>whether the certificate exists</li>
-<li>the certificate PEM itself</li>
+<li>Certificate PEM</li>
+<li>Managed CA certificate path</li>
+<li>Whether the certificate exists</li>
 </ul>
-<p>This is what makes the current host-trust bridge workable. The Linux runtime keeps private key custody, but the desktop app can still retrieve the public certificate material it needs to install trust on the host.</p>
 <h3 id="post-cainit"><code>POST /ca/init</code></h3>
 <p>Initializes CA material if needed and returns the same response shape as <code>GET /ca/status</code>.</p>
 <h3 id="profile-routes">Profile routes</h3>
-<p>These are now part of the real runtime state model, not a future idea.</p>
 <ul>
 <li><code>GET /profiles/catalog</code> exposes the discovered profile catalog plus the active profile</li>
 <li><code>GET /profiles/active</code> exposes the selected profile only</li>
@@ -1471,16 +1473,19 @@
 <li><code>POST /profiles/validate</code> returns profile-coherence warnings for candidate profile data</li>
 </ul>
 <hr>
-<h2 id="desktop-integration-status">Desktop integration status</h2>
-<p>The desktop app already relies on the control plane for:</p>
+<h2 id="desktop-integration">Desktop integration</h2>
+<p>The desktop app relies on the control plane for:</p>
 <ul>
-<li>readiness and lifecycle</li>
+<li>Readiness and lifecycle</li>
 <li>CA bootstrap and CA status</li>
-<li>telemetry snapshots</li>
-<li>active profile reads</li>
-<li>profile validation</li>
+<li>Telemetry snapshots</li>
+<li>Active profile reads</li>
+<li>Profile validation</li>
 </ul>
-<p>It does <strong>not</strong> fully consume the catalog and selection endpoints yet. That matters because the control plane is ahead of the desktop UI in this area.</p>
+<div class="admonition example">
+<p class="admonition-title">Roadmap item</p>
+<p>The desktop app does <strong>not</strong> fully consume the catalog and selection endpoints yet. The control plane is ahead of the desktop UI here.</p>
+</div>
 <hr>
 <h2 id="ca-storage-model">CA storage model</h2>
 <p>Current rule:</p>
@@ -1500,9 +1505,12 @@
 </span></code></pre></div>
 <p>Replace <code>4042</code> with whatever your actual control port is.</p>
 <hr>
-<h2 id="current-limitation">Current limitation</h2>
-<p>The control plane is local and useful, but it is still a host-coupled service contract. It is not yet a polished standalone operator API with a stable public compatibility story documented version by version.</p>
-<p>That is why higher-level compatibility and contract-version policy still belongs in release planning rather than being overstated here.</p></div>
+<h2 id="limitations">Limitations</h2>
+<p>The control plane is still a host-coupled service contract. It is not yet a polished standalone operator API with stable public compatibility.</p>
+<div class="admonition example">
+<p class="admonition-title">Roadmap item</p>
+<p>API changes will be noted in release notes located <a href="https://github.com/un-nf/404/tree/main/.REL_notes">here</a>.</p>
+</div></div>
 
 
 

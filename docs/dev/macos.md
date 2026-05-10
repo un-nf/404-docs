@@ -32,7 +32,7 @@ Extract the zip that matches your machine into your home folder, then keep using
 
 - Apple Silicon uses `static_proxy-macos-aarch64`
 - Intel uses `static_proxy-macos-x86_64`
-- the current public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
+- the public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
 - this walkthrough defaults to `firefox-windows`
 - if you use Chrome, swap `firefox-windows` for `chrome-windows`
 - if you use Edge, swap `firefox-windows` for `edge-windows`
@@ -118,7 +118,7 @@ Then trust the `static-ca.crt` path it reports:
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /path/to/static-ca.crt
 ```
 
-If you use Firefox, import the same certificate in Firefox under Settings -> Privacy & Security -> Certificates -> View Certificates -> Authorities.
+If you use Firefox, import the same certificate in Firefox under Settings → Privacy & Security → Certificates → View Certificates → Authorities.
 
 ---
 
@@ -128,12 +128,12 @@ The bundled config listens on `127.0.0.1:4040`.
 
 For Chrome or Edge:
 
-- System Settings -> Network -> your active interface -> Details -> Proxies
+- System Settings → Network → your active interface → Details → Proxies
 - enable the local proxy path that fits your setup and point it at `127.0.0.1:4040`
 
 For Firefox:
 
-- Settings -> Network Settings -> Manual proxy configuration
+- Settings → Network Settings → Manual proxy configuration
 - HTTP Proxy: `127.0.0.1`
 - Port: `4040`
 - enable `Also use this proxy for HTTPS`
