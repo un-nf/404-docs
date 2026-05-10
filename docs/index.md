@@ -15,7 +15,7 @@ hide:
     404 now has two clear entry points.
 
     - The **desktop application** is the managed product path. It is subscription-backed and distributed through [404privacy.com](https://404privacy.com/pricing/).
-    - The **CLI application** is open source under the AGPLv3 and can still built, run, audited, and modified directly.
+    - The **CLI application** is open source under the AGPLv3 and can be built, run, audited, and modified directly.
     - Download the latest release (**{{ latest_github_release_tag }}**) from [GitHub]({{ latest_github_release_url }}){target="_blank"}.
 
 ---
