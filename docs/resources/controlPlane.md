@@ -1,13 +1,13 @@
 ---
-title: Control Plane and API Documentation
-description: API reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.
+title: API Documentation
+description: Reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.
 hide:
   - toc
 ---
 
 # Control Plane and API
 
-STATIC has an authenticated localhost control plane that the [desktop app](https://404privacy.com/product/) uses.
+!!! tip "STATIC has an authenticated localhost control plane that the [desktop app](https://404privacy.com/product/) uses"
 
 ---
 
@@ -29,7 +29,7 @@ When `control.token_path` is configured, STATIC reads a shared token from disk a
 X-404-Control-Token
 ```
 
-!!! info "Unauthenticated Control"
+!!! info "Unauthenticated control"
     
     If no token path is configured, the control plane can run without that header on a local-only path. The desktop app does not share that functionality.
 

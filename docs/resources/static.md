@@ -1,13 +1,15 @@
 ---
 title: STATIC Proxy
-description: Technical reference for the STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and the limits that matter.
+description: Technical reference for the STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and documented limitations.
 hide:
   - toc
 ---
 
-# Synthetic Traffic and TLS Identity Camouflage (STATIC) Proxy
+# STATIC Proxy
+> Synthetic Traffic and TLS Identity Camouflage
 
-STATIC is the open source runtime at the center of 404.
+!!! info "STATIC"
+    STATIC is the open source runtime at the center of 404.
 
 ---
 
@@ -21,7 +23,7 @@ STATIC is the open source runtime at the center of 404.
 - Injected browser-runtime shaping
 - Profile-aware transport planning for upstream fetches
 
-For host trust installation, host proxy settings, account flow, updater UX, or WSL distro import logic, download the [desktop app](https://404privacy.com/pricing/)
+For host trust installation, host proxy settings, account flow, updater UX, or Windows-side import and lifecycle handling for the Rose-based distribution, download the [desktop app](https://404privacy.com/pricing/)
 
 ??? abstract "STATIC repository map"
 

@@ -25,7 +25,7 @@ hide:
 
 ---
 
-##[ Desktop app](https://404privacy.com/pricing/)
+## [Desktop app](https://404privacy.com/pricing/)
 
 - User Interface (UI)
 - Account management
@@ -38,7 +38,7 @@ hide:
 
 !!! Tip "Windows implementation"
 
-    On Windows, the desktop app provisions and operates a virtual linux environment for packet level mutation.
+    On Windows, the desktop app provisions and operates the 404 distribution, which is built on the Rose base and booted through WSL2 when Linux-side networking features are needed.
 
 Legal documents:
 
@@ -48,13 +48,13 @@ Legal documents:
 
 ---
 
-## Open source runtime
+## [Open source code](https://github.com/un-nf/404)
 
 > Licensed under AGPLv3.
 
-- **STATIC**
-- **Rose kernel**
-- **eBPF module**
+- [**STATIC**](../resources/static.md)
+- [**Rose kernel**](../runtime/distro.md)
+- [**eBPF module**](../resources/ebpf.md)
 
 ---
 
@@ -63,11 +63,11 @@ Legal documents:
 - Desktop authentication routes
 - Billing portal access
 - Signed desktop updater metadata delivery
-- Signed WSL distro manifest and tarball delivery
+- Signed distribution manifest and tarball delivery for the Rose-based runtime path
 
 This allows us to ship managed builds and service enterprise users.
 
-!!! success "Local First
+!!! success "Local First"
 
     Software *always* runs locally, or on-prem.
 

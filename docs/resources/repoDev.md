@@ -1,6 +1,6 @@
 ---
-title: Runtime Repository Map
-description: Repository-facing map of the open source runtime, the desktop shell, and the worker-backed release surface that together make up the current 404 delivery model.
+title: Repository Map
+description: Map of 404 managed repositories. Including the open source code, the desktop application, and the worker-backed release infrastructure that together make up the 404 ecosystem.
 hide:
   - toc
 ---
@@ -22,7 +22,7 @@ Contains the following components:
 
 - STATIC
 - Profile catalog
-- WSL distro packaging path
+- Rose-based distribution packaging path
 - eBPF object and build path
 
 ---
@@ -36,7 +36,7 @@ Contains the following components:
 - Automated host trust installation
 - Automated host proxy configuration
 - Automated desktop updates
-- Windows WSL distro lifecycle
+- Windows-side lifecycle for the Rose-based distribution booted through WSL2
 
 The desktop repo is the product-facing shell.
 

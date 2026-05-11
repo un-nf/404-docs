@@ -1,6 +1,6 @@
 ---
 title: Developer Resources
-description: Developer-facing documentation for the open source CLI application, the WSL distro artifact, the Docker-based rootfs build pipeline, Linux eBPF integration, and deep reference material.
+description: Developer-facing documentation for the open source CLI application, the Rose-based distribution artifact, the Docker-based rootfs build pipeline, Linux eBPF integration, and deep reference material.
 hide:
   - toc
 ---
@@ -13,7 +13,7 @@ If you want the easiest possible experience, use the [404 application](https://4
 
 This documentation covers:
 
-- WSL distro artifact & Rose kernel
+- Rose-based distribution artifact
 - Docker packaging path
 - eBPF layer
 - [Reference pages](../resources/index.md) for [STATIC](../resources/static.md), [APIs](../resources/controlPlane.md), [profiles](../resources/profiles.md), and [repository boundaries](../resources/repoDev.md)
@@ -34,8 +34,8 @@ This documentation covers:
 
 ## Current scope
 
-!!! info "The 404 Linux-distro is live"
+!!! info "The 404 Linux distribution is live"
 
-    The desktop app consumes a signed distro manifest, verifies the referenced tarball, imports the `404` WSL distro, and boots the Linux runtime from there on Windows.
+  The desktop app consumes a signed distro manifest, verifies the referenced tarball, imports the `404` distribution, and boots it through WSL2 on Windows.
 
     This documentation contains instructions on setting up a self-hosted version of this.

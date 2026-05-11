@@ -1,6 +1,6 @@
 ---
-title: Profiles and Persona Materialization
-description: Technical reference for STATIC's profile catalog, family-first identity model, seeded overlays, startup selection rules, and the split between manual operator choice and higher-level desktop policy.
+title: Profiles
+description: Technical reference for STATIC's profile catalog, family-first identity model, seeded overlays, and startup selection rules.
 hide:
   - toc
 ---
@@ -13,8 +13,6 @@ STATIC is profile-driven through startup, validation, transport shaping, and inj
 
 ## What a profile defines
 
-A runtime profile can contribute:
-
 - Identity metadata such as family, variant, and platform
 - Header shaping rules
 - Runtime fingerprint config
@@ -23,7 +21,7 @@ A runtime profile can contribute:
 
 ---
 
-## Current bundled profile families
+## Profile families
 
 The shipped runtime path is organized around browser families and discourages cross-engine spoofing.
 
@@ -32,7 +30,7 @@ Best practice:
 - Chromium-family browsers should use Blink-family profiles
 - Firefox-family browsers should use Gecko-family profiles
 
-!!! Warning "Neither STATIC nor the Rose kernel enforces this policy."
+!!! Warning "Neither STATIC nor the Rose base enforces this policy."
 
 ---
 
@@ -71,7 +69,7 @@ Those overlays give the runtime:
 
 ---
 
-## Control plane
+## [Control plane](./controlPlane.md)
 
 The catalog endpoints expose profile metadata suitable for higher-level clients:
 

@@ -19,8 +19,8 @@ The following section is for readers who want more details about how 404 works o
 
 ## Reference map
 
-- [STATIC Runtime and Data Plane](./static.md)
-- [Control Plane and CA State](./controlPlane.md)
-- [Profiles and Persona Materialization](./profiles.md)
+- [STATIC](./static.md)
+- [API and CA state](./controlPlane.md)
+- [Profiles](./profiles.md)
 - [eBPF](./ebpf.md)
-- [Runtime Repository Map](./repoDev.md)
+- [Understanding 404](./repoDev.md)

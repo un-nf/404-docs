@@ -1,6 +1,6 @@
 ---
 title: Developers
-description: Install dependencies and build the open source 404 runtime from source for the local macOS or Linux path, the Windows WSL distro path, and the supporting Docker packaging workflow.
+description: Install dependencies and build the open source 404 runtime from source for the local macOS or Linux path, the Windows Rose-based distribution path, and the supporting Docker packaging workflow.
 ---
 
 # Developers
@@ -15,7 +15,7 @@ If you only want to download & run published artifacts, go to [Self-Hosted and C
 
 - `src/STATIC_proxy/` contains the Rust proxy, local control plane, JS build assets, and the public `profiles/` catalog
 - `src/ebpf/` contains the Linux packet-mutation program and its build tooling
-- `distro/` contains the WSL rootfs packaging path consumed on Windows
+- `distro/` contains the packaging path for the 404 distribution built on the Rose base and consumed on Windows
 
 ---
 
@@ -54,7 +54,7 @@ Swap `edge-windows` for `chrome-windows` or `firefox-windows` if needed.
 
 ---
 
-## Build the Windows WSL distro inputs
+## Build the Windows distribution inputs
 
 The distro packaging path expects two artifacts first:
 
@@ -101,9 +101,9 @@ make -C src/ebpf clean all
 
 ---
 
-## Package the WSL distro tarball
+## Package the distribution tarball
 
-Once those two inputs exist, package the distro artifact:
+Once those two inputs exist, package the distribution artifact:
 
 ```bash
 ./distro/build.sh \
@@ -114,7 +114,7 @@ Once those two inputs exist, package the distro artifact:
   --image-tag "404-distro-build:local"
 ```
 
-That produces a WSL-importable root filesystem tarball at `dist/404-distro.tar.gz`.
+That produces a WSL-importable root filesystem tarball for the 404 distribution at `dist/404-distro.tar.gz`.
 
 ---
 

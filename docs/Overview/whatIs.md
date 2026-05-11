@@ -57,9 +57,9 @@ Requests and responses move through a fixed stage pipeline.
 4. **JsInjectionStage** injects the spoofing script into eligible HTML responses and records CSP hash material.
 5. **AltSvcStage** normalizes or removes `Alt-Svc` headers to reduce HTTP/3 and QUIC identity drift.
 
-??? tip "Don't believe me? Check my work..."
+!!! tip "Don't believe me? Check my work..."
 
-  Start 404 and compare native output against proxied output with the following tools.
+    Start 404 and compare native output against proxied output with the following tools.
 
     - [FingerprintJS](https://demo.fingerprint.com/playground){target="_blank"}
     - [Browser Leaks](https://browserleaks.com/){target="_blank"}

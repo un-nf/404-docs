@@ -9,7 +9,7 @@ hide:
 
 This section is the open source operator path for 404.
 
-Use it when you want to run the runtime directly, control profiles yourself, work with the WSL distro bundle as infrastructure, or build from source.
+Use it when you want to run the runtime directly, control profiles yourself, work with the Rose-based distribution as infrastructure, or build from source.
 
 Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_release_url }})
 
@@ -23,7 +23,7 @@ Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_relea
 
     ---
 
-    Use the Rose kernel via WSL2 bundle.
+    Use the 404 distribution built on the Rose base through WSL2.
 
     [Open the Windows guide](./windows.md){ .md-button .md-button--primary }
 
@@ -47,7 +47,7 @@ Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_relea
 
     ---
 
-    Install build dependencies, build STATIC from source, package the WSL distro, and work across all three pathways.
+    Install build dependencies, build STATIC from source, package the Rose-based distribution, and work across all three pathways.
 
     [Open the developers guide](./developers.md){ .md-button .md-button--primary }
 

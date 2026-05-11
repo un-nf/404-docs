@@ -1,6 +1,6 @@
 ---
 title: 404 Proxy
-description: Product documentation for the 404 desktop application and the open source CLI application, including STATIC, the WSL distro path, and eBPF.
+description: Product documentation for the 404 desktop application and the open source CLI application, including STATIC, the Rose-based distribution path, and eBPF.
 hide:
   - navigation
 ---
@@ -35,7 +35,7 @@ hide:
     - Verified, license-backed downloads and updates
     - Automatic profile management
     - Automated updates
-    - Automated WSL2 setup (windows)
+    - Automated Windows setup for the Rose-based distribution
     - Automated CA trust and proxy configuration
 
     [Desktop Documentation](./getStart/appStart.md){ .md-button .md-button--primary } 
@@ -51,7 +51,7 @@ hide:
     CLI documentation covers:
 
     - STATIC binary
-    - Rose binary 
+    - Rose-based distribution
     - Manual profile control
     - eBPF build and attach steps
     - Community support
@@ -84,7 +84,7 @@ sequenceDiagram
     The runtime stays local on **Windows, macOS, and Linux**. The desktop application manages that runtime on the host side. The CLI path exposes it directly.
 
 -   ### Open source
-    STATIC, the WSL distro, and the eBPF layer remain open source and auditable. The desktop application layer is documented here as a proprietary product wrapper around that open source runtime stack.
+    STATIC, the Rose-based distribution, and the eBPF layer remain open source and auditable. The desktop application layer is documented here as a proprietary product wrapper around that open source runtime stack.
 
 ---
 

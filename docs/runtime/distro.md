@@ -1,11 +1,11 @@
 ---
-title: WSL Distro and Runtime Packaging
-description: Download, build, package, publish, import, and manually operate the 404 WSL runtime artifact. Covers the public distro contract, exact CI-aligned build steps, and the boot assumptions you must satisfy if you run it yourself.
+title: Rose Distribution and Runtime Packaging
+description: Download, build, package, publish, import, and manually operate the 404 distribution built on the Rose base. Covers the public distro contract, exact CI-aligned build steps, and the boot assumptions you must satisfy if you run it yourself.
 hide:
   - toc
 ---
 
-# Rose Kernel & WSL Distro Packaging
+# Rose Kernel and Distribution Packaging
 
 This page is part of the **open source self-hosted/runtime manual**.
 
@@ -15,7 +15,9 @@ It documents the Linux runtime artifact that the Windows desktop app consumes by
 
 ## What is Rose?
 
-The current distro path packages an Alpine-based WSL-importable root filesystem that contains the:
+Rose is the minimal Linux kernel compiled specifically for the 404 runtime. It includes only the subsystems and modules the 404 stack requires.
+
+The current distribution path packages a WSL-importable root filesystem that runs on that Rose base and contains the:
 
 - Musl STATIC binary
 - Compiled `ttl_editor.o` object
@@ -58,7 +60,7 @@ The current release-manifest shape is:
 
 ## Download the published distro
 
-For most users, the desktop app downloads and verifies the distro.
+For most users, the desktop app downloads and verifies the distribution.
 
 If you want to download the artifact directly, treat the public origin as a manifest-first contract.
 
@@ -81,7 +83,7 @@ curl -O "$BASE_URL/distro/v1.2.3/404-distro.tar.gz"
 
 ## Build it locally
 
-The distro build is a CI-backed packaging path.
+The distribution build is a CI-backed packaging path.
 
 The release job currently:
 
@@ -145,7 +147,7 @@ cargo build --release --locked \
 make -C src/ebpf clean all
 ```
 
-### 6. Package the distro tarball
+### 6. Package the distribution tarball
 
 Use the packaging entrypoint:
 
@@ -196,7 +198,7 @@ Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which
 
     There is no manifest field or runtime TOML field for overriding it yet.
 
-    If your WSL network shows up under a different interface name, the manual operator workaround is:
+    If your Windows host boots the distribution with a different Linux interface name, the manual operator workaround is:
 
     ```powershell
     wsl -d 404 -- ip link show
@@ -221,7 +223,7 @@ C:\Users\<WIN_USER>\AppData\Roaming\404\static\static.runtime.toml
 
 At minimum, that runtime config needs to be internally consistent with the Linux boot path and whatever listener/control contract you want to run.
 
-#### 3. Start the distro
+#### 3. Start the distribution
 
 ```powershell
 wsl -d 404
@@ -243,7 +245,7 @@ The current rootfs includes:
 - `/etc/wsl.conf`
 - the Windows-side runtime TOML reachable under `/mnt/c/...`
 
-This artifact is a bootable runtime environment.
+This artifact is the bootable 404 distribution built on the Rose base.
 
 ---
 
@@ -254,4 +256,4 @@ Use the simpler self-hosted path instead:
 - [Self-Hosted and CLI](../dev/index.md)
 - [Windows](../dev/windows.md)
 
-The distro is the right tool when you want the Linux runtime environment itself, not just the proxy binary.
+The distribution is the right tool when you want the Linux runtime environment itself, not just the proxy binary.

@@ -1,108 +1,67 @@
 ---
-title: About Us
-description: Learn about 404's mission to restore digital privacy through open source anti-fingerprinting technology. Meet the team fighting surveillance capitalism one fingerprint at a time.
+title: Why do I Need 404?
+description: Learn how browser fingerprinting tracks you across VPNs, incognito mode, and cookie clearing. Discover why 404 is built to defeat modern ad-tech surveillance and how it stops companies from collecting your data and tracking you over time.
 hide:
 ---
 
-# About Us
+# Why do I Need 404?
 
-## Who We Are
+## Who is this for?
 
-404 is a local TLS-terminating proxy built to address cross-session tracking through active fingerprint spoofing. It's maintained by a solo developer with a background in systems engineering, computational modeling, and education.
+Anyone who's tired of being tracked across the web despite "privacy tools" that don't work against modern fingerprinting.
 
-The project was founded in 2024 after recognizing that existing privacy tools (e.g. VPNs, private browsing modes, ad blockers) no longer address passive fingerprinting techniques that operate across multiple layers of the network stack. 404 is an attempt to give individuals and organizations practical control over how their devices appear on the web.
+!!! tip "404 has the capability to defeat modern fingerprinting techniques."
 
----
+## Fighting consentless tracking
 
-## Our Ethos
+404 utilizes enterprise-tested solutions to *change* the fingerprint of any machine. 
 
-<div class="grid cards" markdown>
+![type:video](../assets/images/Commercial.mp4)
 
--   :material-shield-lock:{ .lg .middle } __Privacy as Default Infrastructure__
+Whether you're using a Macbook, PC, containerized application, or an ad-blocker should not matter to the websites you visit. With 404, that information never leaves your machine, and the servers collecting your data are fed a false fingerprint carefully crafted in-house.
 
-    ---
+## How big-tech tracks users
 
-    Your device shouldn't broadcast dozens of unique identifiers every time you visit a website. Persistent tracking should not be the invisible default.
+Every machine is unique. Companies combine dozens of semi-unique values to create a single device fingerprint. This allows ad-tech companies to follow you across websites, time, incognito browsers, and even VPN sessions.
 
--   :material-home-circle:{ .lg .middle } __Local-First, Always__
+![Tracking Visual](../assets/images/trackingVisual.png)
 
-    ---
+## Browser Fingerprinting
 
-    404 runs entirely on your machine. No cloud backends. No telemetry. Your data never touches our servers because **we don't have servers**.
+Your online fingerprint is becoming increasingly unique. Modern tracking doesn't just rely on cookies; it builds "personality clouds" from hundreds of data points: TLS handshake patterns (JA3/JA4), HTTP header combinations, canvas rendering quirks, microphone/speaker/headset model and brand, font enumeration, WebGL parameters, audio context characteristics, and behavioral timing patterns... to name a few.
 
--   :fontawesome-brands-github:{ .lg .middle } __Transparency Through Open Source__
+The collection of these semi-unique values (.nav properties, timezone, screen resolution, browser type, etc.) allows servers to confidently identify users. 
 
-    ---
+- [Google does this (and worse).](https://404privacy.com/blog/companies-are-ignoring-your-opt-out-and-google-is-enabling-them-potentially-5-8b-in-liability/)
 
-    Every line of code is public.
+- [LinkedIn does this.](https://404privacy.com/blog/linkedin-is-scanning-your-browser-extensions-this-is-how-they-use-the-data/)
 
--   :material-account-school:{ .lg .middle } __Accessible Privacy Tools__
+Commercial fingerprinting services like FingerprintJS, Fingerprint.com, and DataDome can identify users across...
 
-    ---
-
-    Anti-fingerprinting is technically demanding. A major goal of 404 is making privacy accessible to those who need it most.
-
-</div>
-
----
-
-## Why We Exist
-
-Cross-session tracking has become foundational infrastructure for the modern web. It operates without meaningful consent, is difficult to detect, and is increasingly centralized through a small number of ad-tech and fraud-prevention vendors. Nearly all internet users are now subject to continuous, non-consensual measurement; infrastructure that lends itself to population-scale profiling.
-
-The acute impact falls on communities operating under heightened scrutiny. Journalists, immigration attorneys, human rights organizations, and researchers rely on the open web to investigate sensitive topics, communicate with peers, or gather information on behalf of vulnerable populations. In these contexts, persistent client fingerprinting enables the correlation of browser activity across sessions, sites, and networks—exposing intent, professional focus, and organizational relationships. This creates tangible risk: legal pressure, political targeting, data breaches, and chilling effects on inquiry and advocacy.
-
-Existing defensive tools no longer address this problem:
-
-- **VPNs** hide your IP, but fingerprinting doesn't need it.
-- **Incognito mode** clears cookies, but your device signature remains identical.
-- **Ad blockers** stop requests, but [servers still collect device telemetry](https://unit42.paloaltonetworks.com/cname-cloaking/).
-- **Privacy Browsers** work but trade convenience and can break modern sites.
-
-404 addresses this gap by giving individuals and organizations practical control over how their devices appear on the internet. Rather than attempting to block trackers, 404 intercepts and modifies traffic to present believable but false device profiles, reducing linkability across sessions while remaining compatible with the modern web.
-
----
-
-## The Problem
-
-### Passive Fingerprinting
-
-Modern tracking techniques collect hundreds of semi-unique data points to build device profiles that persist across:
-
-- Cookie deletion
-- Private browsing sessions  
-- VPN connections
 - Different browsers on the same device
-- Network changes
+- Private/incognito modes (linked to 'public' browsing profile)
+- VPN connections (or proxies, even residential ones)
+- Cookie & cache clearing 
+- Different networks
 
-Commercial fingerprinting services achieve 99.5%+ accuracy in identifying returning users. This type of metadata surveillance enables adversaries to map associations, track presence, monitor organizational behavior, and correlate activity without breaking encryption.
+[This is a response to GDPR, CCPA and increasingly privacy conscious users.](https://404privacy.com/blog/browser-fingerprinting-is-the-ad-industrys-response-to-your-privacy-settings/)
 
-### Population-Scale Monitoring
+## The Bigger Picture
 
-Tracking operates on multiple layers that most privacy tools are not designed to control. If left unaddressed, passive fingerprinting will continue to normalize population-scale monitoring as an invisible default, further entrenching power imbalances between centralized tracking infrastructures and the communities they observe.
+As governments worldwide push for mandatory surveillance (Chat Control in the EU, client-side scanning proposals, ["lawful access" backdoors](https://www.aclu.org/news/privacy-technology/dhs-is-circumventing-constitution-by-buying-data-it-would-normally-need-a-warrant-to-access)), and as AI makes behavioral profiling trivial at scale, the ability to be untrackable becomes existential.
 
-### The Illusion of Consent
+404 demonstrates that privacy through illegibility isn't theoretical. It's implementable, it works, and it's available to anyone.
 
-"Cookie consent" banners are theater. By the time you see them, your fingerprint has already been logged, correlated, and sold. GDPR and CCPA are steps forward, but enforcement is weak and technical evasion is complex.
+## Limitations
 
----
+***Manual configuration*** - Profiles require review and occasional tweaking based on your use-case and threat model. If you're confused about configuration, feel free to reach out in an [email](mailto:support@404privacy.com), open a [GitHub issue](https://github.com/un-nf/404/issues){target="_blank"}, or [submit a ticket](https://discord.gg/X9QrVm6dqS){target="_blank"} in the Discord.
 
-## Contributing
+***!Occasional! breakage*** - Breakage is limited but expected. This is the nature of deep protocol mutation. If there's something critical, open a [GitHub issue](https://github.com/un-nf/404/issues){target="_blank"} and I will try to find a fix.
 
-404 is open source. Contributions are welcome in the form of:
+!!! Success "Tutanota mail + DDG already fixed due to user feedback"
 
-- **Testing** to identify fingerprint leaks and edge cases
-- **Development** for code, profiles, and eBPF components
-- **Research** documenting new tracking techniques and mitigations
-- **Documentation** improving onboarding and technical clarity
+***Active maintenance*** - Browser updates change fingerprinting surfaces. Profiles need updating. You can't just "set it and forget it." I update as frequently as I can.
 
-[Contribute on GitHub](https://github.com/un-nf/404/blob/main/CONTRIBUTING.md){.md-button .md-button--primary}
-[Join the Discussion](https://github.com/un-nf/404/discussions){.md-button}
-
----
-
-## Contact
-
-- **GitHub Issues**: Bug reports and feature requests  
-- **GitHub Discussions**: General questions and implementation discussion
-- **Email**: See [contact page](../contact.md)
+!!! Warning "Long term effects"
+    
+    I do not know the long term effects on account usage. I have been logging-in via this proxy using my personal Google, Microsoft, and Apple accounts for the last 9-ish months, and I have experienced *no* retaliation (bans and whatnot). That is *not* to say you will have the same experience. **I *strongly* recommend that you use alternate/disposable accounts if you're going to be testing OAuth or other login flows.**

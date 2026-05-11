@@ -1,6 +1,6 @@
 ---
 title: Desktop Application
-description: Install and use the 404 desktop application. Covers getting started, first run behavior, trust and routing, Windows WSL2 runtime behavior, and updates and licensing.
+description: Install and use the 404 desktop application. Covers getting started, first run behavior, trust and routing, the Windows Rose distribution path booted through WSL2, and updates and licensing.
 ---
 
 # Desktop Application
@@ -28,7 +28,7 @@ The fastest way to start spoofing your fingerprint without having to manage prof
   - Automated updates
   - License-backed access
   - Built-in proxy controls
-  - Automatic WSL2 setup on Windows
+  - Automatic setup of the Rose-based Linux distribution on Windows
 
   The simplest path is:
 
@@ -55,7 +55,7 @@ The fastest way to start spoofing your fingerprint without having to manage prof
 - Updates
 - Uninstall & cleanup
 
-On Windows, it also provisions and updates the managed WSL2 distribution that runs STATIC.
+On Windows, it also provisions and updates the managed 404 distribution that runs on the Rose base through WSL2 and hosts STATIC.
 
 ---
 
@@ -79,7 +79,7 @@ On first run, the desktop application does three things:
 
 - Configures application
 - Configures CA trust
-- Configures system settings (proxy, WSL2, routing)
+- Configures system settings (proxy, Windows-side Rose distribution boot path, routing)
 
 ### Setup
 
@@ -134,12 +134,12 @@ How to reverse it:
 - On Windows, turn the system proxy off and run `netsh winhttp reset proxy`.
 - On macOS, disable web and secure web proxy state for the affected network services.
 
-### Windows WSL2 runtime
+### Windows Rose distribution
 
-On **Windows**, the desktop app provisions a custom Linux distribution for TCP/IP fingerprint mutation.
+On **Windows**, the desktop app provisions the 404 Linux distribution, which is built on the Rose base and booted through WSL2.
 
 - The released app registers the distro as `404`.
-- Downloads a signed distro manifest and tarball, verifies them, imports the distro, and starts it with WSL2.
+- Downloads a signed distro manifest and tarball, verifies them, imports the distro, and starts it through WSL2.
 - Writes host-side WSL state under the app's local data directory in a `wsl/` folder.
 - `wsl/` folder includes a `downloads/` cache, a `distribution/` install directory, a `control-token` file, and an `installed-version.json` record.
 - App writes runtime files such as `/opt/404/control-token` and `/opt/404/win-user` into the Linux environment.
@@ -174,15 +174,15 @@ How to reverse it:
 
 ### Windows
 
-The desktop application defaults to the managed WSL2 runtime described above.
+The desktop application defaults to the managed 404 distribution described above, booted through WSL2 on Windows.
 
 You do **not** need to import the distro manually for the normal product path.
 
-### WSL2 Runtime
+### Windows host boot path
 
-On Windows, the desktop application allows the user to interact with a WSL2 runtime.
+On Windows, the desktop application uses WSL2 as the host mechanism for starting the 404 distribution.
 
-The runtime is a Linux kernel running inside a managed distro currently registered by the released app as `404`.
+That distribution is currently registered by the released app as `404` and is built around the Rose base. Rose is the minimal Linux kernel and base layer compiled specifically for the 404 runtime, with only the subsystems and modules the stack requires.
 
 The Windows application does the following:
 
@@ -190,11 +190,11 @@ The Windows application does the following:
 2. Verifies it with the embedded Ed25519 public key
 3. Downloads the referenced tarball
 4. Verifies the tarball hash against the signed manifest
-5. Imports or updates the `404` WSL distro
+5. Imports or updates the `404` distribution
 6. Writes the runtime configuration and control token the Linux service expects
 7. Starts the runtime and talks to STATIC through an authenticated control API
 
-The distro contains:
+The distribution contains:
 
 - The packaged `STATIC` binary
 - The packaged eBPF module (`ttl_editor.o`)

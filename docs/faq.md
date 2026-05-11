@@ -75,7 +75,7 @@ There is also functionality to change the listening interface, but binding to `0
 
 By default, no.
 
-The current desktop product path on Windows uses a managed WSL2 runtime. The desktop app provisions and controls that Linux environment for you.
+The current desktop product path on Windows uses the managed 404 distribution, which is built on the Rose base and booted through WSL2. The desktop app provisions and controls that Linux environment for you.
 
 If you are operating the open source path manually, you can still work directly with STATIC and the distro build system yourself.
 

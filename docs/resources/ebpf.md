@@ -26,9 +26,9 @@ The eBPF module attaches to Linux Traffic Control (`tc`) egress hooks and rewrit
 The eBPF layer complements STATIC.
 
 - STATIC handles TLS, HTTP, injected runtime shaping, and control-plane behavior.
-- The eBPF layer handles lower-level packet mutation on Linux via the Rose kernel.
+- The eBPF layer handles lower-level packet mutation on Linux inside the Rose-based runtime path.
 
-On Windows, the managed desktop product path reaches this Linux layer through the WSL2 runtime.
+On Windows, the managed desktop product path reaches this Linux layer by booting the 404 distribution through WSL2.
 
 On CLI-managed Linux paths, you can build and attach it directly yourself.
 
@@ -57,9 +57,16 @@ You need a Linux environment with:
 
 ## Configuration
 
-> IP/TCP packet header values are assigned via global variables at the top of `src/ebpf/ttl_editor.c`. They *do not* align with values passed from `profiles.json`, this is a major pitfall of the current version and will be integrated with dynamic `bpfmaps` in a future release.
+Packet behavior now has a live profile-driven path on Linux.
 
-*Modify hardcoded globals to desired values before compiling.*
+The current runtime model is:
+
+- the Linux boot path pins the `fingerprint_profiles` BPF map
+- STATIC derives a packet profile from the selected runtime profile JSON
+- the active packet profile is written into the pinned map
+- the eBPF classifier reads from that map and falls back to built-in defaults only when no userspace value is present
+
+You can still inspect and modify the kernel-side code directly if you are developing the packet layer, but normal runtime behavior is no longer limited to compile-time globals.
 
 !!! note "Native OS Options:"
         
@@ -79,11 +86,9 @@ You need a Linux environment with:
 // etc.
 ```
 
-!!! example "Roadmap item"   
-    
-    The packet policy is still not fully profile-driven in the way the higher-level runtime is.
+!!! info "Current runtime model"
 
-    Mutation values are still assigned through globals in `src/ebpf/ttl_editor.c` rather than being fully driven by the selected runtime profile.
+    The selected runtime profile can now drive the active packet profile on Linux through the pinned BPF map path.
 
 !!! abstract "Default Implementation Options"
 
@@ -126,7 +131,7 @@ make deps-install
 make
 ```
 
-> This is the same object that is packaged into the WSL distro build path.
+> This is the same object that is packaged into the Rose-based distribution build path.
 
 ---
 

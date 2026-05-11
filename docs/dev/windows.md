@@ -1,13 +1,13 @@
 ---
 title: Windows
-description: Run 404 on Windows through the WSL2 distro bundle, populate the runtime contract it expects, trust the generated CA on the host, and route browser traffic through the local listener.
+description: Run 404 on Windows through the 404 distribution booted with WSL2, populate the runtime contract it expects, trust the generated CA on the host, and route browser traffic through the local listener.
 ---
 
 # Windows
 
 This is the Windows self-hosted path.
 
-It uses the WSL2 distro bundle. This page does not document running the raw Windows STATIC binary as the normal Windows operator path.
+It uses the 404 distribution, which is built on the Rose base and booted with WSL2. This page does not document running the raw Windows STATIC binary as the normal Windows operator path.
 
 [Download for Windows x64](https://github.com/un-nf/404/releases/latest/download/404-windows-x64.zip){ .md-button .md-button--primary }
 
@@ -35,7 +35,7 @@ That extraction step should place:
 
 ## Before you start
 
-- WSL2 must be available on the machine
+- WSL2 must be available on the machine because it is the Windows host mechanism used to boot the 404 distribution
 - the public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
 - the bundled runtime config defaults to `firefox-windows`
 - if you use Chrome, swap `firefox-windows` for `chrome-windows`
@@ -124,7 +124,7 @@ This default configuration is as follows:
 
 ---
 
-## 4. Import the distro and write the Windows username file
+## 4. Import the distribution and write the Windows username file
 
 Run these two commands in PowerShell:
 
@@ -143,7 +143,7 @@ Launch the distro:
 wsl -d 404
 ```
 
-After the distro boots, `404-init.sh` reads `static.runtime.toml`, best-effort attaches `ttl_editor.o` to `eth0`, and starts STATIC in proxy mode.
+After the distribution boots, `404-init.sh` reads `static.runtime.toml`, best-effort attaches `ttl_editor.o` to `eth0`, and starts STATIC in proxy mode.
 
 !!! note "About `eth0`"
 
