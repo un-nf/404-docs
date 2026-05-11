@@ -7,6 +7,12 @@ hooks:
 
 nav: 
   - Home: index.md
+  - Overview:
+    - Overview/index.md
+    - What Does 404 Do?: Overview/whatIs.md
+    - Why Do I Need 404?: Overview/why404.md
+    - Understanding 404: Overview/architecture.md
+    - Consent & Warning: consent.md
   - Desktop: getStart/appStart.md
   - Self-Hosted/CLI:
     - dev/index.md
@@ -24,13 +30,7 @@ nav:
     - eBPF: resources/ebpf.md
     - API Documentation: resources/controlPlane.md
     - Profiles: resources/profiles.md
-  - Overview:
-    - Overview/index.md
-    - What Does 404 Do?: Overview/whatIs.md
-    - Why Do I Need 404?: Overview/why404.md
-    - Understanding 404: Overview/architecture.md
   - FAQ: faq.md
-  - Consent & Warning: consent.md
   - Contact Us: contact.md
 
 theme:

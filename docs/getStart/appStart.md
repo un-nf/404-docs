@@ -73,7 +73,36 @@ They do **not** replace the AGPL terms that govern STATIC itself when you self-h
 
 ---
 
-## What is changed
+## Getting started
+
+On first run, the desktop application does three things:
+
+- Configures application
+- Configures CA trust
+- Configures system settings (proxy, WSL2, routing)
+
+### Setup
+
+1. Choose your browser family
+2. Allow application to trust the local CA
+3. Start the engine to configure system settings
+
+### Daily use
+
+1. Open the application
+2. Confirm trust and runtime status
+3. Start the engine
+4. Enable routing
+5. Disable routing
+
+!!! info "Browser family"
+
+    - Blink-family browsers (Chrome, Edge, Brave, Opera) should use Chromium-family profiles
+    - Gecko-family browsers (Firefox, Mullvad, Tor) should use Firefox-family profiles
+
+---
+
+## What 404 changes
 
 The desktop app asks for administrator privileges because it changes local trust and routing state.
 
@@ -138,35 +167,6 @@ How to reverse it:
 
 - Use the app's cleanup or uninstall/reset flow first so trust and proxy state are removed cleanly
 - Remove the app's remaining config, data, cache, local data, and log directories if you want a full wipe
-
----
-
-## Getting started
-
-On first run, the desktop application does three things:
-
-- Configures application
-- Configures CA trust
-- Configures system settings (proxy, WSL2, routing)
-
-### Setup
-
-1. Choose your browser family
-2. Allow application to trust the local CA
-3. Start the engine to configure system settings
-
-### Daily use
-
-1. Open the application
-2. Confirm trust and runtime status
-3. Start the engine
-4. Enable routing
-5. Disable routing
-
-!!! info "Browser family"
-
-    - Blink-family browsers (Chrome, Edge, Brave, Opera) should use Chromium-family profiles
-    - Gecko-family browsers (Firefox, Mullvad, Tor) should use Firefox-family profiles
 
 ---
 

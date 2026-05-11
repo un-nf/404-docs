@@ -28,36 +28,37 @@ hide:
 
     ---
 
-    The fastest way to get started.
+    !!! tip "The fastest way to get started"
 
-    Use the desktop app if you want:
+    Use the desktop app for:
 
-    - License-backed downloads and licensing
+    - Verified, license-backed downloads and updates
+    - Automatic profile management
     - Automated updates
     - Automated WSL2 setup (windows)
     - Automated CA trust and proxy configuration
 
-    [Open the desktop documentation](./getStart/appStart.md){ .md-button .md-button--primary } 
+    [Desktop Documentation](./getStart/appStart.md){ .md-button .md-button--primary } 
     
-    [Visit 404privacy.com](https://404privacy.com/){ .md-button target="_blank" }
+    [Get 404](https://404privacy.com/pricing/){ .md-button target="_blank" }
 
 -   :material-console:{ .lg .middle } __CLI Application__
 
     ---
 
-    The open source operator path.
+    !!! example "Free and open source"
 
-    The CLI documentation covers:
+    CLI documentation covers:
 
     - STATIC binary
     - Rose binary 
     - Manual profile control
-    - eBPF build and attach steps on Linux
+    - eBPF build and attach steps
     - Community support
 
-    [Open the CLI documentation](./dev/index.md){ .md-button }
+    [CLI Documentation](./dev/index.md){ .md-button }
 
-    [View the runtime repository](https://github.com/un-nf/404){ .md-button target="_blank" }
+    [View the code](https://github.com/un-nf/404){ .md-button target="_blank" }
 
 </div>
 
