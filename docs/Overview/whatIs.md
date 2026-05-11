@@ -45,56 +45,46 @@ flowchart LR
 ## STATIC Proxy
 ### *Synthetic Traffic and TLS Identity Camouflage*
 
-The core of 404 is a Rust proxy.
+STATIC is a local Rust proxy that terminates browser traffic, applies profile-driven mutations, and forwards the rewritten request.
 
-> Native values from FingerprintJS ![here](../assets/images/cleanChrome.png).
+STATIC listens on `127.0.0.1:4040` running locally on your machine. 404 does not route traffic because we do not host any server infrastructure.
 
-> Spoofed values from FingerprintJS ![here](../assets/images/dirtyChrome.png).
+Requests and responses move through a fixed stage pipeline.
 
-The STATIC proxy is designed to give the operator granular control over online fingerprint surfaces. That includes browser traffic, but it can also apply to other traffic routed through the proxy.
+1. **HeaderProfileStage** loads the selected profile and rewrites request headers and related request metadata.
+2. **BehavioralNoiseStage** attaches timing and behavior hints used by the injected JavaScript spoofing script.
+3. **CspStage** rewrites Content Security Policy (CSP) to prevalidate script injection.
+4. **JsInjectionStage** injects the spoofing script into eligible HTML responses and records CSP hash material.
+5. **AltSvcStage** normalizes or removes `Alt-Svc` headers to reduce HTTP/3 and QUIC identity drift.
 
-With the sample config, STATIC listens on `127.0.0.1:4040` by default. If you run the standalone binary without a config file, it falls back to built-in CLI defaults and listens on `127.0.0.1:8443`.
+??? tip "Don't believe me? Check my work..."
 
-The proxy stays local. It is not a hosted browser relay or a remote proxy service.
+  Start 404 and compare native output against proxied output with the following tools.
 
-Requests are broken into `flows`. Each `flow` passes through multiple `stages`. A `stage` is where the request/response mutation happens.
-
-Stage order:
-
-1. **HeaderProfileStage** rewrites headers based on the selected profile.
-2. **BehavioralNoiseStage** tags the flow with timing patterns for coordination with the injected runtime.
-3. **CspStage** prepares CSP state so injected scripts can execute without breaking origin policies.
-4. **JsInjectionStage** embeds the spoofing runtime into HTML responses and records script hashes for CSP validation.
-5. **AltSvcStage** strips or normalizes Alt-Svc handling to reduce accidental HTTP/3 and QUIC identity drift.
-
-Each stage runs asynchronously and can inspect or mutate the request/response. The pipeline is deterministic. Same profile, same mutations, same fingerprint.
-
-> Don't believe me? Check my work... 
-
-- [FingerprintJS](https://demo.fingerprint.com/playground){target="_blank"}
-- [Browser Leaks](https://browserleaks.com/){target="_blank"}
-- [EFF - Cover Your Tracks](https://coveryourtracks.eff.org/){target="_blank"}
-- [What is my Browser](https://whatismybrowser.com/){target="_blank"}
-- [HTTP bin](https://httpbin.org/headers){target="_blank"}
+    - [FingerprintJS](https://demo.fingerprint.com/playground){target="_blank"}
+    - [Browser Leaks](https://browserleaks.com/){target="_blank"}
+    - [EFF - Cover Your Tracks](https://coveryourtracks.eff.org/){target="_blank"}
+    - [What is my Browser](https://whatismybrowser.com/){target="_blank"}
+    - [HTTP bin](https://httpbin.org/headers){target="_blank"}
 
 ## Linux eBPF module
 
-The eBPF module uses Linux Traffic Control (`tc`) egress hooks to mutate packets before they leave the machine.
+The eBPF module runs on Linux `tc` egress hooks and modifies your TCP/IP fingerprint which can identify hardware, OS, browser stack, and network environment.
 
-The following is implemented:
+Current defaults:
 
-```md
-**IPv4:**
-- TTL (Time To Live) → forced to 255
-- TOS (Type of Service) → set to 0x10
-- IP ID (Identification) → randomized per packet
-- TCP window size → 65535
-- TCP initial sequence number → randomized (again)
-- TCP window scale → 5
-- TCP MSS (Maximum Segment Size) → 1460
-- TCP timestamps → randomized
+**IPv4**
 
-**IPv6:**
-- Hop limit → forced to 255
-- Flow label → randomized
-```
+- TTL forced to `255` - For testing
+- TOS set to `0x10` 
+- IP ID randomized per packet
+- TCP window size set to `65535`
+- TCP initial sequence number randomized
+- TCP window scale set to `5`
+- TCP MSS set to `1460`
+- TCP timestamps randomized
+
+**IPv6**
+
+- Hop limit forced to `255`
+- Flow label randomized

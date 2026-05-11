@@ -16,19 +16,19 @@ nav:
     - Developers: dev/developers.md
   - Developer Resources:
     - runtime/index.md
-    - WSL Distro and Runtime Packaging: runtime/distro.md
-    - Docker and Build Pipeline: runtime/docker.md
+    - WSL Packaging: runtime/distro.md
+    - Docker Pipeline: runtime/docker.md
     - --- References ---: resources/index.md
     - Repository Map: resources/repoDev.md
     - STATIC: resources/static.md
     - eBPF: resources/ebpf.md
-    - 404 API: resources/controlPlane.md
+    - API Documentation: resources/controlPlane.md
     - Profiles: resources/profiles.md
   - Overview:
     - Overview/index.md
-    - What Does 404 do?: Overview/whatIs.md
-    - Why do I need 404?: Overview/why404.md
-    - Product and Repository Model: Overview/architecture.md
+    - What Does 404 Do?: Overview/whatIs.md
+    - Why Do I Need 404?: Overview/why404.md
+    - Understanding 404: Overview/architecture.md
   - FAQ: faq.md
   - Consent & Warning: consent.md
   - Contact Us: contact.md

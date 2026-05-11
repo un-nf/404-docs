@@ -738,7 +738,7 @@
   <span class="md-ellipsis">
     
   
-    WSL Distro and Runtime Packaging
+    WSL Packaging
   
 
     
@@ -766,7 +766,7 @@
   <span class="md-ellipsis">
     
   
-    Docker and Build Pipeline
+    Docker Pipeline
   
 
     
@@ -906,7 +906,7 @@
   <span class="md-ellipsis">
     
   
-    404 API
+    API Documentation
   
 
     
@@ -1045,7 +1045,7 @@
   <span class="md-ellipsis">
     
   
-    What Does 404 do?
+    What Does 404 Do?
   
 
     
@@ -1082,7 +1082,7 @@
   <span class="md-ellipsis">
     
   
-    Why do I need 404?
+    Why Do I Need 404?
   
 
     
@@ -1100,7 +1100,7 @@
   <span class="md-ellipsis">
     
   
-    Why do I need 404?
+    Why Do I Need 404?
   
 
     
@@ -1126,10 +1126,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#404s-role" class="md-nav__link">
+  <a href="#who-is-this-for" class="md-nav__link">
     <span class="md-ellipsis">
       
-        404's Role
+        Who is this for?
       
     </span>
   </a>
@@ -1137,10 +1137,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#anatomy-of-a-fingerprint" class="md-nav__link">
+  <a href="#fighting-consentless-tracking" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Anatomy of a fingerprint
+        Fighting consentless tracking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-big-tech-tracks-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How big-tech tracks users
       
     </span>
   </a>
@@ -1152,17 +1163,6 @@
     <span class="md-ellipsis">
       
         Browser Fingerprinting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#who-is-this-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Who is this for?
       
     </span>
   </a>
@@ -1214,7 +1214,7 @@
   <span class="md-ellipsis">
     
   
-    Product and Repository Model
+    Understanding 404
   
 
     
@@ -1337,42 +1337,40 @@
 
 
 <div><h1 id="why-do-i-need-404">Why do I Need 404?</h1>
-<h2 id="404s-role">404's Role</h2>
+<h2 id="who-is-this-for">Who is this for?</h2>
+<p>Anyone who's tired of being tracked across the web despite "privacy tools" that don't work against modern fingerprinting.</p>
+<div class="admonition tip">
+<p class="admonition-title">404 has the capability to defeat modern fingerprinting techniques.</p>
+</div>
+<h2 id="fighting-consentless-tracking">Fighting consentless tracking</h2>
 <p>404 utilizes enterprise-tested solutions to <em>change</em> the fingerprint of any machine. </p>
-<p>Whether you're using a Macbook, PC, containerized application, an ad-blocker should not matter to the websites you visit. With 404, that information never leaves your machine, and the servers collecting your data are fed a false, believable fingerprint carefully crafted in-house.</p>
-<h2 id="anatomy-of-a-fingerprint">Anatomy of a fingerprint</h2>
+<p><div class="video-container"><iframe src="../../assets/images/Commercial.mp4" style="width:100%;height:35vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p>
+<p>Whether you're using a Macbook, PC, containerized application, or an ad-blocker should not matter to the websites you visit. With 404, that information never leaves your machine, and the servers collecting your data are fed a false fingerprint carefully crafted in-house.</p>
+<h2 id="how-big-tech-tracks-users">How big-tech tracks users</h2>
 <p>Every machine is unique. Companies combine dozens of semi-unique values to create a single device fingerprint. This allows ad-tech companies to follow you across websites, time, incognito browsers, and even VPN sessions.</p>
 <p><img alt="Tracking Visual" src="../../assets/images/trackingVisual.png"></p>
 <h2 id="browser-fingerprinting">Browser Fingerprinting</h2>
 <p>Your online fingerprint is becoming increasingly unique. Modern tracking doesn't just rely on cookies; it builds "personality clouds" from hundreds of data points: TLS handshake patterns (JA3/JA4), HTTP header combinations, canvas rendering quirks, microphone/speaker/headset model and brand, font enumeration, WebGL parameters, audio context characteristics, and behavioral timing patterns... to name a few.</p>
-<p>The collection of these semi-unique values (.nav properties, timezone, screen resolution, browser type, etc.) allows servers to pretty confidently identify users as not semi-unique, but entirely. </p>
-<p>Commercial fingerprinting services like FingerprintJS, Fingerprint.com, and DataDome can identify users across...</p>
+<p>The collection of these semi-unique values (.nav properties, timezone, screen resolution, browser type, etc.) allows servers to confidently identify users. </p>
 <ul>
 <li>
-<p>Different browsers on the same device</p>
+<p><a href="https://404privacy.com/blog/companies-are-ignoring-your-opt-out-and-google-is-enabling-them-potentially-5-8b-in-liability/">Google does this (and worse).</a></p>
 </li>
 <li>
-<p>Private/incognito modes (linked to 'public' browsing profile)</p>
-</li>
-<li>
-<p>VPN connections (or proxies, even residential ones)</p>
-</li>
-<li>
-<p>Cookie &amp; cache clearing </p>
-</li>
-<li>
-<p>Different networks</p>
+<p><a href="https://404privacy.com/blog/linkedin-is-scanning-your-browser-extensions-this-is-how-they-use-the-data/">LinkedIn does this.</a></p>
 </li>
 </ul>
-<p>This isn't paranoia. This is surveillance capitalism.</p>
-<h2 id="who-is-this-for">Who is this for?</h2>
-<p>Anyone who's tired of being tracked across the web despite "privacy tools" that don't actually work against modern fingerprinting.</p>
-<p>404 has the capability to defeat modern fingerprinting techniques. </p>
-<p>The included profiles (<code>firefox-windows</code>, <code>chrome-windows</code>, <code>edge-windows</code>) produce consistent spoofed fingerprints but are still under active development. Setup is straightforward if you're comfortable with:</p>
-<p>If you’re comfortable with <strong>manual maintenance</strong> and <strong>iteration</strong>, you’ll get real privacy gains.</p>
+<p>Commercial fingerprinting services like FingerprintJS, Fingerprint.com, and DataDome can identify users across...</p>
+<ul>
+<li>Different browsers on the same device</li>
+<li>Private/incognito modes (linked to 'public' browsing profile)</li>
+<li>VPN connections (or proxies, even residential ones)</li>
+<li>Cookie &amp; cache clearing </li>
+<li>Different networks</li>
+</ul>
+<p><a href="https://404privacy.com/blog/browser-fingerprinting-is-the-ad-industrys-response-to-your-privacy-settings/">This is a response to GDPR, CCPA and increasingly privacy conscious users.</a></p>
 <h2 id="the-bigger-picture">The Bigger Picture</h2>
-<p>This isn't just a tool. It's proof that illegibility is technically feasible.</p>
-<p>As governments worldwide push for mandatory surveillance (Chat Control in the EU, client-side scanning proposals, "lawful access" backdoors), and as AI makes behavioral profiling trivial at scale, the ability to be untrackable becomes existential.</p>
+<p>As governments worldwide push for mandatory surveillance (Chat Control in the EU, client-side scanning proposals, <a href="www.aclu.org/news/privacy-technology/dhs-is-circumventing-constitution-by-buying-data-it-would-normally-need-a-warrant-to-access">"lawful access" backdoors</a>), and as AI makes behavioral profiling trivial at scale, the ability to be untrackable becomes existential.</p>
 <p>404 demonstrates that privacy through illegibility isn't theoretical. It's implementable, it works, and it's available to anyone.</p>
 <h2 id="limitations">Limitations</h2>
 <p><strong><em>Manual configuration</em></strong> - Profiles require review and occasional tweaking based on your use-case and threat model. If you're confused about configuration, feel free to reach out in an <a href="mailto:support@404privacy.com">email</a>, open a <a href="https://github.com/un-nf/404/issues" target="_blank" rel="noopener">GitHub issue</a>, or <a href="https://discord.gg/X9QrVm6dqS" target="_blank" rel="noopener">submit a ticket</a> in the Discord.</p>
@@ -1386,7 +1384,7 @@
 <p>I do not know the long term effects on account usage. I have been logging-in via this proxy using my personal Google, Microsoft, and Apple accounts for the last 9-ish months, and I have experienced <em>no</em> retaliation (bans and whatnot). That is <em>not</em> to say you will have the same experience. <strong>I <em>strongly</em> recommend that you use alternate/disposable accounts if you're going to be testing OAuth or other login flows.</strong></p>
 </div>
 <blockquote>
-<p><em>I am not a cybersecurity engineer. I hammered this together and may have missed something important. Feel free to reach out with security vulnerabilities @ 404co@proton.me</em></p>
+<p><em>I am not a cybersecurity engineer. I may have missed something important. Feel free to reach out with security vulnerabilities @ support@404privacy.com</em></p>
 </blockquote></div>
 
 

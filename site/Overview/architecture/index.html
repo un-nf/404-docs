@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#product-and-repository-model" class="md-skip">
+        <a href="#404-manages-multiple-repositories" class="md-skip">
           Skip to content
         </a>
       
@@ -740,7 +740,7 @@
   <span class="md-ellipsis">
     
   
-    WSL Distro and Runtime Packaging
+    WSL Packaging
   
 
     
@@ -768,7 +768,7 @@
   <span class="md-ellipsis">
     
   
-    Docker and Build Pipeline
+    Docker Pipeline
   
 
     
@@ -908,7 +908,7 @@
   <span class="md-ellipsis">
     
   
-    404 API
+    API Documentation
   
 
     
@@ -1047,7 +1047,7 @@
   <span class="md-ellipsis">
     
   
-    What Does 404 do?
+    What Does 404 Do?
   
 
     
@@ -1075,7 +1075,7 @@
   <span class="md-ellipsis">
     
   
-    Why do I need 404?
+    Why Do I Need 404?
   
 
     
@@ -1112,7 +1112,7 @@
   <span class="md-ellipsis">
     
   
-    Product and Repository Model
+    Understanding 404
   
 
     
@@ -1130,7 +1130,7 @@
   <span class="md-ellipsis">
     
   
-    Product and Repository Model
+    Understanding 404
   
 
     
@@ -1156,10 +1156,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-short-version" class="md-nav__link">
+  <a href="#tldr" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The short version
+        TL;DR
       
     </span>
   </a>
@@ -1167,10 +1167,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#layer-1-desktop-app" class="md-nav__link">
+  <a href="#desktop-app" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 1: Desktop app
+        Desktop app
       
     </span>
   </a>
@@ -1178,10 +1178,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#layer-2-open-source-runtime" class="md-nav__link">
+  <a href="#open-source-runtime" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 2: Open source runtime
+        Open source runtime
       
     </span>
   </a>
@@ -1189,10 +1189,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#layer-3-account-and-release-infrastructure" class="md-nav__link">
+  <a href="#account-licensure-and-release-infrastructure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Layer 3: Account and release infrastructure
+        Account, licensure, and release infrastructure
       
     </span>
   </a>
@@ -1318,26 +1318,25 @@
   
 
 
-<div><h1 id="product-and-repository-model">Product and Repository Model</h1>
-<p>Three layers:</p>
+<div><h1 id="404-manages-multiple-repositories">404 Manages Multiple Repositories</h1>
 <ol>
-<li>the <strong>desktop app</strong> users install</li>
-<li>the <strong>runtime stack</strong> that actually mutates traffic</li>
-<li>the <strong>account and release infrastructure</strong> that distributes builds and validates access</li>
+<li><a href="https://github.com/un-nf/404">404</a> - The open source (AGPLv3_ <strong>runtime stack</strong> (<a href="../../resources/static/">STATIC</a> Proxy &amp; <a href="../../runtime/distro/">Rose</a> kernel).</li>
+<li>404_APP - The proprietary <a href="https://404privacy.com/pricing/"><strong>desktop application</strong></a>.</li>
+<li>404-workers - The <strong>account, licensure, and release infrastructure</strong> that distributes, builds, and validates access.</li>
+<li>404-docs - This documentation page.</li>
 </ol>
 <hr>
-<h2 id="the-short-version">The short version</h2>
+<h2 id="tldr">TL;DR</h2>
 <div class="admonition info">
-<p class="admonition-title">One documentation site</p>
-<p>This site covers both:</p>
+<p class="admonition-title">Info</p>
+<p>This site covers:</p>
 <ul>
-<li>the <strong>proprietary desktop app</strong> distributed through 404privacy.com</li>
-<li>the <strong>open source runtime stack</strong> you can self-host, inspect, build, and modify yourself</li>
+<li>The <strong>proprietary desktop app</strong> distributed through <a href="https://404privacy.com">404privacy.com</a></li>
+<li>The <strong>open source runtime stack</strong> you can self-host, inspect, build, and modify yourself</li>
 </ul>
 </div>
 <hr>
-<h2 id="layer-1-desktop-app">Layer 1: Desktop app</h2>
-<p>The desktop app:</p>
+<h2 id="desktop-app"><a href="https://404privacy.com/pricing/"> Desktop app</a></h2>
 <ul>
 <li>User Interface (UI)</li>
 <li>Account management</li>
@@ -1348,7 +1347,10 @@
 <li>Uninstall &amp; cleanup</li>
 <li>Profile orchestration</li>
 </ul>
-<p>On Windows, the desktop app provisions and operates a managed WSL2 Alpine distribution.</p>
+<div class="admonition tip">
+<p class="admonition-title">Windows implementation</p>
+<p>On Windows, the desktop app provisions and operates a virtual linux environment for packet level mutation.</p>
+</div>
 <p>Legal documents:</p>
 <ul>
 <li><a href="https://404privacy.com/privacy/" target="_blank" rel="noopener">Privacy Policy</a></li>
@@ -1356,29 +1358,30 @@
 <li><a href="https://404privacy.com/eula/" target="_blank" rel="noopener">EULA</a></li>
 </ul>
 <hr>
-<h2 id="layer-2-open-source-runtime">Layer 2: Open source runtime</h2>
-<p>The runtime stack remains open source.</p>
-<p>That includes:</p>
+<h2 id="open-source-runtime">Open source runtime</h2>
+<blockquote>
+<p>Licensed under AGPLv3.</p>
+</blockquote>
 <ul>
-<li><strong>STATIC</strong>: localhost TLS-terminating proxy</li>
-<li>the <strong>Rose kernel</strong> for WSL2</li>
-<li>the <strong>eBPF module</strong> used for packet-level mutation.</li>
+<li><strong>STATIC</strong></li>
+<li><strong>Rose kernel</strong></li>
+<li><strong>eBPF module</strong></li>
 </ul>
 <hr>
-<h2 id="layer-3-account-and-release-infrastructure">Layer 3: Account and release infrastructure</h2>
-<p>The public product path also has an infrastructure layer behind it.</p>
-<p>That includes:</p>
+<h2 id="account-licensure-and-release-infrastructure">Account, licensure, and release infrastructure</h2>
 <ul>
-<li>desktop authentication routes</li>
-<li>billing portal access</li>
-<li>signed desktop updater metadata delivery</li>
-<li>signed WSL distro manifest and tarball delivery</li>
+<li>Desktop authentication routes</li>
+<li>Billing portal access</li>
+<li>Signed desktop updater metadata delivery</li>
+<li>Signed WSL distro manifest and tarball delivery</li>
 </ul>
-<p>This allows us to ship managed builds and service enterprise/power users.</p>
-<p>This does <strong>not</strong> change the local-first runtime model. The software still runs locally on the user's machine. </p>
+<p>This allows us to ship managed builds and service enterprise users.</p>
+<p>!!! success "Local First</p>
+<div class="language-text highlight"><pre><span></span><code>Software *always* runs locally, or on-prem.
+</code></pre></div>
 <hr>
-<p>If you need help with the 404 application, start in <a href="../../getStart/appStart/">Desktop</a>.</p>
-<p>If you need help with free installation, start in <a href="../../dev/">Self-Hosted/CLI</a>.</p></div>
+<p>If you need help with the 404 application, start here: <a href="../../getStart/appStart/">Desktop</a>.</p>
+<p>If you need help with free installation, start here: <a href="../../dev/">Self-Hosted/CLI</a>.</p></div>
 
 
 

@@ -57,7 +57,7 @@ Existing defensive tools no longer address this problem:
 - **VPNs** hide your IP, but fingerprinting doesn't need it.
 - **Incognito mode** clears cookies, but your device signature remains identical.
 - **Ad blockers** stop requests, but [servers still collect device telemetry](https://unit42.paloaltonetworks.com/cname-cloaking/).
-- **Privacy Browsers** work but trade convenience and break many modern sites.
+- **Privacy Browsers** work but trade convenience and can break modern sites.
 
 404 addresses this gap by giving individuals and organizations practical control over how their devices appear on the internet. Rather than attempting to block trackers, 404 intercepts and modifies traffic to present believable but false device profiles, reducing linkability across sessions while remaining compatible with the modern web.
 

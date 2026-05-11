@@ -73,6 +73,74 @@ They do **not** replace the AGPL terms that govern STATIC itself when you self-h
 
 ---
 
+## What is changed
+
+The desktop app asks for administrator privileges because it changes local trust and routing state.
+
+### CA settings
+
+To intercept TLS locally, STATIC generates a local CA certificate and the desktop app installs trust for that CA into the host OS.
+
+- On Windows, the app installs the `STATIC Local CA` certificate into `LocalMachine\Root`.
+- On macOS, the app installs the certificate into the login keychain and then into the System keychain.
+- The app keeps local CA material in its managed app data so the runtime can continue minting leaf certificates.
+
+How to reverse it:
+
+- In the app, stop the engine and use the CA removal or cleanup flow if you are resetting the install
+- On Windows, remove the `STATIC Local CA` certificate from the machine trust store
+- On macOS, remove the `STATIC Local CA` certificate from the login keychain and the System keychain
+
+### Proxy settings
+
+When you enable routing, the app changes your proxy settings to use the local STATIC listener.
+
+- STATIC listens on `127.0.0.1:4040` in the managed runtime config.
+- On Windows, the app sets `ProxyEnable`, `ProxyServer`, and `ProxyOverride` under the current user's Internet Settings registry path and also runs `netsh winhttp set proxy`.
+- On macOS, the app enables web and secure web proxy settings for each active network service and adds bypass entries for `localhost` and `127.0.0.1`.
+
+How to reverse it:
+
+- In the app, disable routing or run the cleanup/reset flow.
+- On Windows, turn the system proxy off and run `netsh winhttp reset proxy`.
+- On macOS, disable web and secure web proxy state for the affected network services.
+
+### Windows WSL2 runtime
+
+On **Windows**, the desktop app provisions a custom Linux distribution for TCP/IP fingerprint mutation.
+
+- The released app registers the distro as `404`.
+- Downloads a signed distro manifest and tarball, verifies them, imports the distro, and starts it with WSL2.
+- Writes host-side WSL state under the app's local data directory in a `wsl/` folder.
+- `wsl/` folder includes a `downloads/` cache, a `distribution/` install directory, a `control-token` file, and an `installed-version.json` record.
+- App writes runtime files such as `/opt/404/control-token` and `/opt/404/win-user` into the Linux environment.
+
+How to reverse it:
+
+- In the app, stop the engine and use the cleanup/reset flow if you want the managed runtime removed.
+- Manually, you can run `wsl --unregister 404` to remove the managed distro.
+- After unregistering, remove the app's local `wsl/` state directory if you want the downloaded archive, install directory, and version metadata gone as well.
+
+### Local app-managed files
+
+The app writes normal local application state.
+
+- Config data
+- Runtime config
+- Downloaded runtime assets
+- Managed profiles and profile cache
+- Certificates
+- Logs
+
+The exact base path depends on your OS, but the app manages its standard config, data, cache, local data, and log directories through the platform's normal application-data locations.
+
+How to reverse it:
+
+- Use the app's cleanup or uninstall/reset flow first so trust and proxy state are removed cleanly
+- Remove the app's remaining config, data, cache, local data, and log directories if you want a full wipe
+
+---
+
 ## Getting started
 
 On first run, the desktop application does three things:
@@ -114,7 +182,7 @@ You do **not** need to import the distro manually for the normal product path.
 
 On Windows, the desktop application allows the user to interact with a WSL2 runtime.
 
-The runtime is a Linux kernel running inside a managed distro named `Rose`.
+The runtime is a Linux kernel running inside a managed distro currently registered by the released app as `404`.
 
 The Windows application does the following:
 

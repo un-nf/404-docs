@@ -5,30 +5,27 @@ hide:
   - toc
 ---
 
-# Product and Repository Model
+# 404 Manages Multiple Repositories
 
-Three layers:
-
-1. the **desktop app** users install
-2. the **runtime stack** that actually mutates traffic
-3. the **account and release infrastructure** that distributes builds and validates access
-
----
-
-## The short version
-
-!!! info "One documentation site"
-
-    This site covers both:
-
-    - the **proprietary desktop app** distributed through 404privacy.com
-    - the **open source runtime stack** you can self-host, inspect, build, and modify yourself
+1. [404](https://github.com/un-nf/404) - The open source (AGPLv3_ **runtime stack** ([STATIC](../resources/static.md) Proxy & [Rose](../runtime/distro.md) kernel).
+2. 404_APP - The proprietary [**desktop application**](https://404privacy.com/pricing/).
+3. 404-workers - The **account, licensure, and release infrastructure** that distributes, builds, and validates access.
+4. 404-docs - This documentation page.
 
 ---
 
-## Layer 1: Desktop app
+## TL;DR
 
-The desktop app:
+!!! info
+
+    This site covers:
+
+    - The **proprietary desktop app** distributed through [404privacy.com](https://404privacy.com)
+    - The **open source runtime stack** you can self-host, inspect, build, and modify yourself
+
+---
+
+##[ Desktop app](https://404privacy.com/pricing/)
 
 - User Interface (UI)
 - Account management
@@ -39,7 +36,9 @@ The desktop app:
 - Uninstall & cleanup
 - Profile orchestration
 
-On Windows, the desktop app provisions and operates a managed WSL2 Alpine distribution.
+!!! Tip "Windows implementation"
+
+    On Windows, the desktop app provisions and operates a virtual linux environment for packet level mutation.
 
 Legal documents:
 
@@ -49,35 +48,31 @@ Legal documents:
 
 ---
 
-## Layer 2: Open source runtime
+## Open source runtime
 
-The runtime stack remains open source.
+> Licensed under AGPLv3.
 
-That includes:
-
-- **STATIC**: localhost TLS-terminating proxy
-- the **Rose kernel** for WSL2
-- the **eBPF module** used for packet-level mutation.
+- **STATIC**
+- **Rose kernel**
+- **eBPF module**
 
 ---
 
-## Layer 3: Account and release infrastructure
+## Account, licensure, and release infrastructure
 
-The public product path also has an infrastructure layer behind it.
+- Desktop authentication routes
+- Billing portal access
+- Signed desktop updater metadata delivery
+- Signed WSL distro manifest and tarball delivery
 
-That includes:
+This allows us to ship managed builds and service enterprise users.
 
-- desktop authentication routes
-- billing portal access
-- signed desktop updater metadata delivery
-- signed WSL distro manifest and tarball delivery
+!!! success "Local First
 
-This allows us to ship managed builds and service enterprise/power users.
-
-This does **not** change the local-first runtime model. The software still runs locally on the user's machine. 
+    Software *always* runs locally, or on-prem.
 
 ---
 
-If you need help with the 404 application, start in [Desktop](../getStart/appStart.md).
+If you need help with the 404 application, start here: [Desktop](../getStart/appStart.md).
 
-If you need help with free installation, start in [Self-Hosted/CLI](../dev/index.md).
+If you need help with free installation, start here: [Self-Hosted/CLI](../dev/index.md).

@@ -524,6 +524,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-it-actually-changes-on-your-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it actually changes on your system
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What it actually changes on your system">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ca-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CA trust
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxy settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-wsl2-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows WSL2 runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-app-managed-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local app-managed files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -620,17 +681,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-the-application-does-not-change" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What the application does not change
-      
-    </span>
-  </a>
   
 </li>
       
@@ -929,7 +979,7 @@
   <span class="md-ellipsis">
     
   
-    WSL Distro and Runtime Packaging
+    WSL Packaging
   
 
     
@@ -957,7 +1007,7 @@
   <span class="md-ellipsis">
     
   
-    Docker and Build Pipeline
+    Docker Pipeline
   
 
     
@@ -1097,7 +1147,7 @@
   <span class="md-ellipsis">
     
   
-    404 API
+    API Documentation
   
 
     
@@ -1231,7 +1281,7 @@
   <span class="md-ellipsis">
     
   
-    What Does 404 do?
+    What Does 404 Do?
   
 
     
@@ -1259,7 +1309,7 @@
   <span class="md-ellipsis">
     
   
-    Why do I need 404?
+    Why Do I Need 404?
   
 
     
@@ -1287,7 +1337,7 @@
   <span class="md-ellipsis">
     
   
-    Product and Repository Model
+    Understanding 404
   
 
     
@@ -1465,6 +1515,66 @@
 <p>Those documents govern the desktop application and account-backed service surface.</p>
 <p>They do <strong>not</strong> replace the AGPL terms that govern STATIC itself when you self-host the open source runtime.</p>
 <hr>
+<h2 id="what-it-actually-changes-on-your-system">What it actually changes on your system</h2>
+<p>The desktop app asks for administrator privileges because it changes local trust and routing state. That is a real system-level change, and it should be easy to understand before you install it.</p>
+<h3 id="ca-trust">CA trust</h3>
+<p>To intercept TLS locally, STATIC generates a local CA certificate and the desktop app installs trust for that CA into the host OS.</p>
+<ul>
+<li>On Windows, the app installs the <code>STATIC Local CA</code> certificate into <code>LocalMachine\Root</code></li>
+<li>On macOS, the app installs the certificate into the login keychain and then into the System keychain</li>
+<li>The app also keeps local CA material in its managed app data so the runtime can continue minting leaf certificates</li>
+</ul>
+<p>How to reverse it:</p>
+<ul>
+<li>In the app, stop the engine and use the CA removal or cleanup flow if you are resetting the install</li>
+<li>On Windows, remove the <code>STATIC Local CA</code> certificate from the machine trust store</li>
+<li>On macOS, remove the <code>STATIC Local CA</code> certificate from the login keychain and the System keychain</li>
+</ul>
+<h3 id="proxy-settings">Proxy settings</h3>
+<p>When you enable routing, the app points the OS proxy settings at the local STATIC listener.</p>
+<ul>
+<li>STATIC listens on <code>127.0.0.1:4040</code> in the managed runtime config</li>
+<li>On Windows, the app sets <code>ProxyEnable</code>, <code>ProxyServer</code>, and <code>ProxyOverride</code> under the current user's Internet Settings registry path and also runs <code>netsh winhttp set proxy</code></li>
+<li>On macOS, the app enables web and secure web proxy settings for each active network service and adds bypass entries for <code>localhost</code> and <code>127.0.0.1</code></li>
+</ul>
+<p>How to reverse it:</p>
+<ul>
+<li>In the app, disable routing or run the cleanup/reset flow</li>
+<li>On Windows, turn the system proxy off and run <code>netsh winhttp reset proxy</code></li>
+<li>On macOS, disable web and secure web proxy state for the affected network services</li>
+</ul>
+<h3 id="windows-wsl2-runtime">Windows WSL2 runtime</h3>
+<p>On Windows, the desktop app also provisions a managed WSL2 distro for the Linux runtime path.</p>
+<ul>
+<li>The current released app registers the distro as <code>404</code></li>
+<li>It downloads a signed distro manifest and tarball, verifies them, imports the distro, and starts it with WSL2</li>
+<li>It writes host-side WSL state under the app's local data directory in a <code>wsl/</code> folder</li>
+<li>That <code>wsl/</code> folder includes a <code>downloads/</code> cache, a <code>distribution/</code> install directory, a <code>control-token</code> file, and an <code>installed-version.json</code> record</li>
+<li>Inside the distro, the app writes runtime files such as <code>/opt/404/control-token</code> and <code>/opt/404/win-user</code></li>
+</ul>
+<p>How to reverse it:</p>
+<ul>
+<li>In the app, stop the engine and use the cleanup/reset flow if you want the managed runtime removed</li>
+<li>Manually, you can run <code>wsl --unregister 404</code> to remove the managed distro</li>
+<li>After unregistering, remove the app's local <code>wsl/</code> state directory if you want the downloaded archive, install directory, and version metadata gone as well</li>
+</ul>
+<h3 id="local-app-managed-files">Local app-managed files</h3>
+<p>The app also writes normal local application state.</p>
+<ul>
+<li>Config data</li>
+<li>Runtime config</li>
+<li>Downloaded runtime assets</li>
+<li>Managed profiles and profile cache</li>
+<li>Certificates</li>
+<li>Logs</li>
+</ul>
+<p>The exact base path depends on your OS, but the app manages its standard config, data, cache, local data, and log directories through the platform's normal application-data locations.</p>
+<p>How to reverse it:</p>
+<ul>
+<li>Use the app's cleanup or uninstall/reset flow first so trust and proxy state are removed cleanly</li>
+<li>Then remove the app's remaining config, data, cache, local data, and log directories if you want a full wipe</li>
+</ul>
+<hr>
 <h2 id="getting-started">Getting started</h2>
 <p>On first run, the desktop application does three things:</p>
 <ul>
@@ -1500,7 +1610,7 @@
 <p>You do <strong>not</strong> need to import the distro manually for the normal product path.</p>
 <h3 id="wsl2-runtime">WSL2 Runtime</h3>
 <p>On Windows, the desktop application allows the user to interact with a WSL2 runtime.</p>
-<p>The runtime is a Linux kernel running inside a managed distro named <code>Rose</code>.</p>
+<p>The runtime is a Linux kernel running inside a managed distro currently registered by the released app as <code>404</code>.</p>
 <p>The Windows application does the following:</p>
 <ol>
 <li>Fetches a signed distro manifest</li>
@@ -1525,12 +1635,7 @@
 <p>The desktop application uses the native STATIC runtime path rather than WSL2.</p>
 <h3 id="linux">Linux</h3>
 <p>The desktop documentation here is primarily written for the supported product install paths exposed publicly today.</p>
-<p>If your goal is to run the runtime directly on Linux, the self-hosted manual is the more relevant path.</p>
-<hr>
-<h2 id="what-the-application-does-not-change">What the application does not change</h2>
-<p>404 is local-first. The runtime runs on your machine.</p>
-<p>The desktop application does <strong>not</strong> turn 404 into a remote proxy network or a hosted browser relay.</p>
-<p>It manages a local runtime and local OS integrations around that runtime.</p></div>
+<p>If your goal is to run the runtime directly on Linux, the self-hosted manual is the more relevant path.</p></div>
 
 
 

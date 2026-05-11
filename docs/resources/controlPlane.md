@@ -19,13 +19,6 @@ The control plane binds on:
 listener.bind_port + 2
 ```
 
-So..
-
-- Sample config listener `4040` → control plane `4042`
-- Standalone CLI default listener `8443` → control plane `8445`
-
-HTTP/3 is a separate listener concept. It is **not** the control plane.
-
 ---
 
 ## Authentication
@@ -36,13 +29,13 @@ When `control.token_path` is configured, STATIC reads a shared token from disk a
 X-404-Control-Token
 ```
 
-!!! info "Unauthorized Control"
+!!! info "Unauthenticated Control"
     
     If no token path is configured, the control plane can run without that header on a local-only path. The desktop app does not share that functionality.
 
 ---
 
-## Current routes
+## API endpoints
 
 The current control plane exposes:
 

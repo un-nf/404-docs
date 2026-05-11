@@ -745,7 +745,7 @@
   <span class="md-ellipsis">
     
   
-    WSL Distro and Runtime Packaging
+    WSL Packaging
   
 
     
@@ -773,7 +773,7 @@
   <span class="md-ellipsis">
     
   
-    Docker and Build Pipeline
+    Docker Pipeline
   
 
     
@@ -922,7 +922,7 @@
   <span class="md-ellipsis">
     
   
-    404 API
+    API Documentation
   
 
     
@@ -940,7 +940,7 @@
   <span class="md-ellipsis">
     
   
-    404 API
+    API Documentation
   
 
     
@@ -988,10 +988,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#current-routes" class="md-nav__link">
+  <a href="#api-endpoints" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current routes
+        API endpoints
       
     </span>
   </a>
@@ -1232,7 +1232,7 @@
   <span class="md-ellipsis">
     
   
-    What Does 404 do?
+    What Does 404 Do?
   
 
     
@@ -1260,7 +1260,7 @@
   <span class="md-ellipsis">
     
   
-    Why do I need 404?
+    Why Do I Need 404?
   
 
     
@@ -1288,7 +1288,7 @@
   <span class="md-ellipsis">
     
   
-    Product and Repository Model
+    Understanding 404
   
 
     
@@ -1419,23 +1419,17 @@
 <p>The control plane binds on:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>listener.bind_port + 2
 </span></code></pre></div>
-<p>So..</p>
-<ul>
-<li>Sample config listener <code>4040</code> → control plane <code>4042</code></li>
-<li>Standalone CLI default listener <code>8443</code> → control plane <code>8445</code></li>
-</ul>
-<p>HTTP/3 is a separate listener concept. It is <strong>not</strong> the control plane.</p>
 <hr>
 <h2 id="authentication">Authentication</h2>
 <p>When <code>control.token_path</code> is configured, STATIC reads a shared token from disk and requires it on control routes via:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>X-404-Control-Token
 </span></code></pre></div>
 <div class="admonition info">
-<p class="admonition-title">Unauthorized Control</p>
+<p class="admonition-title">Unauthenticated Control</p>
 <p>If no token path is configured, the control plane can run without that header on a local-only path. The desktop app does not share that functionality.</p>
 </div>
 <hr>
-<h2 id="current-routes">Current routes</h2>
+<h2 id="api-endpoints">API endpoints</h2>
 <p>The current control plane exposes:</p>
 <ul>
 <li><code>GET /status</code></li>
