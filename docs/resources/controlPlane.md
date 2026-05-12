@@ -1,6 +1,6 @@
 ---
 title: API Documentation
-description: Reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.
+description: API reference for STATIC's localhost control plane, including authentication, status routes, CA lifecycle routes, profile endpoints, and the current desktop integration contract.
 hide:
   - toc
 ---
@@ -57,8 +57,8 @@ The current control plane exposes:
 
 Use this to confirm:
 
-- Runtime mode
-- Process readiness
+- Mode STATIC is running in (`proxy` or `control`)
+- Whether STATIC is ready to handle traffic
 
 ### `GET /ca/status`
 
@@ -101,10 +101,10 @@ The desktop app relies on the control plane for:
 
 Current rule:
 
-- the runtime owns CA generation and private key custody
+- STATIC owns CA generation and holds the private key
 - the host-facing app owns trust installation into the OS
 
-The private key does not need to leave the runtime for host trust to work.
+The private key does not need to leave STATIC for host trust to work.
 
 That is one of the main reasons the control plane returns `cert_pem` directly.
 

@@ -1,6 +1,6 @@
 ---
 title: Developers
-description: Install dependencies and build the open source 404 runtime from source for the local macOS or Linux path, the Windows Rose-based distribution path, and the supporting Docker packaging workflow.
+description: Install dependencies and build the open source 404 stack from source for the local macOS or Linux path, the Windows Rose-based distribution path, and the supporting Docker packaging workflow.
 ---
 
 # Developers

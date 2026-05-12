@@ -1,6 +1,6 @@
 ---
 title: Windows
-description: Run 404 on Windows through the 404 distribution booted with WSL2, populate the runtime contract it expects, trust the generated CA on the host, and route browser traffic through the local listener.
+description: Run 404 on Windows through the 404 distribution booted with WSL2, populate the boot contract it expects, trust the generated CA on the host, and route browser traffic through the local listener.
 ---
 
 # Windows
@@ -37,10 +37,10 @@ That extraction step should place:
 
 - WSL2 must be available on the machine because it is the Windows host mechanism used to boot the 404 distribution
 - the public profile catalog is `chrome-windows`, `edge-windows`, and `firefox-windows`
-- the bundled runtime config defaults to `firefox-windows`
+- the bundled `static.runtime.toml` config defaults to `firefox-windows`
 - if you use Chrome, swap `firefox-windows` for `chrome-windows`
 - if you use Edge, swap `firefox-windows` for `edge-windows`
-- the runtime listens on `127.0.0.1:4040` on the Windows side once the distro is running
+- STATIC listens on `127.0.0.1:4040` on the Windows side once the distribution is running
 - the local control plane uses port `4042`
 
 For the exact tagged release page, use [{{ latest_github_release_tag }}]({{ latest_github_release_url }}).
@@ -135,7 +135,7 @@ wsl -d 404 -- sh -lc 'printf "%s\n" "$0" > /opt/404/win-user' $env:USERNAME
 
 ---
 
-## 5. Start the runtime and confirm start
+## 5. Start the distribution and confirm start
 
 Launch the distro:
 
@@ -149,9 +149,9 @@ After the distribution boots, `404-init.sh` reads `static.runtime.toml`, best-ef
 
     The distro init script hard-codes the eBPF attach step to `eth0`.
 
-    There is no separate runtime setting for that interface yet.
+    There is no separate config setting for that interface yet.
 
-    On a normal WSL2 setup, `eth0` is usually the right interface. If your distro uses a different name, the runtime will still start, but the packet-mutation attach step may be skipped.
+    On a normal WSL2 setup, `eth0` is usually the right interface. If your distro uses a different name, STATIC will still start, but the packet-mutation attach step may be skipped.
 
 ??? abstract "I need to attach `ttl_editor.o` to a different interface"
 
@@ -215,7 +215,7 @@ If you use Firefox, you must import the certificate into Firefox:
 
 ## 7. Route browser traffic through the listener
 
-The runtime listener is located at `127.0.0.1:4040`.
+The STATIC listener is located at `127.0.0.1:4040`.
 
 For Chrome or Edge:
 
@@ -231,4 +231,4 @@ For Firefox:
 - Port: `4040`
 - Check `Also use this proxy for HTTPS`
 
-At that point, browser traffic routed through the configured proxy listener will flow through the distro runtime.
+At that point, browser traffic routed through the configured proxy listener will flow through the 404 distribution and into STATIC.

@@ -5,7 +5,7 @@ hide:
   - toc
 ---
 
-# Runtime Repository Map
+# Repository Map
 
 404 maintains multiple repositories that interact with each other.
 
@@ -13,7 +13,7 @@ hide:
 
 ## Open source repository - [404](https://github.com/un-nf/404)
 
-Primary runtime source:
+Source repositories:
 
 - [GitHub](https://github.com/un-nf/404){target="_blank"}
 - [Codeberg](https://codeberg.org/szh/404){target="_blank"}
@@ -51,7 +51,7 @@ The worker-backed service surface exists to deliver:
 - Desktop updater metadata and payloads
 - Public distro manifest and tarball routes
 
-Public runtime-facing routes:
+Public distribution-facing routes:
 
 - `/distro/manifest.json`
 - `/distro/manifest.json.sig`

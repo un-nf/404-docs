@@ -1,21 +1,21 @@
 ---
-title: Rose Distribution and Runtime Packaging
-description: Download, build, package, publish, import, and manually operate the 404 distribution built on the Rose base. Covers the public distro contract, exact CI-aligned build steps, and the boot assumptions you must satisfy if you run it yourself.
+title: Rose Kernel
+description: Download, build, package, publish, import, and manually operate the 404 distribution built on the Rose base. Covers the public distribution contract, exact CI-aligned build steps, and the boot assumptions you must satisfy if you run it yourself.
 hide:
   - toc
 ---
 
-# Rose Kernel and Distribution Packaging
+# Rose Kernel
 
-This page is part of the **open source self-hosted/runtime manual**.
+This page is part of the **open source self-hosted manual**.
 
-It documents the Linux runtime artifact that the Windows desktop app consumes by default, so you can also work with that artifact directly for development or testing.
+It documents the Linux distribution artifact that the Windows desktop app consumes by default, so you can also work with that artifact directly for development or testing.
 
 ---
 
 ## What is Rose?
 
-Rose is the minimal Linux kernel compiled specifically for the 404 runtime. It includes only the subsystems and modules the 404 stack requires.
+Rose is the minimal Linux kernel compiled specifically for 404. It includes only the subsystems and modules the 404 stack requires.
 
 The current distribution path packages a WSL-importable root filesystem that runs on that Rose base and contains the:
 
@@ -124,7 +124,7 @@ sudo apt-get install -y \
 rustup target add x86_64-unknown-linux-musl
 ```
 
-### 3. Build the JS bundle the runtime expects
+### 3. Build the JS bundle STATIC expects
 
 ```bash
 npm ci --prefix src/STATIC_proxy/build
@@ -177,18 +177,18 @@ It stages the rootfs, copies the artifacts into a temporary Docker context, writ
 
 For most users, the desktop app will do this for you.
 
-If you are operating the runtime directly, the lower-level import shape is the normal WSL import pattern:
+If you are operating the distribution directly, the lower-level import shape is the normal WSL import pattern:
 
 ```powershell
 wsl --import 404 C:\path\to\install-root C:\path\to\404-distro.tar.gz --version 2
 ```
 
-After import, the runtime still expects the desktop-style boot contract.
+After import, the distribution still expects the desktop-style boot contract.
 
 Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which:
 
 1. Reads the Windows username from `/opt/404/win-user`
-2. Resolves the runtime config at `/mnt/c/Users/<WIN_USER>/AppData/Roaming/404/static/static.runtime.toml`
+2. Resolves the `static.runtime.toml` config at `/mnt/c/Users/<WIN_USER>/AppData/Roaming/404/static/static.runtime.toml`
 3. Best-effort attaches `ttl_editor.o` to `eth0`
 4. Starts `/opt/404/static --config <path> --mode proxy`
 
@@ -196,7 +196,7 @@ Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which
   
     The interface name in the attach step is currently hard-coded to `eth0` inside `/opt/404/404-init.sh`.
 
-    There is no manifest field or runtime TOML field for overriding it yet.
+    There is no manifest field or config field for overriding it yet.
 
     If your Windows host boots the distribution with a different Linux interface name, the manual operator workaround is:
 
@@ -213,7 +213,7 @@ Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which
 wsl -d 404 -- sh -lc 'printf "%s\n" "$0" > /opt/404/win-user' $env:USERNAME
 ```
 
-#### 2. Create the runtime config on the Windows side
+#### 2. Create the `static.runtime.toml` config on the Windows side
 
 Current expected path:
 
@@ -221,7 +221,7 @@ Current expected path:
 C:\Users\<WIN_USER>\AppData\Roaming\404\static\static.runtime.toml
 ```
 
-At minimum, that runtime config needs to be internally consistent with the Linux boot path and whatever listener/control contract you want to run.
+At minimum, that config needs to be internally consistent with the Linux boot path and whatever listener/control contract you want to run.
 
 #### 3. Start the distribution
 
@@ -243,7 +243,7 @@ The current rootfs includes:
 - `/opt/404/static`
 - `/opt/404/ttl_editor.o`
 - `/etc/wsl.conf`
-- the Windows-side runtime TOML reachable under `/mnt/c/...`
+- the Windows-side `static.runtime.toml` file reachable under `/mnt/c/...`
 
 This artifact is the bootable 404 distribution built on the Rose base.
 
@@ -256,4 +256,4 @@ Use the simpler self-hosted path instead:
 - [Self-Hosted and CLI](../dev/index.md)
 - [Windows](../dev/windows.md)
 
-The distribution is the right tool when you want the Linux runtime environment itself, not just the proxy binary.
+The distribution is the right tool when you want the Linux environment itself, not just the proxy binary.

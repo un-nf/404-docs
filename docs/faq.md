@@ -20,7 +20,7 @@ hide:
 [Both](./resources/repoDev.md).
 
 - The **desktop app** is the managed product path.
-- The **runtime stack** remains the open source self-hosted path.
+- The **open source stack** remains the self-hosted path.
 
 This documentation site now covers both on purpose, with separate setup paths so those workflows do not get mixed together.
 
@@ -46,7 +46,7 @@ This means that no website you visit sees your real fingerprint, only the one di
 
 ## Does the desktop app upload my traffic anywhere?
 
-No. The desktop app manages a local runtime.
+No. The desktop app manages a local proxy and, on Windows, a local Linux distribution.
 
 The product infrastructure handles things like account state, access control, and release delivery. It is not a cloud proxy path for your browsing traffic.
 
@@ -64,7 +64,7 @@ In order to change your IP address, 404 would have to *route* your traffic throu
 
 When you send a packet to `localhost`/`127.0.0.1`/`lo`, you are sending the packet back to its host machine. Applications pair this with a `port` to allow a computer to operate on data locally. 
 
-The common ports now depend on how you launch the runtime:
+The common ports now depend on how you launch STATIC:
 
 - repo sample config: `127.0.0.1:4040`
 - standalone binary with no config file: `127.0.0.1:8443`
@@ -83,4 +83,4 @@ If you are operating the open source path manually, you can still work directly 
 
 For the **desktop app product path**, treat the account and licensing flow as part of the current distribution model.
 
-For the **self-hosted open source path**, you can still clone, build, and run the runtime stack directly.
+For the **self-hosted open source path**, you can still clone, build, and run the open source stack directly.

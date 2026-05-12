@@ -7,7 +7,7 @@ description: Run the published STATIC binary directly on Linux, stage the profil
 
 This is the direct STATIC path for Linux.
 
-It covers both the proxy runtime and the manual eBPF attach path.
+It covers both STATIC and the manual eBPF attach path.
 
 ---
 
@@ -51,7 +51,7 @@ cd "$HOME/404-runtime"
 ./static_proxy --profiles-path ./profiles --list-profiles
 ```
 
-Start the runtime with the profile that matches your browser family:
+Start STATIC with the profile that matches your browser family:
 
 ```bash
 cd "$HOME/404-runtime"

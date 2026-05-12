@@ -81,10 +81,10 @@ sequenceDiagram
     404 targets *correlation*: offers coherent profiles across **TLS → headers → JS surfaces → network values**.
 
 -   ### Cross-platform
-    The runtime stays local on **Windows, macOS, and Linux**. The desktop application manages that runtime on the host side. The CLI path exposes it directly.
+    The software stays local on **Windows, macOS, and Linux**. The desktop application manages STATIC and, on Windows, the 404 distribution on the host side. The CLI path exposes those pieces directly.
 
 -   ### Open source
-    STATIC, the Rose-based distribution, and the eBPF layer remain open source and auditable. The desktop application layer is documented here as a proprietary product wrapper around that open source runtime stack.
+    STATIC, the Rose-based distribution, and the eBPF layer remain open source and auditable. The desktop application layer is documented here as a proprietary product wrapper around that open source stack.
 
 ---
 

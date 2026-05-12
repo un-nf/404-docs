@@ -7,7 +7,7 @@ hide:
 
 # What is STATIC
 
-STATIC is the runtime engine inside 404.
+STATIC is the local proxy at the center of 404.
 
 ??? tip "STATIC sits between your browser and the websites you visit, reshaping your fingerprint across TLS, HTTP header, and JavaScript surfaces to match the profile you choose."
 
@@ -31,7 +31,7 @@ STATIC reduces those contradictions by turning one profile into a coordinated se
 
 ### 1. Runs the local proxy
 
-Your browser points to 404 as a local proxy. STATIC receives the traffic and becomes the local runtime that handles the session.
+Your browser points to 404 as a local proxy. STATIC receives the traffic and becomes the local proxy that handles the session.
 
 That allows it to inspect, route, and reshape traffic before it leaves the machine.
 
@@ -43,7 +43,7 @@ That profile describes the browser identity that 404 presents:
 
 - Browser family and variant
 - Header behavior
-- JavaScript runtime behavior
+- Injected script behavior
 - Transport preferences
 - Packet-profile values that the Linux packet path can apply when STATIC is running on the Rose-based distribution
 
@@ -68,7 +68,7 @@ This is how 404 coordinates things like:
 
 STATIC creates the certificate authority material used for TLS-termination.
 
-!!! tip "The host application can request the public certificate, but the private key stays with the runtime."
+!!! tip "The host application can request the public certificate, but the private key stays with STATIC."
 
 ### 6. Exposes a local control plane
 
@@ -83,7 +83,7 @@ STATIC provides a small local API for:
 - Profile selection
 - Profile validation
 
-That is how the desktop application supervises STATIC without becoming the runtime itself.
+That is how the desktop application supervises STATIC without becoming the proxy itself.
 
 ## How STATIC fits into 404
 
@@ -97,7 +97,7 @@ flowchart LR
     R[Rose-based Linux distribution] -->|hosts Linux packet path| S
 ```
 
-The key point is that STATIC is the center of the runtime stack.
+The key point is that STATIC is the center of the open source stack.
 
 - The browser talks through STATIC.
 - The desktop app supervises STATIC.
@@ -107,13 +107,10 @@ The key point is that STATIC is the center of the runtime stack.
 
 ```mermaid
 flowchart TD
-    P[Profile selected] --> L[STATIC loads active profile]
-    L --> B[Browser sends traffic to local proxy]
-    B --> H[STATIC applies request rules and transport plan]
-    H --> O[Origin website responds]
-    O --> R[STATIC decides whether response shaping is needed]
-    R --> J[Optional runtime injection for HTML pages]
-    J --> F[Browser receives final response]
+    P[Browser sends traffic to STATIC] --> L[STATIC spoofs and forwards traffic]
+    L --> O[Origin website responds]
+    O --> R[STATIC shapes response and injects JS]
+    J --> F[STATIC forwards response back to browser]
 ```
 
 ## What STATIC does not do
@@ -168,5 +165,5 @@ STATIC always runs locally.
 Depending on platform and product mode, that means:
 
 - Directly as a local sidecar process
-- Inside the Linux runtime used by the Windows desktop path
+- Inside the 404 distribution used by the Windows desktop path
 - In a self-hosted environment when you run the open source stack yourself

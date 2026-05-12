@@ -1,6 +1,6 @@
 ---
 title: References
-description: Technical reference entry point for the STATIC runtime, control plane, profile model, eBPF layer, and repository boundaries.
+description: Technical reference entry point for STATIC, the control plane, the profile model, the eBPF layer, and repository boundaries.
 hide:
   - toc
 ---
@@ -12,8 +12,8 @@ The following section is for readers who want more details about how 404 works o
 - What does STATIC do?
 - Which defaults are safe to change?
 - How does the localhost control plane work?
-- What is profile state versus runtime policy versus seeded persona materialization?
-- what exactly is packaged into the WSL runtime path
+- What is profile state, what is active policy, and what is seeded persona materialization?
+- what exactly is packaged into the Rose distribution
 
 ---
 

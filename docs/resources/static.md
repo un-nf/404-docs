@@ -1,6 +1,6 @@
 ---
 title: STATIC Proxy
-description: Technical reference for the STATIC runtime, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and documented limitations.
+description: Technical reference for STATIC, including startup rules, config defaults, managed CA storage, launch modes, the request pipeline, the transport boundary, and documented limitations.
 hide:
   - toc
 ---
@@ -9,7 +9,7 @@ hide:
 > Synthetic Traffic and TLS Identity Camouflage
 
 !!! info "STATIC"
-    STATIC is the open source runtime at the center of 404.
+    STATIC is the open source proxy at the center of 404.
 
 ---
 
@@ -19,8 +19,8 @@ hide:
 - HTTP proxy and TLS interception behavior
 - Shared in-memory profile store
 - Localhost control plane
-- CA generation and runtime-side custody of the private key
-- Injected browser-runtime shaping
+- CA generation with the private key held inside STATIC
+- JavaScript injection that shapes browser-facing fingerprint surfaces
 - Profile-aware transport planning for upstream fetches
 
 For host trust installation, host proxy settings, account flow, updater UX, or Windows-side import and lifecycle handling for the Rose-based distribution, download the [desktop app](https://404privacy.com/pricing/)
@@ -77,7 +77,7 @@ What STATIC does:
 
 - Shapes the upstream client behavior it controls
 - Rewrites request and response state through a deterministic stage pipeline
-- Injects a coordinated browser-runtime shaping layer into HTML responses
+- Injects a coordinated JavaScript shaping layer into HTML responses
 
 What STATIC does **not** do:
 
@@ -164,7 +164,7 @@ Defaults:
     - `proxy_protocol = "tls"` is the normal path
     - the control plane is configured separately and binds on `listener.bind_port + 2`
     - body buffering limits are explicit
-    - HTTP/3 config exists, but the normal runtime path is HTTP/1.1 and HTTP/2
+    - HTTP/3 config exists, but the normal network path is HTTP/1.1 and HTTP/2
 
 ---
 
@@ -180,7 +180,7 @@ Managed paths resolve under the OS-local data directory for the `static_proxy` a
 - `certs/static-ca.key.dpapi` on the protected-storage path used by the keystore backend
 - `certs/cache`
 
-If you need the exact CA certificate path at runtime, the cleanest user-facing check is the control plane:
+If you need the exact CA certificate path while STATIC is running, the cleanest user-facing check is the control plane:
 
 ```text
 GET /ca/status
@@ -198,7 +198,7 @@ keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key"
 
 That is accurate for the standalone/local path.
 
-For WSL, the runtime TOML authored by the desktop shell switches to file-backed key custody inside the Linux runtime contract.
+For WSL, the `static.runtime.toml` file written by the desktop app switches to file-backed key custody inside the Rose distribution.
 
 ---
 
@@ -252,12 +252,12 @@ STATIC's inbound routing distinguishes between:
 - HTTP CONNECT proxy traffic
 - Plain HTTP proxy traffic
 
-At runtime, the connection path branches into downstream and upstream handling paths, including:
+When handling traffic, the connection path branches into downstream and upstream handling paths, including:
 
 - HTTP/1.1 sessions
 - HTTP/2 sessions
 - Raw websocket tunneling
-- Local runtime asset delivery for `__/static/runtime.js`-style support assets
+- Local delivery of the injected script bundle at `__/static/runtime.js`
 - Buffered HTML mutation only when response stages actually require it
 
 ---
@@ -274,7 +274,7 @@ Stage order:
 
 This satisfies the following requirements:
 
-- Profile shaping must exist before runtime config is embedded
+- Profile shaping must happen before the JS injection config is embedded in the response
 - CSP handling must happen before the final injected script layout is sent
 - Alt-Svc handling happens after the main mutation decisions are made
 
@@ -301,13 +301,13 @@ Plan inputs:
 
 ---
 
-## JS runtime model
+## JavaScript injection model
 
-The JS runtime boots as a fixed pipeline with a shared registry and entropy state.
+The injected script boots as a fixed pipeline with a shared registry and entropy state.
 
 Bootstrap order:
 
-1. Runtime registry initialization
+1. Registry initialization under `window.__STATIC_RUNTIME__`
 2. Native reference capture
 3. `Function.prototype.toString` masking
 4. CSP nonce capture
@@ -338,13 +338,13 @@ can be shaped coherently.
 
 Iframe propagation is same-origin and selective.
 
-The runtime mirrors selected state into compatible child contexts rather than blindly re-running the entire bootstrap path in every frame.
+The injected script mirrors selected state into compatible child contexts rather than blindly re-running the entire bootstrap path in every frame.
 
 ---
 
 ## Limitations
 
 - Exact on-the-wire TLS parity is bounded by the curent transport backend
-- Service workers and already-existing worker state remain outside the strongest injected-runtime path
+- Service workers and workers that existed before the injected script loaded remain outside its strongest path
 - Users can select incoherent family combinations if they insist on doing that
 - STATIC and the eBPF layer are distinct systems even when packaged together

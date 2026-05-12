@@ -41,7 +41,7 @@ The fastest way to start spoofing your fingerprint without having to manage prof
 
 !!! info
 
-    404 is a TLS-terminating local proxy. The runtime generates a local CA so it can mint leaf certificates for intercepted TLS sessions.
+    404 is a TLS-terminating local proxy. STATIC generates a local CA so it can mint leaf certificates for intercepted TLS sessions.
 
   ---
 
@@ -49,7 +49,7 @@ The fastest way to start spoofing your fingerprint without having to manage prof
 
 - User interface (UI)
 - Account and authorization
-- Runtime orchestration
+- STATIC and distribution orchestration
 - Trust installation
 - System configuration
 - Updates
@@ -69,7 +69,7 @@ Read the current legal documents for the product path:
 
 Those documents govern the desktop application and account-backed service surface.
 
-They do **not** replace the AGPL terms that govern STATIC itself when you self-host the open source runtime.
+They do **not** replace the AGPL terms that govern STATIC and the open source stack when you self-host them.
 
 ---
 
@@ -90,7 +90,7 @@ On first run, the desktop application does three things:
 ### Daily use
 
 1. Open the application
-2. Confirm trust and runtime status
+2. Confirm trust and STATIC status
 3. Start the engine
 4. Enable routing
 5. Disable routing
@@ -112,7 +112,7 @@ To intercept TLS locally, STATIC generates a local CA certificate and the deskto
 
 - On Windows, the app installs the `STATIC Local CA` certificate into `LocalMachine\Root`.
 - On macOS, the app installs the certificate into the login keychain and then into the System keychain.
-- The app keeps local CA material in its managed app data so the runtime can continue minting leaf certificates.
+- The app keeps local CA material in its managed app data so STATIC can continue minting leaf certificates.
 
 How to reverse it:
 
@@ -124,7 +124,7 @@ How to reverse it:
 
 When you enable routing, the app changes your proxy settings to use the local STATIC listener.
 
-- STATIC listens on `127.0.0.1:4040` in the managed runtime config.
+- STATIC listens on `127.0.0.1:4040` in the managed `static.runtime.toml` config.
 - On Windows, the app sets `ProxyEnable`, `ProxyServer`, and `ProxyOverride` under the current user's Internet Settings registry path and also runs `netsh winhttp set proxy`.
 - On macOS, the app enables web and secure web proxy settings for each active network service and adds bypass entries for `localhost` and `127.0.0.1`.
 
@@ -142,11 +142,11 @@ On **Windows**, the desktop app provisions the 404 Linux distribution, which is 
 - Downloads a signed distro manifest and tarball, verifies them, imports the distro, and starts it through WSL2.
 - Writes host-side WSL state under the app's local data directory in a `wsl/` folder.
 - `wsl/` folder includes a `downloads/` cache, a `distribution/` install directory, a `control-token` file, and an `installed-version.json` record.
-- App writes runtime files such as `/opt/404/control-token` and `/opt/404/win-user` into the Linux environment.
+- The app writes distribution files such as `/opt/404/control-token` and `/opt/404/win-user` into the Linux environment.
 
 How to reverse it:
 
-- In the app, stop the engine and use the cleanup/reset flow if you want the managed runtime removed.
+- In the app, stop the engine and use the cleanup/reset flow if you want the managed distribution removed.
 - Manually, you can run `wsl --unregister 404` to remove the managed distro.
 - After unregistering, remove the app's local `wsl/` state directory if you want the downloaded archive, install directory, and version metadata gone as well.
 
@@ -155,8 +155,8 @@ How to reverse it:
 The app writes normal local application state.
 
 - Config data
-- Runtime config
-- Downloaded runtime assets
+- `static.runtime.toml` config
+- Downloaded distribution and proxy assets
 - Managed profiles and profile cache
 - Certificates
 - Logs
@@ -191,8 +191,8 @@ The Windows application does the following:
 3. Downloads the referenced tarball
 4. Verifies the tarball hash against the signed manifest
 5. Imports or updates the `404` distribution
-6. Writes the runtime configuration and control token the Linux service expects
-7. Starts the runtime and talks to STATIC through an authenticated control API
+6. Writes the `static.runtime.toml` config and control token the Linux service expects
+7. Starts the distribution and talks to STATIC through an authenticated control API
 
 The distribution contains:
 
@@ -203,14 +203,14 @@ The distribution contains:
 - `/opt/404/win-user`
 - `/opt/404/control-token`
 
-The Linux runtime does **not** take over host responsibilities that belong to the desktop application.
+The Linux environment does **not** take over host responsibilities that belong to the desktop application.
 
 ### macOS
 
-The desktop application uses the native STATIC runtime path rather than WSL2.
+The desktop application uses the native STATIC path rather than WSL2.
 
 ### Linux
 
 The desktop documentation here is primarily written for the supported product install paths exposed publicly today.
 
-If your goal is to run the runtime directly on Linux, the self-hosted manual is the more relevant path.
+If your goal is to run STATIC directly on Linux, the self-hosted manual is the more relevant path.

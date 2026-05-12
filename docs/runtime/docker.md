@@ -1,6 +1,6 @@
 ---
 title: Docker and Build Pipeline
-description: How the 404 distribution built on the Rose base is packaged with Docker, the exact local build inputs the rootfs pipeline expects, and how to build, inspect, and export a WSL-importable runtime tarball yourself.
+description: How the 404 distribution built on the Rose base is packaged with Docker, the exact local build inputs the rootfs pipeline expects, and how to build, inspect, and export a WSL-importable tarball yourself.
 hide:
   - toc
 ---
@@ -33,7 +33,7 @@ The 404 distribution is built as a minimal Linux root filesystem and exported as
 
 The STATIC binary must be musl-targeted. A glibc-targeted Linux build is the wrong input for the minimal distribution rootfs.
 
-### Build the runtime bundle dependencies
+### Build the JavaScript bundle dependencies
 
 ```bash
 npm ci --prefix src/STATIC_proxy/build

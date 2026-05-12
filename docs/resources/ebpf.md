@@ -1,6 +1,6 @@
 ---
 title: eBPF Reference
-description: Tehnical reference for 404's eBPF layer, including its current runtime role, packet mutations, Linux requirements, build and attach steps, verification, and VM-forwarding notes.
+description: Tehnical reference for 404's eBPF layer, including its current role in the stack, packet mutations, Linux requirements, build and attach steps, verification, and VM-forwarding notes.
 hide:
   - toc
 ---
@@ -9,8 +9,7 @@ hide:
 
 !!! tip "Role"
 
-    The eBPF layer is wired into the Linux runtime path and is part of the open source CLI application and runtime toolchain.
-
+    The eBPF module runs on Linux and rewrites packet-level values before they leave your machine. It works alongside STATIC to normalize the network-layer fingerprint that tools like p0f and nmap use for OS detection.
 ---
 
 ## Overview
@@ -25,16 +24,16 @@ The eBPF module attaches to Linux Traffic Control (`tc`) egress hooks and rewrit
 
 The eBPF layer complements STATIC.
 
-- STATIC handles TLS, HTTP, injected runtime shaping, and control-plane behavior.
-- The eBPF layer handles lower-level packet mutation on Linux inside the Rose-based runtime path.
+!!! question "Why both?"
+
+    Mismatches between network fingerprints and higher-level browser identity can still expose the host as synthetic or misaligned traffic.
+
+- STATIC handles TLS, HTTP, JavaScript injection, and control-plane behavior.
+- The eBPF layer handles lower-level packet mutation on Linux inside the Rose-based distribution path.
 
 On Windows, the managed desktop product path reaches this Linux layer by booting the 404 distribution through WSL2.
 
 On CLI-managed Linux paths, you can build and attach it directly yourself.
-
-!!! note "Why both?"
-
-    Mismatches between network fingerprints and higher-level browser identity can still expose the host as synthetic or misaligned traffic.
 
 ---
 
@@ -59,14 +58,14 @@ You need a Linux environment with:
 
 Packet behavior now has a live profile-driven path on Linux.
 
-The current runtime model is:
+The current Linux packet-profile model is:
 
 - the Linux boot path pins the `fingerprint_profiles` BPF map
-- STATIC derives a packet profile from the selected runtime profile JSON
+- STATIC derives a packet profile from the selected profile JSON
 - the active packet profile is written into the pinned map
 - the eBPF classifier reads from that map and falls back to built-in defaults only when no userspace value is present
 
-You can still inspect and modify the kernel-side code directly if you are developing the packet layer, but normal runtime behavior is no longer limited to compile-time globals.
+You can still inspect and modify the kernel-side code directly if you are developing the packet layer, but normal packet behavior is no longer limited to compile-time globals.
 
 !!! note "Native OS Options:"
         
@@ -86,9 +85,9 @@ You can still inspect and modify the kernel-side code directly if you are develo
 // etc.
 ```
 
-!!! info "Current runtime model"
+!!! info "Current Linux packet-profile model"
 
-    The selected runtime profile can now drive the active packet profile on Linux through the pinned BPF map path.
+    The selected profile can now drive the active packet profile on Linux through the pinned BPF map path.
 
 !!! abstract "Default Implementation Options"
 

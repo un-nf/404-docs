@@ -7,7 +7,7 @@ hide:
 
 # 404 Manages Multiple Repositories
 
-1. [404](https://github.com/un-nf/404) - The open source (AGPLv3_ **runtime stack** ([STATIC](../resources/static.md) Proxy & [Rose](../runtime/distro.md) kernel).
+1. [404](https://github.com/un-nf/404) - The open source (AGPLv3_ **stack** ([STATIC](../resources/static.md) Proxy & [Rose](../runtime/distro.md) kernel).
 2. 404_APP - The proprietary [**desktop application**](https://404privacy.com/pricing/).
 3. 404-workers - The **account, licensure, and release infrastructure** that distributes, builds, and validates access.
 4. 404-docs - This documentation page.
@@ -21,7 +21,7 @@ hide:
     This site covers:
 
     - The **proprietary desktop app** distributed through [404privacy.com](https://404privacy.com)
-    - The **open source runtime stack** you can self-host, inspect, build, and modify yourself
+    - The **open source stack** you can self-host, inspect, build, and modify yourself
 
 ---
 
@@ -63,7 +63,7 @@ Legal documents:
 - Desktop authentication routes
 - Billing portal access
 - Signed desktop updater metadata delivery
-- Signed distribution manifest and tarball delivery for the Rose-based runtime path
+- Signed distribution manifest and tarball delivery for the Rose-based Linux path
 
 This allows us to ship managed builds and service enterprise users.
 

@@ -1,6 +1,6 @@
 ---
 title: Self-Hosted and CLI
-description: Choose the open source 404 operator path that matches your platform, then follow the exact runtime, trust, and routing steps for Windows, macOS, Linux, or local source builds.
+description: Choose the open source 404 operator path that matches your platform, then follow the exact STATIC, trust, and routing steps for Windows, macOS, Linux, or local source builds.
 hide:
   - toc
 ---
@@ -9,7 +9,7 @@ hide:
 
 This section is the open source operator path for 404.
 
-Use it when you want to run the runtime directly, control profiles yourself, work with the Rose-based distribution as infrastructure, or build from source.
+Use it when you want to run STATIC directly, control profiles yourself, work with the Rose-based distribution as infrastructure, or build from source.
 
 Current tagged release: [{{ latest_github_release_tag }}]({{ latest_github_release_url }})
 

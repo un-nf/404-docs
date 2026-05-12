@@ -7,7 +7,7 @@ hide:
 
 # Profiles and Persona Materialization
 
-STATIC is profile-driven through startup, validation, transport shaping, and injected runtime state.
+STATIC is profile-driven through startup, validation, transport shaping, and the injected JavaScript layer.
 
 ---
 
@@ -15,7 +15,7 @@ STATIC is profile-driven through startup, validation, transport shaping, and inj
 
 - Identity metadata such as family, variant, and platform
 - Header shaping rules
-- Runtime fingerprint config
+- JavaScript fingerprint configuration applied during injection
 - TLS and HTTP/2 behavior hints
 - Seeded overlay choices that materialize into one concrete persona for the lifetime of the process
 
@@ -23,7 +23,7 @@ STATIC is profile-driven through startup, validation, transport shaping, and inj
 
 ## Profile families
 
-The shipped runtime path is organized around browser families and discourages cross-engine spoofing.
+The shipped profile set is organized around browser families and discourages cross-engine spoofing.
 
 Best practice:
 
@@ -49,9 +49,9 @@ The active profile must come from one of these places:
 
 ## Shared profile state
 
-The current runtime loads one shared `ProfileStore` and uses it in both the data plane and the localhost control plane
+STATIC loads one shared `ProfileStore` and uses it in both the data plane and the localhost control plane.
 
-That is what makes runtime profile reads and runtime profile updates coherent.
+That is what makes profile reads and profile selection changes coherent.
 
 Without that shared in-memory state, the control plane and proxy pipeline drift apart.
 
@@ -61,7 +61,7 @@ Without that shared in-memory state, the control plane and proxy pipeline drift 
 
 Some profiles contain `seeded_overlays`.
 
-Those overlays give the runtime:
+Those overlays give STATIC:
 
 - Stable per-process identity
 - Internally consistent high-entropy values

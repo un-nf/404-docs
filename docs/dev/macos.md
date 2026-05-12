@@ -7,7 +7,7 @@ description: Run the published STATIC binary directly on macOS, stage the profil
 
 This is the direct STATIC path for macOS.
 
-The recommended release assets are packaged operator bundles. Each zip includes the binary, the release manifest files, and the profile catalog you need to start the runtime directly on macOS.
+The recommended release assets are packaged operator bundles. Each zip includes the binary, the release manifest files, and the profile catalog you need to start STATIC directly on macOS.
 
 [Download for macOS Apple Silicon](https://github.com/un-nf/404/releases/latest/download/404-macos-aarch64.zip){ .md-button .md-button--primary }
 [Download for macOS Intel](https://github.com/un-nf/404/releases/latest/download/404-macos-x64.zip){ .md-button }
@@ -93,7 +93,7 @@ cd "$HOME/404-runtime"
 ./static_proxy --config ./config/static.example.toml --list-profiles
 ```
 
-Start the runtime with the profile that matches your browser family:
+Start STATIC with the profile that matches your browser family:
 
 ```bash
 cd "$HOME/404-runtime"
