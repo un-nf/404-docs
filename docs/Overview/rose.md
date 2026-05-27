@@ -7,39 +7,34 @@ hide:
 
 # What is Rose?
 
-Rose is a minimal Linux kernel compiled specifically for 404. It includes only the subsystems and modules the 404 stack requires.
+Rose is the Linux runtime distribution used by 404 on Windows through WSL2.
 
-!!! tip "Rose is the minimal Linux layer that the 404 distribution runs on."
+!!! tip "Rose is the Linux layer that starts STATIC and the eBPF path inside WSL2."
 
-404 needs a Linux environment on the distribution path, especially on Windows where the desktop app uses the managed Linux environment.
+Rose provides a consistent runtime contract:
 
-Rose exists so that environment stays:
+- `/opt/404/static`
+- `/opt/404/ttl_editor.o`
+- `/opt/404/404-init.sh`
+- `/etc/wsl.conf` boot command wiring
+- Windows-mounted runtime config at `AppData/Roaming/404/static/static.runtime.toml`
+
+This keeps the Linux execution path:
 
 - Fast
 - Small
-- Secure
 - Focused
 - Predictable
-- Able to load the specific networking pieces 404 actually uses
 
-It gives 404 a Linux path that can support lower-level networking features such as the packet shaping layer used alongside STATIC.
+It also allows packet-layer mutation and profile sync to run where Linux eBPF and TC are available.
 
 ## Components
 
-
-- The boot environment
-- The STATIC binary
-- The lower-level packet mutation tooling used on the Linux path
-- The startup logic that brings those pieces together
-
-!!! info "Rose is the Linux kernel foundation that makes the 404 distribution possible."
-
-Support for:
-
-- Booting the 404 distribution cleanly
-- Starting STATIC from the expected boot contract
-- Supporting the packet-layer mutation path on Linux
-- Keeping the distribution small and focused
+- Linux rootfs imported into WSL2
+- STATIC proxy binary
+- eBPF classifier object
+- Startup script that mounts `bpffs`, attaches TC filters, and launches STATIC
+- Runtime config and profiles from Windows AppData
 
 ## How Rose works with STATIC
 
@@ -47,13 +42,13 @@ Rose does not replace STATIC.
 
 STATIC still owns the active profile, the proxy flow, the injected JavaScript behavior, and the local control plane.
 
-Rose provides the Linux layer that STATIC runs on when 404 uses the distribution path.
+Rose provides the Linux environment and startup contract that STATIC runs within.
 
 ```mermaid
 flowchart LR
-    D[404 Distribution] --> R[Rose boots the minimal Linux base]
+        D[404 Distribution] --> R[Rose boots inside WSL2]
     R --> S[STATIC starts inside the distribution]
-    S --> M[Optional Linux packet shaping path]
+        S --> M[Linux packet shaping path]
     M --> N[Outbound network traffic]
 ```
 
@@ -69,24 +64,24 @@ What matters is what Rose makes possible:
 
 ## Where Rose runs
 
-Rose runs inside the Linux distribution path used by 404.
+Rose runs as an imported WSL2 distribution on Windows.
 
 !!! warning "Rose is not a general cross-platform layer"
 
-    It belongs to the Linux distribution path and exists to support 404's lower-level features.
+    It belongs to the Linux distribution path and exists to support 404's networking features.
 
 ## What the Linux distribution path looks like
 
 ```mermaid
 flowchart TD
     A[Desktop app or operator] --> B[Linux environment starts]
-    B --> C[Rose provides the minimal Linux base]
+    B --> C[Rose distribution starts]
     C --> D[STATIC starts with active profile]
-    D --> E[Linux-only packet shaping path can attach]
+    D --> E[eBPF packet shaping path attaches]
     E --> F[Traffic leaves through the Linux environment]
 ```
 
-The important idea is that Rose is the environment the distribution relies on. It is the base that allows the rest of the Linux stack to start cleanly and stay focused.
+The important idea is that Rose is the runtime environment the distribution relies on.
 
 ## What Rose does not do
 
@@ -102,44 +97,13 @@ Rose is one layer in a larger stack.
 
 It is most useful when it works underneath STATIC, not instead of it.
 
-## Why Rose and STATIC are separate
-
-It may seem simpler to put everything into one layer, but these pieces solve different problems.
-
-STATIC is best at:
-
-- proxy behavior
-- active profile state
-- JavaScript and document-layer shaping
-- local control-plane supervision
-
-Rose is best at:
-
-- providing the minimal Linux base for the distribution path
-- loading only the system pieces that 404 actually needs
-- supporting Linux-side networking features used by the stack
-
-Separating those responsibilities makes the system easier to reason about.
-
-It also means the desktop app can supervise a clear boot contract instead of mixing application logic and Linux packet logic together.
-
-!!! tip "If you want the technical references"
-
-    For the Linux distribution packaging view, see [runtime/distro.md](../runtime/distro.md)
-
-    For the eBPF and packet-layer details, see [resources/ebpf.md](../resources/ebpf.md)
-
-## The biggest misunderstanding about Rose
-
-The biggest misunderstanding is thinking that Rose is just a packet mutator.
-
-That is too narrow.
+## More than a packet mutator
 
 Rose is the minimal Linux kernel foundation the 404 distribution uses.
 
 The packet-shaping path is one important capability that runs on that foundation, but it is not the whole point of Rose.
 
-The broader point is to provide a small, focused Linux environment that supports the 404 stack without carrying unnecessary system surface.
+The broader point is to provide a focused Linux environment that supports the 404 stack.
 
 ## Bottom line
 

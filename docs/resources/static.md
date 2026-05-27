@@ -133,6 +133,28 @@ Defaults:
 - HTTP/3 placeholder bind: `127.0.0.1:8444`
 - control plane: `127.0.0.1:8445`
 
+### WSL distribution launch contract
+
+When operating through the WSL distribution artifact, STATIC is already included inside the tarball at:
+
+- `/opt/404/static`
+
+The distro boot entrypoint `/opt/404/404-init.sh` launches:
+
+```text
+/opt/404/static --config /mnt/c/Users/<WIN_USER>/AppData/Roaming/404/static/static.runtime.toml --mode proxy
+```
+
+The same startup script mounts `bpffs`, attaches `ttl_editor.o` to live `eth*` egress interfaces, and pins `fingerprint_profiles` for userspace sync.
+
+For local Linux or WSL operator runs outside the packaged distro, the repo helper:
+
+```bash
+bash ./scripts/run-static-with-ebpf-caps.sh --profile firefox-windows
+```
+
+builds STATIC and runs it with the capabilities needed for pinned-map sync. On WSL it automatically falls back to a `sudo` launch mode, and on standard Linux it uses file capabilities when available.
+
 ??? abstract "static.example.toml"
 
     ```toml
@@ -198,7 +220,7 @@ keystore = { mode = "keychain", service = "404.static_proxy", account = "ca_key"
 
 That is accurate for the standalone/local path.
 
-For WSL, the `static.runtime.toml` file written by the desktop app switches to file-backed key custody inside the Rose distribution.
+For WSL, `static.runtime.toml` uses file-backed key custody inside the distribution.
 
 ---
 

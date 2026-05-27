@@ -132,6 +132,12 @@ make
 
 > This is the same object that is packaged into the Rose-based distribution build path.
 
+For a CI-shaped local loop that builds STATIC, compiles the eBPF object, and packages a WSL-importable distro tarball in one command, use:
+
+```bash
+bash ./scripts/build-local-distro.sh --version v0.0.0-local
+```
+
 ---
 
 ## Attach path
@@ -148,6 +154,12 @@ Remove:
 ```bash
 sudo tc filter del dev <interface> egress
 sudo tc qdisc del dev <interface> clsact
+```
+
+For a repo-managed attach flow that mounts `bpffs`, discovers live `eth*` interfaces, attaches the classifier, and pins `fingerprint_profiles`, use:
+
+```bash
+bash ./scripts/verify-ebpf-attach.sh
 ```
 
 ---
@@ -168,6 +180,20 @@ tcpdump -i <interface> -vvv -c 20 -Q out 'tcp[tcpflags] & tcp-syn != 0'
 tcpdump -i <interface> -vvv -nn -Q out | grep -E 'ttl|win|mss|wscale'
 tcpdump -i <interface> -vvv -XX -Q out
 tcpdump -i <interface> -vvv -Q out port 443
+```
+
+Useful helper scripts:
+
+- `scripts/inspect-ebpf-state.sh` prints the routed egress path, attached `eth*` interfaces, pinned packet profile map, decoded active profile, and protocol counters.
+- `scripts/tcpdump-syn-fingerprint.sh` auto-detects the routed interface and captures outbound SYN packets with decoded TTL, window, MSS, window scale, and option ordering.
+- `scripts/run-static-with-ebpf-caps.sh` builds STATIC and runs it with the capabilities needed for pinned-map sync, including WSL-safe `sudo` fallback.
+
+Examples:
+
+```bash
+bash ./scripts/inspect-ebpf-state.sh
+bash ./scripts/tcpdump-syn-fingerprint.sh --host 1.1.1.1 --count 10
+bash ./scripts/run-static-with-ebpf-caps.sh --profile firefox-windows
 ```
 
 ---

@@ -14,6 +14,7 @@ If you want the easiest possible experience, use the [404 application](https://4
 This documentation covers:
 
 - Rose-based distribution artifact
+- Manual Windows operator flow using release assets
 - Docker packaging path
 - eBPF layer
 - [Reference pages](../resources/index.md) for [STATIC](../resources/static.md), [APIs](../resources/controlPlane.md), [profiles](../resources/profiles.md), and [repository boundaries](../resources/repoDev.md)
@@ -36,6 +37,6 @@ This documentation covers:
 
 !!! info "The 404 Linux distribution is live"
 
-  The desktop app consumes a signed distro manifest, verifies the referenced tarball, imports the `404` distribution, and boots it through WSL2 on Windows.
+  The desktop app and the manual operator flow both consume signed distro artifacts, import a WSL2 distribution, and boot it through `/opt/404/404-init.sh`.
 
-    This documentation contains instructions on setting up a self-hosted version of this.
+    This documentation contains direct release-download and manual setup instructions.

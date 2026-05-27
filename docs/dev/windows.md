@@ -129,9 +129,12 @@ This default configuration is as follows:
 Run these two commands in PowerShell:
 
 ```powershell
-wsl --import 404 "$env:LOCALAPPDATA\404\wsl\distribution" "$HOME\404-distro.tar.gz" --version 2
-wsl -d 404 -- sh -lc 'printf "%s\n" "$0" > /opt/404/win-user' $env:USERNAME
+$DistroName = "404"
+wsl --import $DistroName "$env:LOCALAPPDATA\404\wsl\$DistroName" "$HOME\404-distro.tar.gz" --version 2
+wsl -d $DistroName -- sh -lc "printf '%s\n' '$env:USERNAME' > /opt/404/win-user"
 ```
+
+For self-hosted Windows development, you can use a different distro name such as `404-dev` to keep it isolated from the app-managed runtime.
 
 ---
 
@@ -140,47 +143,111 @@ wsl -d 404 -- sh -lc 'printf "%s\n" "$0" > /opt/404/win-user' $env:USERNAME
 Launch the distro:
 
 ```powershell
-wsl -d 404
+wsl -d $DistroName
 ```
 
-After the distribution boots, `404-init.sh` reads `static.runtime.toml`, best-effort attaches `ttl_editor.o` to `eth0`, and starts STATIC in proxy mode.
+The fixed WSL distro name `404` is only required for the desktop app-managed runtime. The self-hosted path documented here can run under `404`, `404-dev`, or another name as long as you use that same name consistently in the commands above.
 
-!!! note "About `eth0`"
+After the distribution boots, `404-init.sh` reads `static.runtime.toml`, mounts `bpffs`, pre-loads `ttl_editor.o` with `bpftool` when available, attaches the pinned classifier to live `eth*` interfaces, pins `fingerprint_profiles`, and starts STATIC in proxy mode. If `bpftool` is unavailable, it falls back to direct `tc` object loading.
 
-    The distro init script hard-codes the eBPF attach step to `eth0`.
-
-    There is no separate config setting for that interface yet.
-
-    On a normal WSL2 setup, `eth0` is usually the right interface. If your distro uses a different name, STATIC will still start, but the packet-mutation attach step may be skipped.
+The bundled distro is Alpine-based. Use `sh`, not `bash`, for commands you run inside `404-dev` unless you installed `bash` yourself.
 
 ??? abstract "I need to attach `ttl_editor.o` to a different interface"
 
     First, list the interfaces inside the distro:
 
     ```powershell
-    wsl -d 404 -- ip link show
+    wsl -d $DistroName -- ip link show
     ```
 
-    Then attach the classifier manually, replacing `<interface>` with the correct name:
+    Then either set `EGRESS_IFACES` for that session or attach manually.
+
+    Session override:
 
     ```powershell
-    wsl -d 404 -- sh -lc 'tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da obj /opt/404/ttl_editor.o sec classifier 2>/dev/null || true'
+    wsl -d $DistroName -- sh -lc 'EGRESS_IFACES=<interface> /opt/404/404-init.sh'
     ```
 
-    If you want that different interface to persist across boots, you currently have to edit `/opt/404/404-init.sh` inside the distro yourself. The bundled config does not expose an interface selector yet.
+    Manual attach:
 
-Open a second PowerShell window to confirm 404 has started:
+    ```powershell
+    wsl -d $DistroName -- sh -lc 'mkdir -p /sys/fs/bpf/404/ttl_programs; bpftool prog loadall /opt/404/ttl_editor.o /sys/fs/bpf/404/ttl_programs; tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da pinned /sys/fs/bpf/404/ttl_programs/tc_counter'
+    ```
+
+Open a second PowerShell window to confirm 404 has started. This reads the control token from the Windows-side `%LOCALAPPDATA%\404\wsl\control-token` path configured by the bundled runtime config:
 
 ```powershell
 $token = Get-Content "$env:LOCALAPPDATA\404\wsl\control-token" -Raw
 Invoke-RestMethod -Headers @{ "X-404-Control-Token" = $token } http://127.0.0.1:4042/status
 ```
 
+??? abstract "The distro booted, but I need to start eBPF or STATIC manually"
+
+        If the distro imports successfully but you end up at a shell prompt instead of a fully running proxy, use the following order.
+
+        > From Windows PS terminal (not wsl)
+
+        1. Confirm the runtime config exists:
+
+        ```powershell
+        wsl -d $DistroName -- sh -lc 'WIN_USER=$(cat /opt/404/win-user); ls -l \
+            "/mnt/c/Users/${WIN_USER}/AppData/Roaming/com.404.app/static/static.runtime.toml" \
+            "/mnt/c/Users/${WIN_USER}/AppData/Roaming/404/static/static.runtime.toml" 2>/dev/null'
+        ```
+
+        2. If you need to attach the eBPF classifier manually, use the Alpine-safe pinned-program flow:
+
+        ```powershell
+        wsl -d $DistroName -- sh -lc 'mkdir -p /sys/fs/bpf/404/ttl_programs; bpftool prog loadall /opt/404/ttl_editor.o /sys/fs/bpf/404/ttl_programs; tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da pinned /sys/fs/bpf/404/ttl_programs/tc_counter'
+        ```
+
+        3. If you want the normal boot contract after that, run:
+
+        ```powershell
+        wsl -d $DistroName -- sh -lc '/opt/404/404-init.sh'
+        ```
+
+        4. If eBPF is already attached and you only need to bring up STATIC manually, run the binary directly:
+
+        ```powershell
+        wsl -d $DistroName -- sh -lc 'WIN_USER=$(cat /opt/404/win-user); CONFIG=""; for candidate in \
+            "/mnt/c/Users/${WIN_USER}/AppData/Roaming/com.404.app/static/static.runtime.toml" \
+            "/mnt/c/Users/${WIN_USER}/AppData/Roaming/404/static/static.runtime.toml"; do \
+            if [ -f "$candidate" ]; then CONFIG="$candidate"; break; fi; done; \
+            /opt/404/static --config "$CONFIG" --mode proxy'
+        ```
+
+        5. If you copied scripts into the distro from Windows and they fail with `$'\r'` or `invalid option`, normalize line endings before running them:
+
+        ```powershell
+        wsl -d $DistroName -- sh -lc "sed -i 's/\r$//' /opt/404/404-init.sh; chmod +x /opt/404/404-init.sh"
+        ```
+
+Useful verification helpers from the open-source repo:
+
+- `scripts/inspect-ebpf-state.sh` prints the routed egress path, attached `eth*` interfaces, pinned packet profile map, decoded profile entry, and protocol counters.
+- `scripts/tcpdump-syn-fingerprint.sh` captures outbound SYN packets and prints TTL, window, MSS, window scale, and option ordering on the live routed interface.
+
+Those helper scripts are repo-side developer tools written for `bash`. They are not part of the packaged Alpine distro boot path. Run them from a repo checkout in your WSL development environment, or install `bash` in the distro first if you intentionally want to run them there.
+
 ---
 
 ## 6. Trust the generated CA
 
-Fetch the generated CA from the local control plane and write it to disk:
+On the self-hosted WSL path, STATIC stores its generated CA under the runtime user's Linux app-data directory, not under `/opt/404` and not under the desktop app-managed Windows cert path.
+
+For the default self-hosted distro flow, where STATIC runs as `root`, the live files are typically:
+
+- `\\wsl.localhost\<distro-name>\root\.local\share\static_proxy\certs\static-ca.crt`
+- `\\wsl.localhost\<distro-name>\root\.local\share\static_proxy\certs\static-ca.key.dpapi`
+
+Example for `404-dev`:
+
+```powershell
+Get-ChildItem "\\wsl.localhost\404-dev\root\.local\share\static_proxy\certs"
+```
+
+Fetch the generated CA from the local control plane and export a Windows-local copy for trust installation:
 
 ```powershell
 $token = Get-Content "$env:LOCALAPPDATA\404\wsl\control-token" -Raw
@@ -196,19 +263,20 @@ certutil.exe -addstore root "$env:LOCALAPPDATA\404\wsl\static-ca.crt"
 
 Manual install:
 
-1. Open `%LOCALAPPDATA%\404\wsl` in File Explorer.
-2. Double-click `static-ca.crt`.
-3. Click `Install Certificate...`.
-4. Select `Current User` and click `Next`.
-5. Choose `Place all certificates in the following store` and click `Browse...`.
-6. Select `Trusted Root Certification Authorities` and click `OK`.
-7. Click `Next` and then `Finish`.
+1. :material-microsoft-windows:{ .lg .middle } + `R`
+2. Paste: `\\wsl.localhost\404\root\.local\share\static_proxy\certs\static-ca.crt` or `%LOCALAPPDATA%\404\wsl\static-ca.crt`
+3. Click `Open`
+4. Click `Install Certificate...`.
+5. Select `Current User` and click `Next`.
+6. Choose `Place all certificates in the following store` and click `Browse...`.
+7. Select `Trusted Root Certification Authorities` and click `OK`.
+8. Click `Next` and then `Finish`.
 
 If you use Firefox, you must import the certificate into Firefox:
 
 - Settings → Privacy & Security → Certificates → View Certificates
 - Authorities → Import
-- select `%LOCALAPPDATA%\404\wsl\static-ca.crt`
+- select either `%LOCALAPPDATA%\404\wsl\static-ca.crt` if you exported a Windows-local copy, or the live self-hosted cert at `\\wsl.localhost\<distro-name>\root\.local\share\static_proxy\certs\static-ca.crt`
 - enable `Trust this CA to identify websites`
 
 ---
@@ -223,6 +291,22 @@ For Chrome or Edge:
 - Enable Manual proxy setup
 - Address: `127.0.0.1`
 - Port: `4040`
+
+Click `Network & internet` from the main Windows Settings page:
+
+![Windows Settings Network & internet](../assets/images/Walkthrough/win_settings_opt.png)
+
+Then open `Proxy` from the network settings page:
+
+![Windows Network settings page](../assets/images/Walkthrough/win_net_settings.png)
+
+On the proxy page, select the manual proxy section:
+
+![Windows Proxy settings page](../assets/images/Walkthrough/win_proxy_settings_page.png)
+
+Turn `Use a proxy server` on and enter `127.0.0.1` with port `4040`:
+
+![Windows Proxy setup](../assets/images/Walkthrough/win_proxy_setup.png)
 
 For Firefox:
 

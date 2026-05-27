@@ -1,6 +1,6 @@
 ---
 title: Rose Kernel
-description: Download, build, package, publish, import, and manually operate the 404 distribution built on the Rose base. Covers the public distribution contract, exact CI-aligned build steps, and the boot assumptions you must satisfy if you run it yourself.
+description: Download and run the 404 WSL2 distribution directly from GitHub release assets. Includes manual Windows import, runtime contract, and verification commands.
 hide:
   - toc
 ---
@@ -9,26 +9,44 @@ hide:
 
 This page is part of the **open source self-hosted manual**.
 
-It documents the Linux distribution artifact that the Windows desktop app consumes by default, so you can also work with that artifact directly for development or testing.
+It documents the Linux distribution artifact that runs inside WSL2 on Windows.
 
 ---
 
-## What is Rose?
+## What this artifact is
 
-Rose is the minimal Linux kernel compiled specifically for 404. It includes only the subsystems and modules the 404 stack requires.
+The release artifact is a WSL-importable Linux root filesystem that contains:
 
-The current distribution path packages a WSL-importable root filesystem that runs on that Rose base and contains the:
+- `/opt/404/static` (STATIC binary)
+- `/opt/404/ttl_editor.o` (eBPF classifier object)
+- `/opt/404/404-init.sh` (startup entrypoint)
+- `/etc/wsl.conf` (boot command wiring)
+- `/opt/404/distro-version`
 
-- Musl STATIC binary
-- Compiled `ttl_editor.o` object
-- Linux-side startup entrypoint
-- Boot configuration
+You do not need to download STATIC separately when using this distro tarball.
 
 !!! Tip "Available on Windows"
 
 ---
 
-## Public release contract
+## Release assets
+
+GitHub release assets include:
+
+- `404-distro.tar.gz`
+- `404-distro-manifest.json`
+- `404-distro-manifest.json.sig`
+- `404-windows-x64.zip`
+
+`404-windows-x64.zip` is the operator bundle for manual Windows setup. It includes:
+
+- `404-distro.tar.gz`
+- distro manifest files
+- `AppData/Roaming/404/static/profiles/*`
+- `AppData/Roaming/404/static/static.runtime.toml`
+- `AppData/Local/404/wsl/control-token`
+
+## Public manifest contract
 
 The public update origin exposes:
 
@@ -40,12 +58,12 @@ The public update origin exposes:
 
 The manifest points at a versioned, immutable tarball path.
 
-The desktop app verifies the:
+Consumers verify:
 
 - Manifest signature
 - Tarball hash inside the signed manifest
 
-The current release-manifest shape is:
+Release-manifest shape:
 
 ```json
 {
@@ -58,202 +76,148 @@ The current release-manifest shape is:
 
 ---
 
-## Download the published distro
+## Download from GitHub release
 
-For most users, the desktop app downloads and verifies the distribution.
+On Windows, download release assets from the repository Releases page.
 
-If you want to download the artifact directly, treat the public origin as a manifest-first contract.
+For manual setup, download:
 
-Fetch sequence:
+- `404-windows-x64.zip`
+
+Optional direct assets:
+
+- `404-distro.tar.gz`
+- `404-distro-manifest.json`
+- `404-distro-manifest.json.sig`
+
+---
+
+## Manual Windows setup (self-hosted)
+
+### 1. Extract the Windows operator bundle
+
+Example:
+
+```powershell
+Expand-Archive -Path .\404-windows-x64.zip -DestinationPath .\404-windows -Force
+```
+
+### 2. Copy AppData payload into your Windows profile
+
+From PowerShell:
+
+```powershell
+$src = Resolve-Path .\404-windows
+robocopy "$src\AppData\Roaming\404" "$env:APPDATA\404" /E
+robocopy "$src\AppData\Local\404" "$env:LOCALAPPDATA\404" /E
+```
+
+This places:
+
+- `static.runtime.toml` and profiles under `AppData\Roaming\404\static`
+- control token under `AppData\Local\404\wsl`
+
+### 3. Import the WSL distro tarball
+
+Choose a distro name. Example uses `rose`:
+
+```powershell
+New-Item -ItemType Directory -Force -Path C:\WSL\rose | Out-Null
+wsl --import rose C:\WSL\rose .\404-windows\404-distro.tar.gz --version 2
+```
+
+You can use any distro name for manual inspection. The desktop app currently manages only the fixed WSL distro name `404`, so use `404` if you expect the Tauri app to control the runtime.
+
+### 4. Write the Windows username expected by distro startup
+
+```powershell
+wsl -d rose -- sh -lc "printf '%s\n' '$env:USERNAME' > /opt/404/win-user"
+```
+
+Do not use shell positional parameters such as `$0` here. They can write the shell name instead of the Windows username, which makes distro startup look under the wrong `C:\Users\...\AppData` path.
+
+### 5. Start the distro
+
+```powershell
+wsl -d rose
+```
+
+That opens a shell session and runs the distro boot contract.
+
+---
+
+## What happens on startup
+
+`/opt/404/404-init.sh` does the following:
+
+1. Reads `/opt/404/win-user`
+2. Resolves config at `/mnt/c/Users/<WIN_USER>/AppData/Roaming/404/static/static.runtime.toml`
+3. Mounts `bpffs` at `/sys/fs/bpf` (best effort)
+4. Attaches `ttl_editor.o` to all live `eth*` egress interfaces (best effort)
+5. Pins `fingerprint_profiles` at `/sys/fs/bpf/404/fingerprint_profiles`
+6. Starts `/opt/404/static --config <path> --mode proxy`
+
+The eBPF attach path is interface-discovery based (`eth*`), and can be overridden with `EGRESS_IFACES`.
+
+---
+
+## Verify runtime state
+
+Check STATIC process:
+
+```powershell
+wsl -d rose -- pgrep -a static
+```
+
+Check control plane status:
+
+```powershell
+curl.exe http://127.0.0.1:4042/status
+```
+
+Check pinned eBPF map:
+
+```powershell
+wsl -d rose -- bpftool map show pinned /sys/fs/bpf/404/fingerprint_profiles
+```
+
+Check attached filters:
+
+```powershell
+wsl -d rose -- sh -lc 'for d in $(ip -o link show up | awk -F": " "/: eth[0-9]+:/ {print \$2}"); do echo "== $d =="; tc filter show dev "$d" egress; done'
+```
+
+Useful helper scripts from the open-source repo:
+
+- `scripts/verify-distro-publication.sh` verifies that a public origin exposes the stable manifest, signature, and versioned tarball correctly.
+- `scripts/build-local-distro.sh` builds the musl STATIC binary, compiles `ttl_editor.o`, and packages a WSL-importable tarball when you need a source-built artifact.
+
+---
+
+## Direct public-origin download flow
+
+If you are fetching from a public origin, use manifest-first retrieval:
 
 ```bash
 BASE_URL="https://updates.404privacy.com"
 
 curl -O "$BASE_URL/distro/manifest.json"
 curl -O "$BASE_URL/distro/manifest.json.sig"
-```
-
-Then read the manifest and fetch the referenced tarball path:
-
-```bash
+# then fetch the manifest's artifact_path, for example:
 curl -O "$BASE_URL/distro/v1.2.3/404-distro.tar.gz"
 ```
 
 ---
 
-## Build it locally
+## Source-maintainer build path
 
-The distribution build is a CI-backed packaging path.
+For source builds of the distro tarball, use the repository build documentation in:
 
-The release job currently:
+- `404_REL/distro/README.md`
+- `404 APP/docs/local-distro-build.md`
 
-1. Builds the musl STATIC binary for `x86_64-unknown-linux-musl`
-2. Builds `src/ebpf/ttl_editor.o`
-3. Packages `dist/404-distro.tar.gz`
-4. Generates `dist/distro/manifest.json`
-5. Signs that manifest
-6. Publishes stable and versioned objects
-
-If you want to mirror the local parts of that path yourself, this is the closest manual sequence.
-
-### 1. Install the musl and Linux build dependencies
-
-On Debian/Ubuntu-like hosts:
+The main packaging helper is:
 
 ```bash
-sudo apt-get update
-sudo apt-get install -y \
-  clang \
-  llvm \
-  musl-tools \
-  pkg-config \
-  cmake \
-  ninja-build \
-  perl \
-  make \
-  g++ \
-  iproute2 \
-  libbpf-dev \
-  libelf-dev \
-  linux-libc-dev
+bash ./scripts/build-local-distro.sh --version v0.0.0-local
 ```
-
-### 2. Add the Rust musl target
-
-```bash
-rustup target add x86_64-unknown-linux-musl
-```
-
-### 3. Build the JS bundle STATIC expects
-
-```bash
-npm ci --prefix src/STATIC_proxy/build
-```
-
-### 4. Build the musl STATIC binary
-
-```bash
-CC_x86_64_unknown_linux_musl=musl-gcc \
-CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_LINKER=musl-gcc \
-cargo build --release --locked \
-  --manifest-path src/STATIC_proxy/Cargo.toml \
-  --bin static_proxy \
-  --target x86_64-unknown-linux-musl
-```
-
-### 5. Build the eBPF object
-
-```bash
-make -C src/ebpf clean all
-```
-
-### 6. Package the distribution tarball
-
-Use the packaging entrypoint:
-
-```sh
-./distro/build.sh \
-  --static-binary "$PWD/src/STATIC_proxy/target/x86_64-unknown-linux-musl/release/static_proxy" \
-  --ttl-object "$PWD/src/ebpf/ttl_editor.o" \
-  --version v0.1.0-dev \
-  --output "$PWD/dist/404-distro.tar.gz" \
-  --image-tag "404-distro-build:local"
-```
-
-That script expects two prebuilt inputs:
-
-- a Linux `x86_64-unknown-linux-musl` STATIC binary
-- a compiled `ttl_editor.o` object
-
-Output:
-
-- `dist/404-distro.tar.gz`
-
-It stages the rootfs, copies the artifacts into a temporary Docker context, writes `/opt/404/distro-version`, builds a temporary image, then uses `docker create` and `docker export` to emit the final WSL-importable tarball.
-
----
-
-## Import it manually on Windows
-
-For most users, the desktop app will do this for you.
-
-If you are operating the distribution directly, the lower-level import shape is the normal WSL import pattern:
-
-```powershell
-wsl --import 404 C:\path\to\install-root C:\path\to\404-distro.tar.gz --version 2
-```
-
-After import, the distribution still expects the desktop-style boot contract.
-
-Current boot behavior inside the distro comes from `/opt/404/404-init.sh`, which:
-
-1. Reads the Windows username from `/opt/404/win-user`
-2. Resolves the `static.runtime.toml` config at `/mnt/c/Users/<WIN_USER>/AppData/Roaming/404/static/static.runtime.toml`
-3. Best-effort attaches `ttl_editor.o` to `eth0`
-4. Starts `/opt/404/static --config <path> --mode proxy`
-
-??? warning "Interface is hard-coded to eth0" 
-  
-    The interface name in the attach step is currently hard-coded to `eth0` inside `/opt/404/404-init.sh`.
-
-    There is no manifest field or config field for overriding it yet.
-
-    If your Windows host boots the distribution with a different Linux interface name, the manual operator workaround is:
-
-    ```powershell
-    wsl -d 404 -- ip link show
-    wsl -d 404 -- sh -lc 'tc qdisc add dev <interface> clsact 2>/dev/null || true; tc filter add dev <interface> egress bpf da obj /opt/404/ttl_editor.o sec classifier 2>/dev/null || true'
-    ```
-
-### Minimum manual setup after import
-
-#### 1. Write the Windows username file inside the distro
-
-```powershell
-wsl -d 404 -- sh -lc 'printf "%s\n" "$0" > /opt/404/win-user' $env:USERNAME
-```
-
-#### 2. Create the `static.runtime.toml` config on the Windows side
-
-Current expected path:
-
-```text
-C:\Users\<WIN_USER>\AppData\Roaming\404\static\static.runtime.toml
-```
-
-At minimum, that config needs to be internally consistent with the Linux boot path and whatever listener/control contract you want to run.
-
-#### 3. Start the distribution
-
-```powershell
-wsl -d 404
-```
-
-If the boot path is healthy, WSL boot configuration should invoke `/opt/404/404-init.sh` automatically.
-
----
-
-## What is inside the tarball
-
-The current rootfs includes:
-
-- `/opt/404/win-user`
-- `/opt/404/distro-version`
-- `/opt/404/404-init.sh`
-- `/opt/404/static`
-- `/opt/404/ttl_editor.o`
-- `/etc/wsl.conf`
-- the Windows-side `static.runtime.toml` file reachable under `/mnt/c/...`
-
-This artifact is the bootable 404 distribution built on the Rose base.
-
----
-
-## If you only want to run STATIC
-
-Use the simpler self-hosted path instead:
-
-- [Self-Hosted and CLI](../dev/index.md)
-- [Windows](../dev/windows.md)
-
-The distribution is the right tool when you want the Linux environment itself, not just the proxy binary.
