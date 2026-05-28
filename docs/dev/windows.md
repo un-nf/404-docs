@@ -134,6 +134,8 @@ wsl --import $DistroName "$env:LOCALAPPDATA\404\wsl\$DistroName" "$HOME\404-dist
 wsl -d $DistroName -- sh -lc "printf '%s\n' '$env:USERNAME' > /opt/404/win-user"
 ```
 
+The import directory intentionally lives under `%LOCALAPPDATA%\404\wsl\$DistroName`. That is the Windows-side storage location for the imported self-hosted distro.
+
 For self-hosted Windows development, you can use a different distro name such as `404-dev` to keep it isolated from the app-managed runtime.
 
 ---
@@ -150,7 +152,7 @@ The fixed WSL distro name `404` is only required for the desktop app-managed run
 
 After the distribution boots, `404-init.sh` reads `static.runtime.toml`, mounts `bpffs`, pre-loads `ttl_editor.o` with `bpftool` when available, attaches the pinned classifier to live `eth*` interfaces, pins `fingerprint_profiles`, and starts STATIC in proxy mode. If `bpftool` is unavailable, it falls back to direct `tc` object loading.
 
-The bundled distro is Alpine-based. Use `sh`, not `bash`, for commands you run inside `404-dev` unless you installed `bash` yourself.
+The bundled distro is Alpine-based. Use `sh`, not `bash`, for commands you run inside `404` unless you installed `bash` yourself.
 
 ??? abstract "I need to attach `ttl_editor.o` to a different interface"
 
@@ -177,7 +179,8 @@ The bundled distro is Alpine-based. Use `sh`, not `bash`, for commands you run i
 Open a second PowerShell window to confirm 404 has started. This reads the control token from the Windows-side `%LOCALAPPDATA%\404\wsl\control-token` path configured by the bundled runtime config:
 
 ```powershell
-$token = Get-Content "$env:LOCALAPPDATA\404\wsl\control-token" -Raw
+$TokenPath = "$env:LOCALAPPDATA\404\wsl\control-token"
+$token = Get-Content $TokenPath -Raw
 Invoke-RestMethod -Headers @{ "X-404-Control-Token" = $token } http://127.0.0.1:4042/status
 ```
 
@@ -244,27 +247,32 @@ For the default self-hosted distro flow, where STATIC runs as `root`, the live f
 Example for `404-dev`:
 
 ```powershell
-Get-ChildItem "\\wsl.localhost\404-dev\root\.local\share\static_proxy\certs"
+$LiveCaDir = "\\wsl.localhost\$DistroName\root\.local\share\static_proxy\certs"
+Get-ChildItem $LiveCaDir
 ```
 
-Fetch the generated CA from the local control plane and export a Windows-local copy for trust installation:
+For the self-hosted path, the simplest trust path is to use the live cert directly from the distro:
 
 ```powershell
-$token = Get-Content "$env:LOCALAPPDATA\404\wsl\control-token" -Raw
-$ca = Invoke-RestMethod -Headers @{ "X-404-Control-Token" = $token } http://127.0.0.1:4042/ca/status
-$ca.cert_pem | Set-Content "$env:LOCALAPPDATA\404\wsl\static-ca.crt"
+$LiveCaPath = "\\wsl.localhost\$DistroName\root\.local\share\static_proxy\certs\static-ca.crt"
+certutil.exe -addstore root $LiveCaPath
 ```
 
-Trust it in the Windows root store:
+??? abstract "I want a Windows-local exported copy of the CA"
 
-```powershell
-certutil.exe -addstore root "$env:LOCALAPPDATA\404\wsl\static-ca.crt"
-```
+    Fetch the generated CA from the local control plane and export a Windows-local copy for trust installation:
+
+    ```powershell
+    $TokenPath = "$env:LOCALAPPDATA\404\wsl\control-token"
+    $token = Get-Content $TokenPath -Raw
+    $ca = Invoke-RestMethod -Headers @{ "X-404-Control-Token" = $token } http://127.0.0.1:4042/ca/status
+    $ca.cert_pem | Set-Content "$env:LOCALAPPDATA\404\wsl\static-ca.crt"
+    ```
 
 Manual install:
 
 1. :material-microsoft-windows:{ .lg .middle } + `R`
-2. Paste: `\\wsl.localhost\404\root\.local\share\static_proxy\certs\static-ca.crt` or `%LOCALAPPDATA%\404\wsl\static-ca.crt`
+2. Paste the live self-hosted cert path for your distro, for example `\\wsl.localhost\404\root\.local\share\static_proxy\certs\static-ca.crt`
 3. Click `Open`
 4. Click `Install Certificate...`.
 5. Select `Current User` and click `Next`.
@@ -276,7 +284,7 @@ If you use Firefox, you must import the certificate into Firefox:
 
 - Settings → Privacy & Security → Certificates → View Certificates
 - Authorities → Import
-- select either `%LOCALAPPDATA%\404\wsl\static-ca.crt` if you exported a Windows-local copy, or the live self-hosted cert at `\\wsl.localhost\<distro-name>\root\.local\share\static_proxy\certs\static-ca.crt`
+- select the live self-hosted cert at `\\wsl.localhost\<distro-name>\root\.local\share\static_proxy\certs\static-ca.crt`, or `%LOCALAPPDATA%\404\wsl\static-ca.crt` only if you explicitly exported a Windows-local copy
 - enable `Trust this CA to identify websites`
 
 ---
