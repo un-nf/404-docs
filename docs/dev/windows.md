@@ -302,19 +302,19 @@ For Chrome or Edge:
 
 Click `Network & internet` from the main Windows Settings page:
 
-![Windows Settings Network & internet](../assets/images/Walkthrough/win_settings_opt.png)
+![Windows Settings Network & internet](../assets/images/walkthroughs/proxy/win_settings_opt.png)
 
 Then open `Proxy` from the network settings page:
 
-![Windows Network settings page](../assets/images/Walkthrough/win_net_settings.png)
+![Windows Network settings page](../assets/images/walkthroughs/proxy/win_net_settings.png)
 
 On the proxy page, select the manual proxy section:
 
-![Windows Proxy settings page](../assets/images/Walkthrough/win_proxy_settings_page.png)
+![Windows Proxy settings page](../assets/images/walkthroughs/proxy/win_proxy_settings_page.png)
 
 Turn `Use a proxy server` on and enter `127.0.0.1` with port `4040`:
 
-![Windows Proxy setup](../assets/images/Walkthrough/win_proxy_setup.png)
+![Windows Proxy setup](../assets/images/walkthroughs/proxy/win_proxy_setup.png)
 
 For Firefox:
 
