@@ -1,0 +1,1719 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Run 404 on Windows through the 404 distribution booted with WSL2, populate the boot contract it expects, trust the generated CA on the host, and route browser traffic through the local listener.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.404privacy.com/dev/windows/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../macos/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Windows - 404 - A Privacy Tool</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#windows" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="404 - A Privacy Tool" class="md-header__button md-logo" aria-label="404 - A Privacy Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            404 - A Privacy Tool
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Windows
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/un-nf/404" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Overview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Overview
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getStart/appStart/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Desktop
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Self-Hosted/CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../runtime/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Developer Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contact/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contact Us
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="404 - A Privacy Tool" class="md-nav__button md-logo" aria-label="404 - A Privacy Tool" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    404 - A Privacy Tool
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/un-nf/404" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../Overview/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Overview
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/whatIs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is 404?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is STATIC?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/rose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What is Rose?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../consent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consent & Warning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Overview/about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About us
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getStart/appStart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desktop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Self-Hosted/CLI
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Self-Hosted/CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-verify-the-download-matches-the-manifest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Verify the download matches the manifest
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-extract-the-bundle-into-your-windows-home-folder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Extract the bundle into your Windows home folder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-change-the-default-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Change the default profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-import-the-distribution-and-write-the-windows-username-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Import the distribution and write the Windows username file
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-start-the-distribution-and-confirm-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Start the distribution and confirm start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-trust-the-generated-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Trust the generated CA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-route-browser-traffic-through-the-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Route browser traffic through the listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../macos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    macOS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../runtime/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developer Resources
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developer Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../runtime/distro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WSL Packaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../runtime/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    --- References ---
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/repoDev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repository Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/static/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    STATIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/ebpf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eBPF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/controlPlane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resources/profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contact Us
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<div><h1 id="windows">Windows</h1>
+<p>This is the Windows self-hosted path.</p>
+<p>It uses the 404 distribution, which is built on the Rose base and booted with WSL2. This page does not document running the raw Windows STATIC binary as the normal Windows operator path.</p>
+<p><a class="md-button md-button--primary" href="https://github.com/un-nf/404/releases/latest/download/404-windows-x64.zip">Download for Windows x64</a></p>
+<p>The Windows operator bundle includes:</p>
+<ul>
+<li><code>404-distro.tar.gz</code></li>
+<li><code>404-distro-manifest.json</code></li>
+<li><code>404-distro-manifest.json.sig</code></li>
+<li><code>AppData\Roaming\404\static\static.runtime.toml</code></li>
+<li><code>AppData\Roaming\404\static\profiles\manifest.json</code></li>
+<li><code>AppData\Roaming\404\static\profiles\firefox-windows.json</code></li>
+<li><code>AppData\Roaming\404\static\profiles\chrome-windows.json</code></li>
+<li><code>AppData\Roaming\404\static\profiles\edge-windows.json</code></li>
+<li><code>AppData\Local\404\wsl\control-token</code></li>
+</ul>
+<p>Extract <code>404-windows-x64.zip</code> directly into your Windows home folder, which is usually <code>C:\Users\&lt;your-username&gt;</code>.</p>
+<p>That extraction step should place:</p>
+<ul>
+<li><code>404-distro.tar.gz</code>, <code>404-distro-manifest.json</code>, and <code>404-distro-manifest.json.sig</code> in your home folder</li>
+<li>the full <code>AppData\Roaming\404\static</code> tree in the right place</li>
+<li>the <code>AppData\Local\404\wsl\control-token</code> file in the right place</li>
+</ul>
+<hr>
+<h2 id="before-you-start">Before you start</h2>
+<ul>
+<li>WSL2 must be available on the machine because it is the Windows host mechanism used to boot the 404 distribution</li>
+<li>the public profile catalog is <code>chrome-windows</code>, <code>edge-windows</code>, and <code>firefox-windows</code></li>
+<li>the bundled <code>static.runtime.toml</code> config defaults to <code>firefox-windows</code></li>
+<li>if you use Chrome, swap <code>firefox-windows</code> for <code>chrome-windows</code></li>
+<li>if you use Edge, swap <code>firefox-windows</code> for <code>edge-windows</code></li>
+<li>STATIC listens on <code>127.0.0.1:4040</code> on the Windows side once the distribution is running</li>
+<li>the local control plane uses port <code>4042</code></li>
+</ul>
+<p>For the exact tagged release page, use <a href="https://github.com/un-nf/404/releases/tag/v2.6.93">v2.6.93</a>.</p>
+<hr>
+<h2 id="1-verify-the-download-matches-the-manifest">1. Verify the download matches the manifest</h2>
+<p>Run this in PowerShell:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">$manifest</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="s2">"$HOME\Downloads\404-windows-x64\404-distro-manifest.json"</span> <span class="p">|</span> <span class="nb">ConvertFrom-Json</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">$archiveHash</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-FileHash</span> <span class="s2">"$HOME\Downloads\404-windows-x64\404-distro.tar.gz"</span> <span class="n">-Algorithm</span> <span class="n">SHA256</span><span class="p">).</span><span class="n">Hash</span><span class="p">.</span><span class="n">ToLower</span><span class="p">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="s2">"manifest version: </span><span class="p">$(</span><span class="nv">$manifest</span><span class="p">.</span><span class="n">version</span><span class="p">)</span><span class="s2">"</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="s2">"manifest artifact path: </span><span class="p">$(</span><span class="nv">$manifest</span><span class="p">.</span><span class="n">artifact_path</span><span class="p">)</span><span class="s2">"</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="s2">"manifest sha256: </span><span class="p">$(</span><span class="nv">$manifest</span><span class="p">.</span><span class="n">sha256</span><span class="p">)</span><span class="s2">"</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s2">"archive sha256:  $archiveHash"</span>
+</span></code></pre></div>
+<p>The two SHA-256 values should match.</p>
+<hr>
+<h2 id="2-extract-the-bundle-into-your-windows-home-folder">2. Extract the bundle into your Windows home folder</h2>
+<p>Right-click <code>404-windows-x64.zip</code>, choose <code>Extract All...</code>, and set the destination to your Windows home folder.</p>
+<p>In the Extract All dialog:</p>
+<ol>
+<li>click <code>Browse...</code></li>
+<li>open <code>This PC → Local Disk (C:) → Users → &lt;your-username&gt;</code></li>
+<li>click <code>Select Folder</code></li>
+<li>click <code>Extract</code></li>
+</ol>
+<details class="abstract">
+<summary>Powershell command</summary>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">Expand-Archive</span> <span class="n">-LiteralPath</span> <span class="s2">"$HOME\Downloads\404-windows-x64.zip"</span> <span class="n">-DestinationPath</span> <span class="s2">"$HOME"</span> <span class="n">-Force</span>
+</span></code></pre></div>
+</details>
+<hr>
+<h2 id="3-change-the-default-profile">3. Change the default profile</h2>
+<div class="admonition info">
+<p class="admonition-title">The default profile is Firefox-Windows</p>
+<p>If you are using a Blink based profile, you'll have to use the <code>Chrome-Windows</code> or <code>Edge-Windows</code> profile.</p>
+</div>
+<ul>
+<li>File: <code>%APPDATA%\404\static\static.runtime.toml</code></li>
+</ul>
+<p>Line to change:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">default_profile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"firefox-windows"</span>
+</span></code></pre></div>
+<details class="abstract">
+<summary>I want to use the Chrome profile</summary>
+<p>Run this in PowerShell:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">(</span><span class="nb">Get-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span><span class="p">)</span> <span class="o">-replace</span> <span class="s1">'default_profile = "firefox-windows"'</span><span class="p">,</span> <span class="s1">'default_profile = "chrome-windows"'</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span>
+</span></code></pre></div>
+</details>
+<details class="abstract">
+<summary>I want to use the Edge profile</summary>
+<p>Run this in PowerShell:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">(</span><span class="nb">Get-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span><span class="p">)</span> <span class="o">-replace</span> <span class="s1">'default_profile = "firefox-windows"'</span><span class="p">,</span> <span class="s1">'default_profile = "edge-windows"'</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">"$env:APPDATA\404\static\static.runtime.toml"</span>
+</span></code></pre></div>
+</details>
+<p>This default configuration is as follows:</p>
+<ul>
+<li>Listener on <code>4040</code></li>
+<li>Control plane on <code>4042</code></li>
+<li>File-backed key storage</li>
+<li>Profiles loaded from the local <code>profiles</code> directory beside the config file</li>
+<li>control token loaded from the relative Windows local-app-data path</li>
+</ul>
+<hr>
+<h2 id="4-import-the-distribution-and-write-the-windows-username-file">4. Import the distribution and write the Windows username file</h2>
+<p>Run these two commands in PowerShell:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">$DistroName</span> <span class="p">=</span> <span class="s2">"404"</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">wsl</span> <span class="p">-</span><span class="n">-import</span> <span class="nv">$DistroName</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\$DistroName"</span> <span class="s2">"$HOME\404-distro.tar.gz"</span> <span class="p">-</span><span class="n">-version</span> <span class="n">2</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="nv">$DistroName</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s2">"printf '%s\n' '$env:USERNAME' &gt; /opt/404/win-user"</span>
+</span></code></pre></div>
+<p>The import directory intentionally lives under <code>%LOCALAPPDATA%\404\wsl\$DistroName</code>. That is the Windows-side storage location for the imported self-hosted distro.</p>
+<p>For self-hosted Windows development, you can use a different distro name such as <code>404-dev</code> to keep it isolated from the app-managed runtime.</p>
+<hr>
+<h2 id="5-start-the-distribution-and-confirm-start">5. Start the distribution and confirm start</h2>
+<p>Launch the distro:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="nv">$DistroName</span>
+</span></code></pre></div>
+<p>The fixed WSL distro name <code>404</code> is only required for the desktop app-managed runtime. The self-hosted path documented here can run under <code>404</code>, <code>404-dev</code>, or another name as long as you use that same name consistently in the commands above.</p>
+<p>After the distribution boots, <code>404-init.sh</code> reads <code>static.runtime.toml</code>, mounts <code>bpffs</code>, pre-loads <code>ttl_editor.o</code> with <code>bpftool</code> when available, attaches the pinned classifier to live <code>eth*</code> interfaces, pins <code>fingerprint_profiles</code>, and starts STATIC in proxy mode. If <code>bpftool</code> is unavailable, it falls back to direct <code>tc</code> object loading.</p>
+<p>The bundled distro is Alpine-based. Use <code>sh</code>, not <code>bash</code>, for commands you run inside <code>404</code> unless you installed <code>bash</code> yourself.</p>
+<details class="abstract">
+<summary>I need to attach <code>ttl_editor.o</code> to a different interface</summary>
+<p>First, list the interfaces inside the distro:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="nv">$DistroName</span> <span class="p">--</span> <span class="n">ip</span> <span class="n">link</span> <span class="n">show</span>
+</span></code></pre></div>
+<p>Then either set <code>EGRESS_IFACES</code> for that session or attach manually.</p>
+<p>Session override:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="nv">$DistroName</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'EGRESS_IFACES=&lt;interface&gt; /opt/404/404-init.sh'</span>
+</span></code></pre></div>
+<p>Manual attach:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">wsl</span> <span class="n">-d</span> <span class="nv">$DistroName</span> <span class="p">--</span> <span class="n">sh</span> <span class="n">-lc</span> <span class="s1">'mkdir -p /sys/fs/bpf/404/ttl_programs; bpftool prog loadall /opt/404/ttl_editor.o /sys/fs/bpf/404/ttl_programs; tc qdisc add dev &lt;interface&gt; clsact 2&gt;/dev/null || true; tc filter add dev &lt;interface&gt; egress bpf da pinned /sys/fs/bpf/404/ttl_programs/tc_counter'</span>
+</span></code></pre></div>
+</details>
+<p>Open a second PowerShell window to confirm 404 has started. This reads the control token from the Windows-side <code>%LOCALAPPDATA%\404\wsl\control-token</code> path configured by the bundled runtime config:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nv">$TokenPath</span> <span class="p">=</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\control-token"</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">$token</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="nv">$TokenPath</span> <span class="n">-Raw</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nb">Invoke-RestMethod</span> <span class="n">-Headers</span> <span class="p">@{</span> <span class="s2">"X-404-Control-Token"</span> <span class="p">=</span> <span class="nv">$token</span> <span class="p">}</span> <span class="n">http</span><span class="p">://</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">4042</span><span class="p">/</span><span class="n">status</span>
+</span></code></pre></div>
+<details class="abstract">
+<summary>The distro booted, but I need to start eBPF or STATIC manually</summary>
+<div class="language-text highlight"><pre><span></span><code>If the distro imports successfully but you end up at a shell prompt instead of a fully running proxy, use the following order.
+
+&gt; From Windows PS terminal (not wsl)
+
+1. Confirm the runtime config exists:
+
+```powershell
+wsl -d $DistroName -- sh -lc 'WIN_USER=$(cat /opt/404/win-user); ls -l \
+    "/mnt/c/Users/${WIN_USER}/AppData/Roaming/com.404.app/static/static.runtime.toml" \
+    "/mnt/c/Users/${WIN_USER}/AppData/Roaming/404/static/static.runtime.toml" 2&gt;/dev/null'
+```
+
+2. If you need to attach the eBPF classifier manually, use the Alpine-safe pinned-program flow:
+
+```powershell
+wsl -d $DistroName -- sh -lc 'mkdir -p /sys/fs/bpf/404/ttl_programs; bpftool prog loadall /opt/404/ttl_editor.o /sys/fs/bpf/404/ttl_programs; tc qdisc add dev &lt;interface&gt; clsact 2&gt;/dev/null || true; tc filter add dev &lt;interface&gt; egress bpf da pinned /sys/fs/bpf/404/ttl_programs/tc_counter'
+```
+
+3. If you want the normal boot contract after that, run:
+
+```powershell
+wsl -d $DistroName -- sh -lc '/opt/404/404-init.sh'
+```
+
+4. If eBPF is already attached and you only need to bring up STATIC manually, run the binary directly:
+
+```powershell
+wsl -d $DistroName -- sh -lc 'WIN_USER=$(cat /opt/404/win-user); CONFIG=""; for candidate in \
+    "/mnt/c/Users/${WIN_USER}/AppData/Roaming/com.404.app/static/static.runtime.toml" \
+    "/mnt/c/Users/${WIN_USER}/AppData/Roaming/404/static/static.runtime.toml"; do \
+    if [ -f "$candidate" ]; then CONFIG="$candidate"; break; fi; done; \
+    /opt/404/static --config "$CONFIG" --mode proxy'
+```
+
+5. If you copied scripts into the distro from Windows and they fail with `$'\r'` or `invalid option`, normalize line endings before running them:
+
+```powershell
+wsl -d $DistroName -- sh -lc "sed -i 's/\r$//' /opt/404/404-init.sh; chmod +x /opt/404/404-init.sh"
+```
+</code></pre></div>
+</details>
+<p>Useful verification helpers from the open-source repo:</p>
+<ul>
+<li><code>scripts/inspect-ebpf-state.sh</code> prints the routed egress path, attached <code>eth*</code> interfaces, pinned packet profile map, decoded profile entry, and protocol counters.</li>
+<li><code>scripts/tcpdump-syn-fingerprint.sh</code> captures outbound SYN packets and prints TTL, window, MSS, window scale, and option ordering on the live routed interface.</li>
+</ul>
+<p>Those helper scripts are repo-side developer tools written for <code>bash</code>. They are not part of the packaged Alpine distro boot path. Run them from a repo checkout in your WSL development environment, or install <code>bash</code> in the distro first if you intentionally want to run them there.</p>
+<hr>
+<h2 id="6-trust-the-generated-ca">6. Trust the generated CA</h2>
+<p>On the self-hosted WSL path, STATIC stores its generated CA under the runtime user's Linux app-data directory, not under <code>/opt/404</code> and not under the desktop app-managed Windows cert path.</p>
+<p>For the default self-hosted distro flow, where STATIC runs as <code>root</code>, the live files are typically:</p>
+<ul>
+<li><code>\\wsl.localhost\&lt;distro-name&gt;\root\.local\share\static_proxy\certs\static-ca.crt</code></li>
+<li><code>\\wsl.localhost\&lt;distro-name&gt;\root\.local\share\static_proxy\certs\static-ca.key.dpapi</code></li>
+</ul>
+<p>Example for <code>404-dev</code>:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nv">$LiveCaDir</span> <span class="p">=</span> <span class="s2">"\\wsl.localhost\$DistroName\root\.local\share\static_proxy\certs"</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nb">Get-ChildItem</span> <span class="nv">$LiveCaDir</span>
+</span></code></pre></div>
+<p>For the self-hosted path, the simplest trust path is to use the live cert directly from the distro:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nv">$LiveCaPath</span> <span class="p">=</span> <span class="s2">"\\wsl.localhost\$DistroName\root\.local\share\static_proxy\certs\static-ca.crt"</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">certutil</span><span class="p">.</span><span class="n">exe</span> <span class="n">-addstore</span> <span class="n">root</span> <span class="nv">$LiveCaPath</span>
+</span></code></pre></div>
+<details class="abstract">
+<summary>I want a Windows-local exported copy of the CA</summary>
+<p>Fetch the generated CA from the local control plane and export a Windows-local copy for trust installation:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nv">$TokenPath</span> <span class="p">=</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\control-token"</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nv">$token</span> <span class="p">=</span> <span class="nb">Get-Content</span> <span class="nv">$TokenPath</span> <span class="n">-Raw</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nv">$ca</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Headers</span> <span class="p">@{</span> <span class="s2">"X-404-Control-Token"</span> <span class="p">=</span> <span class="nv">$token</span> <span class="p">}</span> <span class="n">http</span><span class="p">://</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">4042</span><span class="p">/</span><span class="n">ca</span><span class="p">/</span><span class="n">status</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nv">$ca</span><span class="p">.</span><span class="n">cert_pem</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="s2">"$env:LOCALAPPDATA\404\wsl\static-ca.crt"</span>
+</span></code></pre></div>
+</details>
+<p>Manual install:</p>
+<ol>
+<li><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path d="M3 12V6.75l6-1.32v6.48zm17-9v8.75l-10 .15V5.21zM3 13l6 .09v6.81l-6-1.15zm17 .25V22l-10-1.91V13.1z"></path></svg></span> + <code>R</code></li>
+<li>Paste the live self-hosted cert path for your distro, for example <code>\\wsl.localhost\404\root\.local\share\static_proxy\certs\static-ca.crt</code></li>
+<li>Click <code>Open</code></li>
+<li>Click <code>Install Certificate...</code>.</li>
+<li>Select <code>Current User</code> and click <code>Next</code>.</li>
+<li>Choose <code>Place all certificates in the following store</code> and click <code>Browse...</code>.</li>
+<li>Select <code>Trusted Root Certification Authorities</code> and click <code>OK</code>.</li>
+<li>Click <code>Next</code> and then <code>Finish</code>.</li>
+</ol>
+<p>If you use Firefox, you must import the certificate into Firefox:</p>
+<ul>
+<li>Settings → Privacy &amp; Security → Certificates → View Certificates</li>
+<li>Authorities → Import</li>
+<li>select the live self-hosted cert at <code>\\wsl.localhost\&lt;distro-name&gt;\root\.local\share\static_proxy\certs\static-ca.crt</code>, or <code>%LOCALAPPDATA%\404\wsl\static-ca.crt</code> only if you explicitly exported a Windows-local copy</li>
+<li>enable <code>Trust this CA to identify websites</code></li>
+</ul>
+<hr>
+<h2 id="7-route-browser-traffic-through-the-listener">7. Route browser traffic through the listener</h2>
+<p>The STATIC listener is located at <code>127.0.0.1:4040</code>.</p>
+<p>For Chrome or Edge:</p>
+<ul>
+<li>Windows Settings → Network &amp; internet → Proxy</li>
+<li>Enable Manual proxy setup</li>
+<li>Address: <code>127.0.0.1</code></li>
+<li>Port: <code>4040</code></li>
+</ul>
+<p>Click <code>Network &amp; internet</code> from the main Windows Settings page:</p>
+<p><img alt="Windows Settings Network &amp; internet" src="../../assets/images/walkthroughs/proxy/win_settings_opt.png"></p>
+<p>Then open <code>Proxy</code> from the network settings page:</p>
+<p><img alt="Windows Network settings page" src="../../assets/images/walkthroughs/proxy/win_net_settings.png"></p>
+<p>On the proxy page, select the manual proxy section:</p>
+<p><img alt="Windows Proxy settings page" src="../../assets/images/walkthroughs/proxy/win_proxy_settings_page.png"></p>
+<p>Turn <code>Use a proxy server</code> on and enter <code>127.0.0.1</code> with port <code>4040</code>:</p>
+<p><img alt="Windows Proxy setup" src="../../assets/images/walkthroughs/proxy/win_proxy_setup.png"></p>
+<p>For Firefox:</p>
+<ul>
+<li>Settings → Network Settings → Manual proxy configuration</li>
+<li>HTTP Proxy: <code>127.0.0.1</code></li>
+<li>Port: <code>4040</code></li>
+<li>Check <code>Also use this proxy for HTTPS</code></li>
+</ul>
+<p>At that point, browser traffic routed through the configured proxy listener will flow through the 404 distribution and into STATIC.</p></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.indexes", "content.tabs.link", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
